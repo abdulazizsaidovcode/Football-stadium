@@ -1,10 +1,11 @@
 import Buttons from '@/components/button/button';
+import Layout from '@/layout/layout';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 // import AntDesign from '@expo/vector-icons/AntDesign';
 export default function Dashboard() {
   return (
-    <ScrollView style={styles.container}>
+    <Layout scroll>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profile}>
@@ -68,18 +69,14 @@ export default function Dashboard() {
       {/* <TouchableOpacity style={styles.businessCardButton}>
         <Text style={styles.businessCardText}>Моя визитка</Text>
       </TouchableOpacity> */}
-    </ScrollView>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 15,
-  },
   header: {
-    marginTop: 40,
-    marginBottom: 20,
+    // marginTop: 40,
+    // marginBottom: 20,
   },
   profile: {
     flexDirection: 'row',
