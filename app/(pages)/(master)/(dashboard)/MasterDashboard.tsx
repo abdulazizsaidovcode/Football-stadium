@@ -1,21 +1,23 @@
+import Buttons from '@/components/button/button';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-
+// import AntDesign from '@expo/vector-icons/AntDesign';
 export default function Dashboard() {
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.profile}>
           <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.name}>Гузаль Шерматова</Text>
             <Text style={styles.phone}>+998 93 123-45-67</Text>
-            <Text style={styles.role}>King barber</Text>
+            {/* <Text style={styles.role}>Stadioni kop boy opashka</Text> */}
           </View>
         </View>
-        <TouchableOpacity style={styles.settingsButton}>
-          <Text style={styles.settingsText}>Настройка приложения</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.settingsButton}>
+          <Buttons title={'Edit profile' } icon={<AntDesign name="edit" size={24} color="white" />}/>
+        </TouchableOpacity> */}
       </View>
 
       {/* Schedule */}
@@ -24,20 +26,16 @@ export default function Dashboard() {
         <Text style={styles.sectionSubtitle}>Время работы: необходимо настроить</Text>
         <View style={styles.scheduleButtons}>
           <TouchableOpacity style={styles.scheduleButton}>
-            <Text style={styles.scheduleButtonText}>Забронированные</Text>
+            <Buttons title='Break Up' />
           </TouchableOpacity>
           <TouchableOpacity style={styles.scheduleButton}>
-            <Text style={styles.scheduleButtonText}>Свободные слоты</Text>
+            <Buttons title='edit' />
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* Clients and Stats */}
       <View style={styles.clientsSection}>
         <Text style={styles.clientsTitle}>Мои клиенты</Text>
         <Text style={styles.clientsCount}>0</Text>
-
-        {/* Stats */}
         <View style={styles.statsContainer}>
           <View style={styles.statBox}>
             <Text style={styles.statTitle}>Выполненные записи</Text>
@@ -67,19 +65,18 @@ export default function Dashboard() {
       </View>
 
       {/* Footer */}
-      <TouchableOpacity style={styles.businessCardButton}>
+      {/* <TouchableOpacity style={styles.businessCardButton}>
         <Text style={styles.businessCardText}>Моя визитка</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#1C1A29',
-//     paddingHorizontal: 16,
-//   },
+  container: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
   header: {
     marginTop: 40,
     marginBottom: 20,
@@ -110,9 +107,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   settingsButton: {
-    backgroundColor: '#F94D5A',
+    // backgroundColor: '#F94D5A',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 20,
     alignItems: 'center',
@@ -140,7 +137,7 @@ const styles = StyleSheet.create({
   },
   scheduleButton: {
     flex: 1,
-    backgroundColor: '#2A2839',
+    // backgroundColor: '#2A2839',
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
