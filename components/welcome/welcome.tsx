@@ -64,7 +64,7 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="Русский"
                     onPress={() => {
-                        // navigation.navigate("(auth)/(login)/number-create");
+                        navigation.navigate("(tabs)/(master)");
                         changeLanguage("ru");
                     }}
                 />
@@ -78,7 +78,7 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="English"
                     onPress={() => {
-                        navigation.navigate("(auth)/(login)/number-create");
+                        // navigation.navigate("(auth)/(login)/number-create");
                         changeLanguage("en");
                     }}
                 />

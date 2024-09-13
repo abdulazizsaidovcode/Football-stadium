@@ -1,3 +1,5 @@
 export interface RootStackParamList {
-    "index": undefined
+    "index": undefined;
+    "(tabs)/(master)": undefined;
+    "(pages)/(master)/master": undefined;
 }
