@@ -56,7 +56,7 @@ const Welcome: React.FC = () => {
         <Layout style={styles.container}>
             <View style={styles.logo}>
                 <FontAwesome name="soccer-ball-o" size={50} color="black" />
-                                </View>
+            </View>
             <Text style={styles.title}>Bookers Stadium</Text>
             <Text style={styles.welcome}> </Text>
             <Text style={styles.selectLanguage}>Выберите язык</Text>
@@ -78,7 +78,7 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="English"
                     onPress={() => {
-                        // navigation.navigate("(auth)/(login)/number-create");
+                        navigation.navigate("(tabs)/(client)");
                         changeLanguage("en");
                     }}
                 />

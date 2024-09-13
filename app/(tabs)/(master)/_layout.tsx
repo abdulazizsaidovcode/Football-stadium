@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, FontAwesome5, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import MasterDashboard from './dashboard';
 import MasterStadium from './stadium';
 import MasterProfile from './profile';
@@ -30,7 +30,7 @@ function MasterTabLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
-              <MaterialIcons name="space-dashboard" size={27} color={color} />
+              <Octicons name="home" size={27} color={color} />
             )
           }}
         />
@@ -48,9 +48,9 @@ function MasterTabLayout() {
           name="Profile"
           component={MasterProfile}
           options={{
-            title: "Stadium",
+            title: "Profile",
             tabBarIcon: ({ color }) => (
-              <FontAwesome5 name="user-alt" size={24} color={color} />
+              <Feather name="user" size={27} color={color} />
             )
           }}
         />

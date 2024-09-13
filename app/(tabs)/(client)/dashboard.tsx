@@ -2,14 +2,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Layout from '@/layout/layout'
 
-const ClientProfile = () => {
+const ClientDashboard = () => {
   return (
     <Layout>
-      <Text>ClientProfile</Text>
+      <Text>ClientDashboard</Text>
     </Layout>
   )
 }
 
-export default ClientProfile;
+export default ClientDashboard;
 
 const styles = StyleSheet.create({})
