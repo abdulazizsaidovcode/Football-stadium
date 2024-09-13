@@ -9,6 +9,7 @@ import { RootStackParamList } from "@/types/root/root";
 // import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
 import Layout from "@/layout/layout";
+import { FontAwesome } from "@expo/vector-icons";
 // import * as SecureStore from "expo-secure-store";
 
 type SettingsScreenNavigationProp = NavigationProp<
@@ -53,38 +54,35 @@ const Welcome: React.FC = () => {
 
     return (
         <Layout style={styles.container}>
-                <View style={styles.logo}>
-                    {/* <Image source={require("../../assets/images/auth/logo.png")}/> */}
-                </View>
-                <Text style={styles.title}>Bookers Beauty</Text>
-                <Text style={styles.welcome}> </Text>
-                <Text style={styles.selectLanguage}>Выберите язык</Text>
-                <View style={styles.button}>
-                    <Buttons
-                        title="Русский"
-                        backgroundColor="#9C0A35"
-                        onPress={() => {
-                            // navigation.navigate("(auth)/(login)/number-create");
-                            changeLanguage("ru");
-                        }}
-                    />
-                    <Buttons
-                        title="O‘zbek"
-                        backgroundColor="#9C0A35"
-                        onPress={() => {
-                            navigation.navigate("(pages)/(master)/master");
-                            changeLanguage("uz");
-                        }}
-                    />
-                    <Buttons
-                        title="English"
-                        backgroundColor="#9C0A35"
-                        onPress={() => {
-                            navigation.navigate("(auth)/(login)/number-create");
-                            changeLanguage("en");
-                        }}
-                    />
-                </View>
+            <View style={styles.logo}>
+                <FontAwesome name="soccer-ball-o" size={50} color="black" />
+                                </View>
+            <Text style={styles.title}>Bookers Stadium</Text>
+            <Text style={styles.welcome}> </Text>
+            <Text style={styles.selectLanguage}>Выберите язык</Text>
+            <View style={styles.button}>
+                <Buttons
+                    title="Русский"
+                    onPress={() => {
+                        // navigation.navigate("(auth)/(login)/number-create");
+                        changeLanguage("ru");
+                    }}
+                />
+                <Buttons
+                    title="O‘zbek"
+                    onPress={() => {
+                        navigation.navigate("(pages)/(master)/master");
+                        changeLanguage("uz");
+                    }}
+                />
+                <Buttons
+                    title="English"
+                    onPress={() => {
+                        navigation.navigate("(auth)/(login)/number-create");
+                        changeLanguage("en");
+                    }}
+                />
+            </View>
         </Layout>
     );
 };

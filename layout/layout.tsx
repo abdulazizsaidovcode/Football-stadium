@@ -1,15 +1,11 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 
-const Layout: React.FC<{ children: React.ReactNode, style?: any }> = ({ children, style }) => {
+const Layout: React.FC<{ children: React.ReactNode, style?: any, scroll: boolean }> = ({ children, style, scroll = false }) => {
     return (
         <SafeAreaView style={[styles.container, style]}>
-            <StatusBar style='light' />
-            <ScrollView>
-                {children}
-            </ScrollView>
+            <StatusBar barStyle='light-content' />
+            {scroll ? <ScrollView>{children}</ScrollView> : children}
         </SafeAreaView>
     )
 }
@@ -19,8 +15,7 @@ export default Layout
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#21212E',
+        backgroundColor: '#2C3639',
         padding: 16,
-        position: 'relative'
     }
 })
