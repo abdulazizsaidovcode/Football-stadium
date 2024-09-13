@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import Layout from '@/layout/layout'
-import Dashboard from './(dashboard)'
+import Dashboard from './(dashboard)/MasterDashboard'
 
 const Master = () => {
   return (
-    <Layout>
+    <Layout >
       <Text style={styles.Text}>Master</Text>
       <Dashboard/>
     </Layout>
