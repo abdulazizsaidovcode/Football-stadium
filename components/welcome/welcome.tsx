@@ -71,7 +71,7 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="O‘zbek"
                     onPress={() => {
-                        navigation.navigate("(pages)/(master)/master");
+                        // navigation.navigate("(tabs)/(master)");
                         changeLanguage("uz");
                     }}
                 />
