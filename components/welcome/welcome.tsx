@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, Image, SafeAreaView, BackHandler } from "react-
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/types/root/root";
 // import {langstore} from "@/helpers/state_managment/lang/lang";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
 import Layout from "@/layout/layout";
 // import * as SecureStore from "expo-secure-store";
@@ -34,7 +34,7 @@ const Welcome: React.FC = () => {
             const onBackPress = () => {
                 if (backPressCount === 0) {
                     setBackPressCount(backPressCount + 1);
-                    Toast.show('Orqaga qaytish uchun yana bir marta bosing', Toast.SHORT);
+                    // Toast.show('Orqaga qaytish uchun yana bir marta bosing', Toast.SHORT);
                     setTimeout(() => {
                         setBackPressCount(0);
                     }, 2000); // 2 soniya ichida ikkinchi marta bosilmasa, holatni qayta boshlaydi
@@ -72,7 +72,7 @@ const Welcome: React.FC = () => {
                         title="O‘zbek"
                         backgroundColor="#9C0A35"
                         onPress={() => {
-                            navigation.navigate("(auth)/(login)/number-create");
+                            navigation.navigate("(pages)/(master)/master");
                             changeLanguage("uz");
                         }}
                     />

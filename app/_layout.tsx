@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Master from './(pages)/(master)/master';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,6 +37,11 @@ export default function RootLayout() {
         <Stack.Screen
           name="index"
           component={Index}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="(pages)/(master)/master"
+          component={Master}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
