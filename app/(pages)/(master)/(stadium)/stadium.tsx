@@ -31,7 +31,7 @@ const Stadium = () => {
   );
 
   useEffect(() => {
-    globalDataFunc(); // Fetch stadiums on mount
+    globalDataFunc(); // Fetch stadiums on mountppppppppppppp
   }, []);
 
   // Handle form submission for adding/editing
