@@ -1,3 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { toastMessage } from "../toast-message/toast-message";
+
 export interface UseGlobalResponse<T> {
     loading: boolean;
     error: any;
@@ -28,7 +32,7 @@ export function useGlobalRequest<T>(
                     res = await axios.delete(url, config || {});
                     break;
                 default:
-                    return toast.error('Method xaltolik yuz berdi!');
+                    return alert('Method xaltolik yuz berdi!');
             }
             if (res.data.error) toastMessage(res.data.error.code, res.data.error.message);
             return res.data.data;
@@ -37,7 +41,7 @@ export function useGlobalRequest<T>(
     });
 
     return {
-        loading: mutation.status === 'loading',
+        loading: mutation.status === 'pending',
         error: mutation.error,
         response: mutation.data,
         globalDataFunc: mutation.mutateAsync,
