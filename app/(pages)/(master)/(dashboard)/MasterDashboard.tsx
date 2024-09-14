@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 // import AntDesign from '@expo/vector-icons/AntDesign';
 export default function Dashboard() {
   return (
-    <Layout scroll style={styles.padding}>
+    <Layout padding scroll>
       <View style={styles.header}>
         <View style={styles.profile}>
           <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />

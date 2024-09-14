@@ -57,7 +57,7 @@ const Welcome: React.FC = () => {
             <View style={styles.logo}>
                 <FontAwesome name="soccer-ball-o" size={50} color="black" />
             </View>
-            <Text style={styles.title}>Bookers Stadium</Text>
+            <Text style={styles.title}>Socker Bookers</Text>
             <Text style={styles.welcome}> </Text>
             <Text style={styles.selectLanguage}>Выберите язык</Text>
             <View style={styles.button}>
