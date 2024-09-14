@@ -1,11 +1,12 @@
 import Buttons from '@/components/button/button';
+import { Colors } from '@/constants/Colors';
 import Layout from '@/layout/layout';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 // import AntDesign from '@expo/vector-icons/AntDesign';
 export default function Dashboard() {
   return (
-    <Layout scroll>
+    <Layout scroll style={styles.padding}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profile}>
@@ -23,8 +24,8 @@ export default function Dashboard() {
 
       {/* Schedule */}
       <View style={styles.schedule}>
-        <Text style={styles.sectionTitle}>Расписание на сегодня</Text>
-        <Text style={styles.sectionSubtitle}>Время работы: необходимо настроить</Text>
+        <Text style={styles.sectionTitle}>все заказы сегодня</Text>
+        <Text style={styles.sectionSubtitle}>еще не доступен</Text>
         <View style={styles.scheduleButtons}>
           <TouchableOpacity style={styles.scheduleButton}>
             <Buttons title='Break Up' />
@@ -74,9 +75,13 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
+  padding: {
+    paddingHorizontal: 15,
+  },
   header: {
-    // marginTop: 40,
-    // marginBottom: 20,
+    marginTop: 0,
+    marginBottom: 20,
+    borderBottomColor: "#000",
   },
   profile: {
     flexDirection: 'row',
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
   },
   clientsCount: {
     fontSize: 36,
-    color: '#F94D5A',
+    color: '#C4DAD2',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   statBox: {
-    backgroundColor: '#1C1A29',
+    backgroundColor: '#6A9C89',
     width: '48%',
     paddingVertical: 20,
     alignItems: 'center',
@@ -174,13 +179,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   statTitle: {
-    color: '#A9A9A9',
+    color: '#000',
     fontSize: 12,
     textAlign: 'center',
   },
   statValue: {
     fontSize: 18,
-    color: '#fff',
+    color: '#C4DAD2',
     fontWeight: 'bold',
     marginTop: 10,
   },
