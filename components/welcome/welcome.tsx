@@ -10,7 +10,7 @@ import { RootStackParamList } from "@/types/root/root";
 import Buttons from "../button/button";
 import Layout from "@/layout/layout";
 import { FontAwesome } from "@expo/vector-icons";
-// import * as SecureStore from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
