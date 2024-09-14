@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   statBox: {
-    backgroundColor: '#6A9C89',
+    backgroundColor: '#698474',
     width: '48%',
     paddingVertical: 20,
     alignItems: 'center',
