@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "react-query";
 import axios from "axios";
 import { toastMessage } from "../toast-message/toast-message";
 
@@ -12,12 +12,18 @@ export interface UseGlobalResponse<T> {
 export function useGlobalRequest<T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    data?: T,
-    config?: any
+    config?: any,
+    data?: T
 ): UseGlobalResponse<T> {
+    console.log('URL', url);
+    console.log('METHOD', method);
+    console.log('CONFIG', config);
+    
     const mutation = useMutation({
         mutationFn: async () => {
+            console.log('aaaaaaaaaaaaaaa')
             let res;
+            
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
@@ -41,7 +47,7 @@ export function useGlobalRequest<T>(
     });
 
     return {
-        loading: mutation.status === 'pending',
+        loading: mutation.status === 'loading',
         error: mutation.error,
         response: mutation.data,
         globalDataFunc: mutation.mutateAsync,

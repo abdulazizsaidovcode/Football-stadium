@@ -10,9 +10,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Master from './(pages)/(master)/master';
 import MasterTabLayout from './(tabs)/(master)/_layout';
 import ClientTabLayout from './(tabs)/(client)/_layout';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -28,35 +29,36 @@ export default function RootLayout() {
 
   const Stack = createNativeStackNavigator();
 
-
   if (!loaded) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator initialRouteName="index" screenOptions={{ animation: 'none' }}>
-        <Stack.Screen
-          name="index"
-          component={Index}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="(tabs)/(master)"
-          component={MasterTabLayout}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="(tabs)/(client)"
-          component={ClientTabLayout}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="(pages)/(master)/master"
-          component={Master}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack.Navigator initialRouteName="index" screenOptions={{ animation: 'none' }}>
+          <Stack.Screen
+            name="index"
+            component={Index}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(tabs)/(master)"
+            component={MasterTabLayout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(tabs)/(client)"
+            component={ClientTabLayout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(master)/master"
+            component={Master}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
