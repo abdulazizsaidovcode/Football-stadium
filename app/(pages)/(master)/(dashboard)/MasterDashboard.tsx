@@ -7,22 +7,16 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 export default function Dashboard() {
   return (
     <Layout scroll style={styles.padding}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.profile}>
           <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.name}>Гузаль Шерматова</Text>
             <Text style={styles.phone}>+998 93 123-45-67</Text>
-            {/* <Text style={styles.role}>Stadioni kop boy opashka</Text> */}
           </View>
         </View>
-        {/* <TouchableOpacity style={styles.settingsButton}>
-          <Buttons title={'Edit profile' } icon={<AntDesign name="edit" size={24} color="white" />}/>
-        </TouchableOpacity> */}
       </View>
 
-      {/* Schedule */}
       <View style={styles.schedule}>
         <Text style={styles.sectionTitle}>все заказы сегодня</Text>
         <Text style={styles.sectionSubtitle}>еще не доступен</Text>
@@ -65,11 +59,6 @@ export default function Dashboard() {
           </View>
         </View>
       </View>
-
-      {/* Footer */}
-      {/* <TouchableOpacity style={styles.businessCardButton}>
-        <Text style={styles.businessCardText}>Моя визитка</Text>
-      </TouchableOpacity> */}
     </Layout>
   );
 }
@@ -77,6 +66,7 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 15,
+    paddingVertical: 20,
   },
   header: {
     marginTop: 0,
@@ -175,6 +165,10 @@ const styles = StyleSheet.create({
     width: '48%',
     paddingVertical: 20,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     borderRadius: 10,
     marginBottom: 20,
   },

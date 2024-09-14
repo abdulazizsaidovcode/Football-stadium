@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import React from 'react';
 import Layout from '@/layout/layout';
-import { colors } from '@/constants/Colors';
 
 const MasterStadium = () => {
   const stadiums = [
@@ -13,7 +12,7 @@ const MasterStadium = () => {
   return (
     <Layout scroll>
       <Image
-        source={{ uri: 'https://picsum.photos/500' }}
+        // source={{ uri: 'https://picsum.photos/500' }}
         style={styles.image}  // Added style to image
       />
       <View style={styles.container}>
@@ -23,10 +22,14 @@ const MasterStadium = () => {
       <ScrollView contentContainerStyle={styles.stadiumList}>
         {stadiums.map((stadium) => (
           <View key={stadium.id} style={styles.card}>
-            <Image source={{ uri: stadium.image }} style={styles.image} />
+            <Image source={{ uri: stadium.image }} style={styles.cardImage} />
             <View style={styles.cardContent}>
+              <Text style={styles.date}>September 14, 2024</Text>
               <Text style={styles.titleCard}>{stadium.name}</Text>
-              <Text style={styles.location}>{stadium.location}</Text>
+              <Text style={styles.description}>
+                {stadium.location} is one of the major locations of the city, offering a rich history and numerous modern amenities. Discover more about this stadium!
+              </Text>
+              <Text style={styles.link}>Find out more</Text>
             </View>
           </View>
         ))}
@@ -50,12 +53,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginVertical: 20,
   },
-  titleCard: {
-    color: "#C4DAD2",
-    // marginTop: 0,
-    fontSize: 30,
-    marginVertical: 10,
-  },
+
   defaultTitle: {
     color: "#6A9C89",
     fontSize: 16,
@@ -63,15 +61,14 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 500,
-    height: 200,
+    height: 100,
     resizeMode: 'cover',
   },
   stadiumList: {
     padding: 20,
   },
-
   card: {
-    backgroundColor: "#6A9C89",
+    backgroundColor: '#343A40', // dark background for the card
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -79,14 +76,33 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
-    overflow: 'hidden', // Ensures the border radius applies to the image as well
+    overflow: 'hidden',
+  },
+  cardImage: {
+    width: '100%', // ensure the image takes full width of the card
+    height: 200,
+    resizeMode: 'cover',
   },
   cardContent: {
     padding: 15,
   },
-  location: {
+  date: {
+    fontSize: 12,
+    color: '#A9A9A9', // lighter text color for the date
+    marginBottom: 5,
+  },
+  titleCard: {
+    fontSize: 20,
+    color: '#FFFFFF', // white text color for the title
+    marginBottom: 10,
+  },
+  description: {
     fontSize: 14,
-    color: '#666',
-    marginTop: 5,
+    color: '#CCCCCC', // light gray for the description text
+    marginBottom: 15,
+  },
+  link: {
+    fontSize: 14,
+    color: '#00BFFF', // light blue for the 'Find out more' link
   },
 });
