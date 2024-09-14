@@ -1,12 +1,12 @@
-import MasterStadium from '@/app/(tabs)/(master)/stadium'
+import Stadium from '@/app/(pages)/(master)/(stadium)/stadium'
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
 
-export class Stadium extends Component {
+export class MasterStadium extends Component {
   render() {
-    return ( <MasterStadium/>
+    return (
+      <Stadium />
     )
   }
 }
 
-export default Stadium
+export default MasterStadium;

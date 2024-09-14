@@ -1,4 +1,5 @@
 export const BASE_URL: string = 'http://134.122.77.107:8085/api/v1/';
+export const File: string = `${BASE_URL}auth/send-code-to-phone`;
 
 // AUTH
 export const auth_login: string = `${BASE_URL}auth/login`;
