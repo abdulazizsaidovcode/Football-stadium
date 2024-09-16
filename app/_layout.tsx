@@ -14,7 +14,7 @@ import ClientHistory from './(pages)/(history)/(client)/history';
 import MasterRegister from './(pages)/(auth)/(master)/register';
 import ClientRegister from './(pages)/(auth)/(client)/register';
 import Master from './(pages)/(master)/master';
-import Login from './(pages)/(auth)/login/login';
+import Login from './(pages)/(auth)/(login)/login';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();

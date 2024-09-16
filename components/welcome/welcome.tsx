@@ -73,14 +73,14 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="O‘zbek"
                     onPress={() => {
-                        navigation.navigate("(pages)/(auth)/(login)/login");
+                        navigation.navigate("(tabs)/(master)");
                         changeLanguage("uz");
                     }}
                 />
                 <Buttons
                     title="English"
                     onPress={() => {
-                        navigation.navigate("(pages)/(auth)/(login)/login");
+                        navigation.navigate("(tabs)/(client)");
                         changeLanguage("en");
                     }}
                 />
