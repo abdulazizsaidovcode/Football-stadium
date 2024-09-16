@@ -14,7 +14,6 @@ import ClientDashboardCard from '@/components/cards/ClientDashboardCard'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { Loading } from '@/components/loading/loading'
 
-
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "index"
@@ -31,7 +30,7 @@ const ClientDashboard = () => {
 
   useEffect(() => {
     staduims.globalDataFunc()
-  }, [staduims.globalDataFunc]);
+  }, [userLocation?.coords.latitude, userLocation?.coords.longitude]);
 
   if (staduims.loading) {
     return <Loading />
