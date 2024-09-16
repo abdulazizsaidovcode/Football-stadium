@@ -1,43 +1,36 @@
 import Buttons from '@/components/button/button';
 import { Colors } from '@/constants/Colors';
-import { user_me } from '@/helpers/api/api';
+import { file_get, user_me } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout';
+import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 // import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
-  useEffect(() => { 
+  useEffect(() => {
     userMee.globalDataFunc();
   }, [])
-  console.log(userMee.response);
 
   return (
     <Layout padding scroll>
       <View style={styles.header}>
         <View style={styles.profile}>
-          <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />
+          <Text>
+            {userMee.response && userMee.response.attaachmentId ?
+              <Image source={file_get + userMee.response.attaachmentId} style={styles.avatar} />
+              : <AntDesign name="user" size={70} color="white" />
+            }
+          </Text>
           <View style={styles.profileInfo}>
-            <Text style={styles.name}>Гузаль Шерматова</Text>
-            <Text style={styles.phone}>+998 93 123-45-67</Text>
+            <Text style={styles.name}>{userMee.response && userMee.response.lastName || "Network error"}  {userMee.response && userMee.response.firstName || "Network error"}</Text>
+            <Text style={styles.phone}>{userMee.response && userMee.response.phoneNumber || "Network error"}</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.schedule}>
-        <Text style={styles.sectionTitle}>все заказы сегодня</Text>
-        <Text style={styles.sectionSubtitle}>еще не доступен</Text>
-        <View style={styles.scheduleButtons}>
-          <TouchableOpacity style={styles.scheduleButton}>
-            <Buttons title='Break Up' />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.scheduleButton}>
-            <Buttons title='edit' />
-          </TouchableOpacity>
-        </View>
-      </View>
       <View style={styles.clientsSection}>
         <Text style={styles.clientsTitle}>Мои клиенты</Text>
         <Text style={styles.clientsCount}>0</Text>
@@ -51,8 +44,12 @@ export default function Dashboard() {
             <Text style={styles.statValue}>0</Text>
           </View>
           <View style={styles.statBox}>
-            <Text style={styles.statTitle}>Запросы на бронирования</Text>
-            <Text style={styles.statValue}>0</Text>
+            <Text style={styles.statTitle}>
+              Запросы на бронирования
+            </Text>
+            <Text style={styles.statValue}>
+              0
+            </Text>
           </View>
           <View style={styles.statBox}>
             <Text style={styles.statTitle}>В зале ожидания</Text>
@@ -66,6 +63,18 @@ export default function Dashboard() {
             <Text style={styles.statTitle}>Мой доход</Text>
             <Text style={styles.statValue}>0</Text>
           </View>
+        </View>
+      </View>
+      <View style={styles.schedule}>
+        <Text style={styles.sectionTitle}>все заказы сегодня</Text>
+        <Text style={styles.sectionSubtitle}>еще не доступен</Text>
+        <View style={styles.scheduleButtons}>
+          <TouchableOpacity style={styles.scheduleButton}>
+            <Buttons title='Break Up' />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.scheduleButton}>
+            <Buttons title='edit' />
+          </TouchableOpacity>
         </View>
       </View>
     </Layout>
@@ -83,6 +92,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000",
   },
   profile: {
+    marginTop: 50,
     flexDirection: 'row',
     alignItems: 'center',
   },
