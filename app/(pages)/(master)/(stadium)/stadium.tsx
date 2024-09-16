@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { BASE_URL } from '@/helpers/api/api';
+import { getConfig } from '@/helpers/api/token';
 
 const Stadium = () => {
-  // State for the form
   const [form, setForm] = useState({
     name: '',
     number: 0,
@@ -22,24 +22,27 @@ const Stadium = () => {
     endMinute: 0,
     attechmentIds: [''],
   });
-  const [editingStadium, setEditingStadium] = useState(null); // For handling edit mode
+  const [editingStadium, setEditingStadium] = useState(null);
+  const [stadiums, setStadiums] = useState([]);
 
-  // Fetch stadiums
   const { loading, error, response, globalDataFunc } = useGlobalRequest<any[]>(
     `${BASE_URL}stadium/for/master`,
-    'GET'
+    'GET',
+    getConfig()
   );
 
+  // Fetch data on component mount
   useEffect(() => {
-    globalDataFunc(); // Fetch stadiums on mountppppppppppppp
+    globalDataFunc().then((res) => {
+      setStadiums(res.data || []);
+    });
   }, []);
 
-  // Handle form submission for adding/editing
   const handleSubmit = () => {
     const method = editingStadium ? 'PUT' : 'POST';
     const url = editingStadium
-      ? `${BASE_URL}stadium/${editingStadium.id}` // Edit existing stadium
-      : `${BASE_URL}stadium`; // Add new stadium
+      ? `${BASE_URL}stadium/${editingStadium.id}`
+      : `${BASE_URL}stadium`;
 
     const { loading, error, response, globalDataFunc } = useGlobalRequest<any>(
       url,
@@ -47,7 +50,6 @@ const Stadium = () => {
       form
     );
 
-    // After submit, clear form and refresh stadium list
     globalDataFunc().then(() => {
       setForm({
         name: '',
@@ -65,17 +67,15 @@ const Stadium = () => {
         endMinute: 0,
         attechmentIds: [''],
       });
-      setEditingStadium(null); // Clear editing state
-      globalDataFunc(); // Refresh list
+      setEditingStadium(null);
+      globalDataFunc().then((res) => setStadiums(res.data || []));
     });
   };
 
-  // Handle input changes
   const handleInputChange = (field: string, value: any) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
   };
 
-  // Pre-fill form for editing
   const handleEdit = (stadium: any) => {
     setForm({
       name: stadium.name,
@@ -120,17 +120,18 @@ const Stadium = () => {
           onChangeText={(text) => handleInputChange('number', parseInt(text))}
           style={styles.input}
         />
-        {/* Add input fields for other form elements like lat, lang, price, etc. */}
         <Button title={editingStadium ? "Update Stadium" : "Add Stadium"} onPress={handleSubmit} />
       </View>
 
       <ScrollView contentContainerStyle={styles.stadiumList}>
-        {response && response.map((stadium: any) => (
+        {stadiums && stadiums.map((stadium: any) => (
           <View key={stadium.id} style={styles.card}>
-            <Image source={{ uri: stadium.imageUrl }} style={styles.cardImage} />
+            <Image source={{ uri: `${BASE_URL}/attachments/${stadium.isMainAttachmentId}` }} style={styles.cardImage} />
             <View style={styles.cardContent}>
-              <Text style={styles.titleCard}>{stadium.name}</Text>
-              <Text style={styles.description}>{stadium.location}</Text>
+              <Text style={styles.titleCard}>
+                {stadium.name}
+              </Text>
+              <Text style={styles.description}>{stadium.description}</Text>
               <Button title="Edit" onPress={() => handleEdit(stadium)} />
             </View>
           </View>
@@ -144,6 +145,7 @@ export default Stadium;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 10,

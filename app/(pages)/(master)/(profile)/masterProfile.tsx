@@ -2,6 +2,9 @@ import Buttons from '@/components/button/button';
 import Layout from '@/layout/layout';
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { BASE_URL } from '@/helpers/api/api';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { getConfig } from '@/helpers/api/token';
 
 interface ProfileState {
     isEditing: boolean;
@@ -12,22 +15,23 @@ interface ProfileState {
 export class Profile extends Component<{}, ProfileState> {
     state: ProfileState = {
         isEditing: false,
-        name: 'Гузаль Шерматова',
-        phone: '+998 93 123-45-67',
+        name: '',
+        phone: '',
     };
 
-    toggleEdit = () => {
-        this.setState(prevState => ({
-            isEditing: !prevState.isEditing,
-        }));
-    };
+    componentDidMount() {
+        this.fetchMasterData();
+    }
 
-    handleNameChange = (text: string) => {
-        this.setState({ name: text });
-    };
-
-    handlePhoneChange = (text: string) => {
-        this.setState({ phone: text });
+    fetchMasterData = async () => {
+        const { response } = useGlobalRequest<any[]>(`${BASE_URL}/api/v1/user/me`, 'GET', getConfig());
+        if (response) {
+            this.setState({
+                name: `${response.data.firstName} ${response.data.lastName}`,
+                phone: response.data.phoneNumber,
+            });
+        }
+        console.log(response);
     };
 
     render() {
@@ -36,31 +40,11 @@ export class Profile extends Component<{}, ProfileState> {
             <Layout scroll style={styles.container}>
                 <View style={styles.profile}>
                     <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />
-                    <View style={styles.profileInfo}>
-                        {isEditing ? (
-                            <TextInput
-                                style={styles.input}
-                                value={name}
-                                onChangeText={this.handleNameChange}
-                            />
-                        ) : (
-                            <Text style={styles.name}>{name}</Text>
-                        )}
-                        {isEditing ? (
-                            <TextInput
-                                style={styles.input}
-                                value={phone}
-                                onChangeText={this.handlePhoneChange}
-                                keyboardType="phone-pad"
-                            />
-                        ) : (
-                            <Text style={styles.phone}>{phone}</Text>
-                        )}
-                    </View>
-                    <Buttons
-                        title={isEditing ? 'Save' : 'Edit'}
-                        onPress={this.toggleEdit}
-                    />
+                    <Text>
+                        <Text style={styles.name}>{name}</Text>
+                        <Text style={styles.phone}>{phone}</Text>
+                        <Text>{phone}</Text>
+                    </Text>
                 </View>
             </Layout>
         );
@@ -72,7 +56,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 30,
         paddingVertical: 10,
-        // backgroundColor: '#333',
     },
     profile: {
         flexDirection: 'column',
@@ -110,10 +93,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         paddingVertical: 5,
         borderRadius: 5,
-        borderBlockColor: "#fff",
-        // paddingHorizontal: 30,
-        // paddingVertical: 5,
-        // borderRadius: 5,
         width: 200,
         marginTop: 5,
     },
