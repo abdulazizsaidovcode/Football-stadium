@@ -1,55 +1,40 @@
-import Buttons from '@/components/button/button';
+import React, { useState, useEffect } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Layout from '@/layout/layout';
-import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
-import { BASE_URL } from '@/helpers/api/api';
+import Buttons from '@/components/button/button';
+import { BASE_URL, file_get, user_me } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { getConfig } from '@/helpers/api/token';
+import { AntDesign } from '@expo/vector-icons';
 
-interface ProfileState {
-    isEditing: boolean;
-    name: string;
-    phone: string;
-}
+const Profile = () => {
+    const userMee = useGlobalRequest<any[]>(user_me, 'GET');
 
-export class Profile extends Component<{}, ProfileState> {
-    state: ProfileState = {
-        isEditing: false,
-        name: '',
-        phone: '',
-    };
+    useEffect(() => {
+        userMee.globalDataFunc()
+    }, [userMee.globalDataFunc])
 
-    componentDidMount() {
-        this.fetchMasterData();
-    }
+    return (
+        <Layout scroll style={styles.container}>
+            <View style={styles.profile}>
+                {userMee.response && userMee.response.attaachmentId ?
+                    <Image source={file_get + userMee.response.attaachmentId} style={styles.avatar} />
+                    : <AntDesign name="user" size={70} color="white" />
 
-    fetchMasterData = async () => {
-        const { response } = useGlobalRequest<any[]>(`${BASE_URL}/api/v1/user/me`, 'GET', getConfig());
-        if (response) {
-            this.setState({
-                name: `${response.data.firstName} ${response.data.lastName}`,
-                phone: response.data.phoneNumber,
-            });
-        }
-        console.log(response);
-    };
-
-    render() {
-        const { isEditing, name, phone } = this.state;
-        return (
-            <Layout scroll style={styles.container}>
-                <View style={styles.profile}>
-                    <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatar} />
+                }
+                <View style={styles.profileBody}>
                     <Text>
-                        <Text style={styles.name}>{name}</Text>
-                        <Text style={styles.phone}>{phone}</Text>
-                        <Text>{phone}</Text>
+                        <Text style={styles.name}>{userMee.response && userMee.response.lastName || "Network error"} </Text>
+                        <Text style={styles.name}>{userMee.response && userMee.response.firstName || "Network error"}</Text>
                     </Text>
+                    <Text style={styles.phone}>{userMee.response && userMee.response.phoneNumber || "Network error"}</Text>
                 </View>
-            </Layout>
-        );
-    }
-}
+            </View>
+        </Layout>
+    );
+};
+
+export default Profile;
 
 const styles = StyleSheet.create({
     container: {
@@ -63,6 +48,12 @@ const styles = StyleSheet.create({
         gap: 10,
         justifyContent: 'center',
         marginTop: 50,
+    },
+    profileBody: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 10,
+        justifyContent: 'center',
     },
     avatar: {
         width: 100,
@@ -97,5 +88,3 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
 });
-
-export default Profile;

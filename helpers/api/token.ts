@@ -6,7 +6,7 @@ export const getConfig = async () => {
         // if (!token) {
             return {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIrOTk4OTE5NTE3MzM1IiwiaWF0IjoxNzI2MzEwMzExLCJleHAiOjE4MTI3MTAzMTF9.XWnuu6XPzdmv5r4h93f1ZF0g24uWJOVqxdERPuaOPNU8-z5CqMYowaLJH_slhIDy3GA9l-gN6iUEMyrShvxDIA`,
+                    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIrOTk4NTA4ODkwMDM3IiwiaWF0IjoxNzI2NDY0MTIyLCJleHAiOjE4MTI4NjQxMjJ9.48Q_WTG6DAz1lYI2N7R_JyZ4cYrTOxT3mBw9-veAK0QRW2-fz9uAYCZdn6o00fy1ACMeQpEg-NmY_3M_7oBzJA`,
                 },
             };
         // } else {
