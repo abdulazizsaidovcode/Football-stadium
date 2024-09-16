@@ -1,10 +1,19 @@
 import Buttons from '@/components/button/button';
 import { Colors } from '@/constants/Colors';
+import { user_me } from '@/helpers/api/api';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 // import AntDesign from '@expo/vector-icons/AntDesign';
+
 export default function Dashboard() {
+  const userMee = useGlobalRequest(user_me, 'GET');
+  useEffect(() => { 
+    userMee.globalDataFunc();
+  }, [])
+  console.log(userMee.response);
+
   return (
     <Layout padding scroll>
       <View style={styles.header}>
