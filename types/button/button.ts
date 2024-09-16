@@ -6,5 +6,6 @@ export interface IButton {
     onPress?: () => void;
     bordered?: boolean;
     isDisebled?: boolean;
-    icon?: any
+    icon?: any;
+    loading?: boolean
 }

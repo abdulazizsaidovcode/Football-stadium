@@ -7,4 +7,5 @@ export interface RootStackParamList {
     "(pages)/(auth)/(login)/login": undefined;
     "(pages)/(auth)/(master)/register": undefined;
     "(pages)/(auth)/(client)/register": undefined;
+    "(pages)/(auth)/(check-code)/check-code": undefined;
 }

@@ -15,6 +15,7 @@ import MasterRegister from './(pages)/(auth)/(master)/register';
 import ClientRegister from './(pages)/(auth)/(client)/register';
 import Master from './(pages)/(master)/master';
 import Login from './(pages)/(auth)/(login)/login';
+import CheckCode from './(pages)/(auth)/(check-code)/check-code';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -84,6 +85,11 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(auth)/(login)/login"
             component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(auth)/(check-code)/check-code"
+            component={CheckCode}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

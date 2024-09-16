@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { IButton } from "@/types/button/button";
 
-const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', bordered = false, icon, textColor = 'white', textSize = 18, onPress, isDisebled = true }) => {
+const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', bordered = false, icon, textColor = 'white', textSize = 18, onPress, isDisebled = true, loading = false }) => {
     return (
         <TouchableOpacity
             style={[
                 styles.button,
-                { backgroundColor: !isDisebled ? 'gray' : backgroundColor, borderWidth: bordered ? 1.5 : 0, borderColor: '#9C0A35' }
+                { backgroundColor: !isDisebled || loading ? 'gray' : backgroundColor, borderWidth: bordered ? 1.5 : 0, borderColor: '#9C0A35' }
             ]}
             onPress={onPress}
             activeOpacity={.8}
@@ -17,6 +17,7 @@ const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', border
             <Text style={[styles.buttonText, { color: textColor }, { fontSize: textSize }]}>
                 {title}
             </Text>
+            {loading && <ActivityIndicator size="small" color={textColor} style={styles.loader} />}
         </TouchableOpacity>
     );
 };
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontWeight: '500',
+    },
+    loader: {
+        marginLeft: 20,
     },
 });
 

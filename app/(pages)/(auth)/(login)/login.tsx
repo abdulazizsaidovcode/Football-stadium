@@ -1,11 +1,31 @@
 import { Image, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 import Buttons from '@/components/button/button';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '@/types/root/root';
+import { useAuthStore } from '@/helpers/stores/auth/auth-store';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { auth_send_code } from '@/helpers/api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+type SettingsScreenNavigationProp = NavigationProp<
+  RootStackParamList,
+  "(pages)/(auth)/(login)/login"
+>;
+
 
 const Login = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const { phoneNumber, setPhoneNumber } = useAuthStore();
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
+  const sendCode = useGlobalRequest(auth_send_code, 'POST', { phoneNumber: '+998' + phoneNumber.split(' ').join('') });
+
+  useEffect(() => {
+    if (sendCode.response === 'Success') {
+      navigation.navigate('(pages)/(auth)/(check-code)/check-code');
+    }
+  }, [sendCode.response]);
 
   const formatPhoneNumber = (text: string) => {
     let cleaned = ('' + text).replace(/\D/g, '');
@@ -13,18 +33,22 @@ const Login = () => {
     if (cleaned.length > 9) {
       cleaned = cleaned.slice(0, 9);
     }
-
     const formattedNumber = cleaned.replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
 
     setPhoneNumber(formattedNumber);
   };
+
+
+
+  console.log('+998' + phoneNumber.split(' ').join(''));
+  console.log(sendCode.error);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <View style={{ marginTop: 50 }}>
           <Text style={styles.title}>Ваш номер телефона</Text>
-          <Text style={styles.des}>Мы отправили вам SMS с кодом подтверждения.</Text>
+          <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             <View style={styles.phoneCard}>
               <Image source={require('../../../../assets/images/uzb.png')} />
@@ -42,8 +66,12 @@ const Login = () => {
             </View>
           </View>
         </View>
-        <View style={{position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center'}}>
-          <Buttons title="Save" />
+        <View style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
+          <Buttons
+            title="Войти"
+            onPress={() => sendCode.globalDataFunc()}
+            loading={sendCode.loading}
+          />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -71,7 +99,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   phoneCard: {
-    backgroundColor: '#4B4B64',
+    backgroundColor: colors.inDarkGreen,
     padding: 15,
     borderRadius: 10,
     flexDirection: 'row',
@@ -80,12 +108,11 @@ const styles = StyleSheet.create({
     width: '29%'
   },
   phoneInput: {
-    backgroundColor: '#4B4B64',
-    paddingVertical: 17,
+    backgroundColor: colors.inDarkGreen,
+    paddingVertical: 15,
     paddingHorizontal: 15,
     borderRadius: 10,
     color: colors.white,
-    fontSize: 15,
-
+    fontSize: 17,
   }
 });
