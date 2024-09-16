@@ -1,4 +1,4 @@
-package com.abdulaziziz.MyExpoProject
+package uz.sfera.stadium
 
 import android.os.Build
 import android.os.Bundle

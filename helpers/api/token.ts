@@ -12,7 +12,7 @@ export const getConfig = async () => {
         // } else {
         //     console.log("Token not found");
         //     return null;
-        // }
+        // }a
     } catch (error) {
         console.log(error);
         return null;

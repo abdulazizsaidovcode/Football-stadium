@@ -15,3 +15,6 @@ export const file_upload: string = `${BASE_URL}file/upload`;
 export const file_update: string = `${BASE_URL}file/update`;
 export const file_get: string = `${BASE_URL}file/files`;
 export const file_delete: string = `${BASE_URL}file/delete`;
+
+// STADIUM
+export const stadium_get: string = `${BASE_URL}stadium`;

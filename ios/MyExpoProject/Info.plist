@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>myapp</string>
-          <string>com.abdulaziziz.MyExpoProject</string>
+          <string>uz.sfera.stadium</string>
         </array>
       </dict>
     </array>

@@ -3,7 +3,6 @@ import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vecto
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import ClientDashboard from './dashboard';
-import ClientStadium from './stadium';
 import ClientProfile from './profile';
 
 export default function ClientTabLayout() {
@@ -31,16 +30,6 @@ export default function ClientTabLayout() {
             title: "Home",
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="space-dashboard" size={27} color={color} />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="Stadium"
-          component={ClientStadium}
-          options={{
-            title: "Stadium",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="stadium" size={27} color={color} />
             )
           }}
         />

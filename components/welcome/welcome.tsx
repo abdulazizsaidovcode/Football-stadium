@@ -8,9 +8,10 @@ import { RootStackParamList } from "@/types/root/root";
 // import {langstore} from "@/helpers/state_managment/lang/lang";
 // import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
-import Layout from "@/layout/layout";
 import { FontAwesome } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
+import { colors } from "@/constants/Colors";
+import { StatusBar } from "expo-status-bar";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -26,7 +27,7 @@ const Welcome: React.FC = () => {
 
     const changeLanguage = async (lng: string) => {
         // i18n.changeLanguage(lng);
-        // await SecureStore.setItemAsync("selectedLanguage", lng);
+        await SecureStore.setItemAsync("selectedLanguage", lng);
         // setLanguage(lng);
     };
 
@@ -53,7 +54,8 @@ const Welcome: React.FC = () => {
     );
 
     return (
-        <Layout style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <StatusBar style='light' />
             <View style={styles.logo}>
                 <FontAwesome name="soccer-ball-o" size={50} color="black" />
             </View>
@@ -83,12 +85,14 @@ const Welcome: React.FC = () => {
                     }}
                 />
             </View>
-        </Layout>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: colors.darkGreen,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         gap: 10,
-        padding: 15,
+        padding: 16,
     },
 });
 

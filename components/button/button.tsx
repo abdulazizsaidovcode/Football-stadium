@@ -13,8 +13,9 @@ const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', border
             activeOpacity={.8}
             disabled={!isDisebled}
         >
+            {icon ? icon : ''}
             <Text style={[styles.buttonText, { color: textColor }, { fontSize: textSize }]}>
-                {icon ? icon : ''} {title}
+                {title}
             </Text>
         </TouchableOpacity>
     );
@@ -23,10 +24,12 @@ const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', border
 const styles = StyleSheet.create({
     button: {
         width: '100%',
-        paddingVertical: 12,
+        paddingVertical: 10,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 10
     },
     buttonText: {
         fontWeight: '500',

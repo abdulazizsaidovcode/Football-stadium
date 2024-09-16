@@ -14,14 +14,19 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.abdulaziziz.MyExpoProject"
+      "bundleIdentifier": "uz.sfera.stadium"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.abdulaziziz.MyExpoProject"
+      "package": "uz.sfera.stadium",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA7hQst-XJ1zOl63vgDEfOI05ec3boIPms"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +34,13 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

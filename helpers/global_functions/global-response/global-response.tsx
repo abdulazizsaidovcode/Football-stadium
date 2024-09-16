@@ -1,6 +1,7 @@
 import { useMutation } from "react-query";
 import axios from "axios";
 import { toastMessage } from "../toast-message/toast-message";
+import { getConfig } from "@/helpers/api/token";
 
 export interface UseGlobalResponse<T> {
     loading: boolean;
@@ -12,18 +13,12 @@ export interface UseGlobalResponse<T> {
 export function useGlobalRequest<T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    config?: any,
     data?: T
 ): UseGlobalResponse<T> {
-    console.log('URL', url);
-    console.log('METHOD', method);
-    console.log('CONFIG', config);
-    
     const mutation = useMutation({
         mutationFn: async () => {
-            console.log('aaaaaaaaaaaaaaa')
             let res;
-            
+            const config = await getConfig();
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
