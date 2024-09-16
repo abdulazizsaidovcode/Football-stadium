@@ -66,21 +66,21 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="Русский"
                     onPress={() => {
-                        navigation.navigate("(tabs)/(master)");
+                        navigation.navigate("(pages)/(auth)/(login)/login");
                         changeLanguage("ru");
                     }}
                 />
                 <Buttons
                     title="O‘zbek"
                     onPress={() => {
-                        // navigation.navigate("(tabs)/(master)");
+                        navigation.navigate("(pages)/(auth)/(login)/login");
                         changeLanguage("uz");
                     }}
                 />
                 <Buttons
                     title="English"
                     onPress={() => {
-                        navigation.navigate("(tabs)/(client)");
+                        navigation.navigate("(pages)/(auth)/(login)/login");
                         changeLanguage("en");
                     }}
                 />

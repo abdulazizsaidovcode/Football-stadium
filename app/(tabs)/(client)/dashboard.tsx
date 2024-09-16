@@ -1,18 +1,18 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect } from 'react'
-import Layout from '@/layout/layout'
+import React, { useEffect } from 'react'
 import { colors } from '@/constants/Colors'
-import { Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Entypo, MaterialIcons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions'
 import { useUserStore } from '@/helpers/stores/user/user-store'
-import Buttons from '@/components/button/button'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { user_me } from '@/helpers/api/api'
+import { stadium_get } from '@/helpers/api/api'
 import { RootStackParamList } from '@/types/root/root'
 import ClientDashboardCard from '@/components/cards/ClientDashboardCard'
+import { StadiumTypes } from '@/types/stadium/stadium'
+import { Loading } from '@/components/loading/loading'
 
 
 type SettingsScreenNavigationProp = NavigationProp<
@@ -22,18 +22,20 @@ type SettingsScreenNavigationProp = NavigationProp<
 
 const ClientDashboard = () => {
   const { userLocation, setUserLocation } = useUserStore();
-  const { response, globalDataFunc } = useGlobalRequest(user_me, 'GET');
+  const staduims = useGlobalRequest(`${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
-  useFocusEffect(
-    useCallback(() => {
-      getUserLocation(setUserLocation);
-    }, [])
-  )
+  useEffect(() => {
+    getUserLocation(setUserLocation);
+  }, [])
 
   useEffect(() => {
-    globalDataFunc()
-  }, [])
+    staduims.globalDataFunc()
+  }, [staduims.globalDataFunc]);
+
+  if (staduims.loading) {
+    return <Loading />
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,7 +53,9 @@ const ClientDashboard = () => {
           <View>
             <Text style={styles.subTitle}>Мои записи</Text>
             <View style={{ marginTop: 15 }}>
-              <ClientDashboardCard />
+              {staduims.response && staduims.response.map((item: StadiumTypes, index: number) => (
+                <ClientDashboardCard key={index} data={item} />
+              ))}
             </View>
           </View>
         </View>

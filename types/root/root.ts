@@ -4,4 +4,7 @@ export interface RootStackParamList {
     "(tabs)/(client)": undefined;
     "(tabs)/(master)": undefined;
     "(pages)/(master)/master": undefined;
+    "(pages)/(auth)/(login)/login": undefined;
+    "(pages)/(auth)/(master)/register": undefined;
+    "(pages)/(auth)/(client)/register": undefined;
 }

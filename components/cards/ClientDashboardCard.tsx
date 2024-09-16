@@ -3,13 +3,14 @@ import React from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
 import { FontAwesome6 } from '@expo/vector-icons'
+import { StadiumTypes } from '@/types/stadium/stadium'
 
-const ClientDashboardCard = () => {
+const ClientDashboardCard: React.FC<{ data: StadiumTypes }> = ({ data }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Sexy stadium</Text>
+            <Text style={styles.title}>{data.name}</Text>
             <Image height={200} style={{ objectFit: 'cover', borderRadius: 10 }} source={{ uri: 'https://picsum.photos/200/300' }} />
-            <Text style={styles.description}>Sexy stadium</Text>
+            <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
                 <View style={{ width: '82%' }}>
                     <Buttons title='Записаться' />
