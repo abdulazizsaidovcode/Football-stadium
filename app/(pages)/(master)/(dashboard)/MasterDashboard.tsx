@@ -7,7 +7,7 @@ import { user_me, user_update } from '@/helpers/api/api';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
-  const userEdit = useGlobalRequest(user_update, 'PUT'); 
+  const userEdit = useGlobalRequest(user_update, 'PUT');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
