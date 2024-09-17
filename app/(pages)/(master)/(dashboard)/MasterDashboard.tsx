@@ -7,6 +7,7 @@ import { user_me, user_update } from '@/helpers/api/api';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
+  const userEdit = useGlobalRequest(user_update, 'PUT'); 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -14,7 +15,7 @@ export default function Dashboard() {
     phoneNumber: '',
   });
   console.log(userMee.response);
-  
+
   useEffect(() => {
     userMee.globalDataFunc();
     if (userMee.response) {
@@ -25,20 +26,21 @@ export default function Dashboard() {
       });
     }
   }, []);
-  
+
   const handleEditPress = () => {
     setIsModalVisible(true);
   };
-  
+
   const handleSave = async () => {
     try {
-      const userEdit = useGlobalRequest(user_update, 'PUT' ,formData); 
+      await userEdit.globalDataFunc(formData);
       setIsModalVisible(false);
       userMee.globalDataFunc();
     } catch (error) {
       console.error("Failed to update user:", error);
     }
   };
+
 
   return (
     <Layout padding scroll>
@@ -55,8 +57,6 @@ export default function Dashboard() {
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* Edit Modal */}
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -78,8 +78,10 @@ export default function Dashboard() {
               value={formData.phoneNumber}
               onChangeText={(text) => setFormData({ ...formData, phoneNumber: text })}
             />
-            <Button title="Save" onPress={handleSave} />
-            <Button title="Cancel" color="red" onPress={() => setIsModalVisible(false)} />
+            <Text style={styles.Buttons}>
+              <Button title="Save" color='green' onPress={handleSave} />
+              <Button title="Cancel" color="red" onPress={() => setIsModalVisible(false)} />
+            </Text>
           </View>
         </View>
       </Modal>
@@ -94,6 +96,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderBottomColor: "#000",
   },
+  Buttons: {
+    display: "flex",
+  },
+
   profile: {
     marginTop: 50,
     flexDirection: 'row',
@@ -114,6 +120,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     padding: 10,
+    // color: '#000',
   },
   modalContainer: {
     flex: 1,
@@ -124,11 +131,13 @@ const styles = StyleSheet.create({
   modalContent: {
     width: 300,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#698474',
+    color: '#fff',
     borderRadius: 10,
   },
   input: {
     borderBottomWidth: 1,
+    color: '#fff',
     borderBottomColor: '#ccc',
     marginBottom: 20,
     paddingVertical: 5,
