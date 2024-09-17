@@ -19,7 +19,7 @@ const Index = () => {
 
     getToken()
   }, []);
-  
+
   return token && role ? role === 'ROLE_CLIENT' ? <ClientTabLayout /> : <MasterTabLayout /> : <Welcome />
 }
 

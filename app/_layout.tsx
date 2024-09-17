@@ -11,8 +11,7 @@ import MasterTabLayout from './(tabs)/(master)/_layout';
 import ClientTabLayout from './(tabs)/(client)/_layout';
 import MasterHistory from './(pages)/(history)/(master)/history';
 import ClientHistory from './(pages)/(history)/(client)/history';
-import MasterRegister from './(pages)/(auth)/(master)/register';
-import ClientRegister from './(pages)/(auth)/(client)/register';
+import Register from './(pages)/(auth)/(register)/register';
 import Master from './(pages)/(master)/master';
 import Login from './(pages)/(auth)/(login)/login';
 import CheckCode from './(pages)/(auth)/(check-code)/check-code';
@@ -20,6 +19,7 @@ import AddStadium from './(pages)/(master)/(stadium)/(addStadium)/AddStadium';
 import InternetNotice from '@/components/internet-notice/internet-notice';
 import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
 import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium';
+import ClientDashboard from './(pages)/(client)/(dashboard)/dashboard';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -79,8 +79,8 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="(pages)/(auth)/(master)/register"
-            component={MasterRegister}
+            name="(pages)/(auth)/(register)/register"
+            component={Register}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -91,11 +91,6 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(master)/(stadium)/(editStadium)/editStadium"
             component={editStadium}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(pages)/(auth)/(client)/register"
-            component={ClientRegister}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -111,6 +106,11 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(maps)/(stadium-locations)/stadium-locations"
             component={StadiumLoacations}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(client)/(dashboard)/dashboard"
+            component={ClientDashboard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 
-const ClientRegister = () => {
+const Register = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text></Text>
@@ -11,7 +11,7 @@ const ClientRegister = () => {
   )
 }
 
-export default ClientRegister;
+export default Register
 
 const styles = StyleSheet.create({
     container: {
