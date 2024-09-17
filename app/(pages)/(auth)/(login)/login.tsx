@@ -38,8 +38,8 @@ const Login = () => {
     setPhoneNumber(formattedNumber);
   };
 
-
-
+ 
+ 
   console.log('+998' + phoneNumber.split(' ').join(''));
   console.log(sendCode.error);
 

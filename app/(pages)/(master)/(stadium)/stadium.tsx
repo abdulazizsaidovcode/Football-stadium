@@ -3,17 +3,31 @@ import React, { useEffect } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { BASE_URL, file_get, stadium_get_master } from '@/helpers/api/api';
+import { StadiumTypes } from '@/types/stadium/stadium';
+import { colors } from '@/constants/Colors';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import Buttons from '@/components/button/button';
+import { useNavigation } from '@react-navigation/native';
+import AddStadium from './(addStadium)/AddStadium';
 
 const Stadium = () => {
-  const stadiums = useGlobalRequest(stadium_get_master, 'GET');
-
+  const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
+  const navigation = useNavigation()
   useEffect(() => {
     stadiums.globalDataFunc();
   }, []);
 
   return (
     <Layout scroll>
+
       <ScrollView contentContainerStyle={styles.stadiumList}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Стадионы</Text>
+          <View style={styles.headerIcon}>
+            <Entypo name="share" size={27} color="white" />
+          </View>
+        </View>
+        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(addStadium)/AddStadium')} />
         {stadiums.response && stadiums.response.map((stadium: any) => (
           <View key={stadium.id} style={styles.card}>
             <Image
@@ -40,10 +54,28 @@ const styles = StyleSheet.create({
   stadiumList: {
     padding: 20,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 40,
+    marginBottom: 30
+  },
+  headerIcon: {
+    flexDirection: 'row',
+    gap: 15,
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 25,
+    color: colors.white
+  },
+
   card: {
     backgroundColor: '#698474',
     borderRadius: 10,
     marginBottom: 20,
+    marginTop: 20,
     overflow: 'hidden',
   },
   cardImage: {
