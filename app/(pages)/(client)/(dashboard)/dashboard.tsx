@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import { Entypo, MaterialIcons } from '@expo/vector-icons'
@@ -14,6 +14,7 @@ import { StadiumTypes } from '@/types/stadium/stadium'
 import { Loading } from '@/components/loading/loading'
 import StadiumCard from '@/components/cards/StadiumCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Buttons from '@/components/button/button'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -23,6 +24,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>('')
+    const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>('')
     const staduims = useGlobalRequest(`${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
@@ -37,6 +39,29 @@ const ClientDashboard = () => {
 
             getConfig()
         }, [])
+    );
+
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                if (backPressCount === 0) {
+                    setBackPressCount(backPressCount + 1);
+                    alert("Orqaga qaytish uchun yana bir marta bosing");
+                    setTimeout(() => {
+                        setBackPressCount(0);
+                    }, 2000); // 2 soniya ichida ikkinchi marta bosilmasa, holatni qayta boshlaydi
+                    return true; // Orqaga qaytishni bloklaydi
+                } else {
+                    BackHandler.exitApp(); // Ilovadan chiqish
+                    return false;
+                }
+            };
+
+            BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+            return () =>
+                BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        }, [backPressCount])
     );
 
     useFocusEffect(
@@ -75,6 +100,7 @@ const ClientDashboard = () => {
                             ))}
                         </View>
                     </View>
+                    <Buttons onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} title='Login'/>
                 </View>
             </ScrollView>
         </SafeAreaView>

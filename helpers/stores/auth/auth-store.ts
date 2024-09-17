@@ -10,4 +10,6 @@ export const useAuthStore = create<AuthStoreTypes>((set) => ({
     setLastName: (val: string) => set({ lastName: val }),
     phoneNumber: '',
     setPhoneNumber: (val: string) => set({ phoneNumber: val }),
+    status: null,
+    setStatus: (val: boolean | null) => set({ status: val }),
 }));

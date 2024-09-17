@@ -16,7 +16,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 
 const CheckCode = () => {
-    const { phoneNumber, setPhoneNumber } = useAuthStore()
+    const { phoneNumber, setPhoneNumber, status } = useAuthStore()
     const [code, setCode] = useState<string[]>(['', '', '', '']);
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const inputRefs = useRef<Array<TextInput | null>>([]);
@@ -46,8 +46,8 @@ const CheckCode = () => {
                 const token = checkCode.response.token;
                 const role = checkCode.response.role;
                 await AsyncStorage.setItem('token', token);
-                await AsyncStorage.setItem('role', role);
-                checkCode.response.role === 'ROLE_CLIENT' ? navigation.navigate('(tabs)/(client)') : navigation.navigate('(tabs)/(master)')
+                await AsyncStorage.setItem('role', role === 'ROLE_CLIENT' ? 'CLIENT' : 'MASTER');
+                status === false ? navigation.navigate('(pages)/(auth)/(register)/register') : checkCode.response.role === 'ROLE_CLIENT' ? navigation.navigate('(tabs)/(client)') : navigation.navigate('(tabs)/(master)')
                 setPhoneNumber('');
                 setCode(['', '', '', ''])
             }
@@ -62,10 +62,7 @@ const CheckCode = () => {
         }
     }, [code]);
 
-    console.log(checkCode.error);
-    console.log(checkCode.response);
-
-
+    console.log('STATUS', status);
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>

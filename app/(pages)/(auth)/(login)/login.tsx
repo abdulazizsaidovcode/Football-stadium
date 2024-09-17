@@ -7,19 +7,20 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/types/root/root';
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { auth_send_code } from '@/helpers/api/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth_send_code, user_found } from '@/helpers/api/api';
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "(pages)/(auth)/(login)/login"
 >;
 
-
 const Login = () => {
-  const { phoneNumber, setPhoneNumber } = useAuthStore();
+  const { phoneNumber, setPhoneNumber, status, setStatus } = useAuthStore();
   const navigation = useNavigation<SettingsScreenNavigationProp>();
   const sendCode = useGlobalRequest(auth_send_code, 'POST', { phoneNumber: '+998' + phoneNumber.split(' ').join('') });
+  const userFound = useGlobalRequest(`${user_found}?phone=${'%2B998' + phoneNumber.split(' ').join('')}`, 'GET');
+
+  const [isPhoneNumberComplete, setIsPhoneNumberComplete] = useState(false); // New state to track phone number completeness
 
   useEffect(() => {
     if (sendCode.response === 'Success') {
@@ -36,12 +37,17 @@ const Login = () => {
     const formattedNumber = cleaned.replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
 
     setPhoneNumber(formattedNumber);
+
+    // Check if phone number is complete (12 characters including spaces)
+    setIsPhoneNumberComplete(formattedNumber.length === 12);
   };
 
- 
- 
-  console.log('+998' + phoneNumber.split(' ').join(''));
-  console.log(sendCode.error);
+  useEffect(() => {
+    if (isPhoneNumberComplete) {
+      userFound.globalDataFunc();
+      setStatus(userFound.response)
+    }
+  }, [isPhoneNumberComplete]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -66,13 +72,23 @@ const Login = () => {
             </View>
           </View>
         </View>
-        <View style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
-          <Buttons
-            title="Войти"
-            onPress={() => sendCode.globalDataFunc()}
-            loading={sendCode.loading}
-          />
-        </View>
+        {isPhoneNumberComplete && (
+          <View style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
+            {userFound.response === true ? (
+              <Buttons
+                title="Voyti"
+                onPress={() => sendCode.globalDataFunc()}
+                loading={sendCode.loading || userFound.loading}
+              />
+            ) : (
+              <Buttons
+                title="Registratsiya"
+                onPress={() => sendCode.globalDataFunc()}
+                loading={sendCode.loading || userFound.loading}
+              />
+            )}
+          </View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

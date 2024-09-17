@@ -15,10 +15,10 @@ import Register from './(pages)/(auth)/(register)/register';
 import Master from './(pages)/(master)/master';
 import Login from './(pages)/(auth)/(login)/login';
 import CheckCode from './(pages)/(auth)/(check-code)/check-code';
-import AddStadium from './(pages)/(master)/(stadium)/(addStadium)/AddStadium';
+import AddStadium from './(pages)/(master)/(stadium)/(add-stadium)/add-stadium';
 import InternetNotice from '@/components/internet-notice/internet-notice';
 import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
-import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium';
+import EditStadium from './(pages)/(master)/(stadium)/(edit-staidium)/edit-stadium';
 import ClientDashboard from './(pages)/(client)/(dashboard)/dashboard';
 import OrderSave from './(pages)/(order)/(order-save)/order-save';
 import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
@@ -92,13 +92,13 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="(pages)/(master)/(stadium)/(addStadium)/AddStadium"
+            name="(pages)/(master)/(stadium)/(add-stadium)/add-stadium"
             component={AddStadium}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="(pages)/(master)/(stadium)/(editStadium)/editStadium"
-            component={editStadium}
+            name="(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium"
+            component={EditStadium}
             options={{ headerShown: false }}
           />
           <Stack.Screen
