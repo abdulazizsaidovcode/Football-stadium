@@ -1,5 +1,6 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { colors } from '@/constants/Colors';
 
 interface TimesCardProps {
     title: string;
@@ -9,7 +10,7 @@ interface TimesCardProps {
     disabled: boolean;
 }
 
-const TimesCard: React.FC<TimesCardProps> = ({title, onSelect, isSelected, isInRange, disabled}) => {
+const TimesCard: React.FC<TimesCardProps> = ({ title, onSelect, isSelected, isInRange, disabled }) => {
     return (
         <TouchableOpacity
             activeOpacity={.8}
@@ -22,7 +23,7 @@ const TimesCard: React.FC<TimesCardProps> = ({title, onSelect, isSelected, isInR
             ]}
             disabled={disabled}
         >
-            <Text style={[styles.title, {color: isSelected ? 'white' : 'black'}]}>{title}</Text>
+            <Text style={[styles.title, { color: isSelected ? 'white' : colors.inDarkGreen }]}>{title.slice(0, 5)}</Text>
         </TouchableOpacity>
     );
 };
@@ -32,7 +33,7 @@ export default TimesCard;
 const styles = StyleSheet.create({
     container: {
         width: 80,
-        height: 35,
+        height: 40,
         backgroundColor: '#f2f2f2',
         borderRadius: 5,
         justifyContent: 'center',
@@ -42,10 +43,11 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     title: {
-        fontSize: 17,
+        fontSize: 15,
+        color: colors.inDarkGreen
     },
     selected: {
-        backgroundColor: '#9c0a35',
+        backgroundColor: colors.inDarkGreen,
     },
     inRange: {
         backgroundColor: '#aaaaaa',
