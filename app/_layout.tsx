@@ -17,6 +17,7 @@ import Master from './(pages)/(master)/master';
 import Login from './(pages)/(auth)/(login)/login';
 import CheckCode from './(pages)/(auth)/(check-code)/check-code';
 import AddStadium from './(pages)/(master)/(stadium)/(addStadium)/AddStadium';
+import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -58,7 +59,7 @@ export default function RootLayout() {
             component={ClientTabLayout}
             options={{ headerShown: false }}
           />
-          
+
           <Stack.Screen
             name="(pages)/(master)/master"
             component={Master}
@@ -79,9 +80,14 @@ export default function RootLayout() {
             component={MasterRegister}
             options={{ headerShown: false }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="(pages)/(master)/(stadium)/(addStadium)/AddStadium"
             component={AddStadium}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(master)/(stadium)/(editStadium)/editStadium"
+            component={editStadium}
             options={{ headerShown: false }}
           />
           <Stack.Screen
