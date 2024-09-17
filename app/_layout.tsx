@@ -19,6 +19,7 @@ import CheckCode from './(pages)/(auth)/(check-code)/check-code';
 import AddStadium from './(pages)/(master)/(stadium)/(addStadium)/AddStadium';
 import InternetNotice from '@/components/internet-notice/internet-notice';
 import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
+import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -88,6 +89,11 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="(pages)/(master)/(stadium)/(editStadium)/editStadium"
+            component={editStadium}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="(pages)/(auth)/(client)/register"
             component={ClientRegister}
             options={{ headerShown: false }}
@@ -107,7 +113,6 @@ export default function RootLayout() {
             component={StadiumLoacations}
             options={{ headerShown: false }}
           />
-          {/* app\(pages)\(maps)\(stadium-loacations)\stadium-loacations.tsx */}
         </Stack.Navigator>
       </ThemeProvider>
     </QueryClientProvider>
