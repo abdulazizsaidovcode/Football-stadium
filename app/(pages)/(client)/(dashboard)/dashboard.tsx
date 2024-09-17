@@ -41,7 +41,7 @@ const ClientDashboard = () => {
 
     useFocusEffect(
         useCallback(() => {
-            staduims.globalDataFunc();
+            userLocation?.coords && staduims.globalDataFunc();
         }, [userLocation?.coords])
     );
 
@@ -70,7 +70,7 @@ const ClientDashboard = () => {
                                     key={index}
                                     data={item}
                                     onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
-                                    onPress={() => { }}
+                                    onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
                                 />
                             ))}
                         </View>

@@ -20,6 +20,8 @@ import InternetNotice from '@/components/internet-notice/internet-notice';
 import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
 import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium';
 import ClientDashboard from './(pages)/(client)/(dashboard)/dashboard';
+import OrderSave from './(pages)/(order)/(order-save)/order-save';
+import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -111,6 +113,16 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(client)/(dashboard)/dashboard"
             component={ClientDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(order)/(order-save)/order-save"
+            component={OrderSave}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(order)/(order-details)/order-details"
+            component={OrderDatails}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

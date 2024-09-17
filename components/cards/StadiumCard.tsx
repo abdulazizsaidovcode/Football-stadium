@@ -4,6 +4,7 @@ import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
+import { file_get } from '@/helpers/api/api'
 
 const StadiumCard: React.FC<{ data: StadiumTypes, onMapPress: () => void, onPress: () => void }> = ({ data, onMapPress, onPress }) => {
     return (
@@ -12,7 +13,7 @@ const StadiumCard: React.FC<{ data: StadiumTypes, onMapPress: () => void, onPres
                 <Text style={styles.title}>{data.name}</Text>
                 <Text style={styles.priceTitle}>{data.price} sum</Text>
             </View>
-            <Image height={200} style={{ objectFit: 'cover', borderRadius: 10 }} source={{ uri: 'https://picsum.photos/200/300' }} />
+            <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
             <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
                 <View style={{ width: '85%' }}>
