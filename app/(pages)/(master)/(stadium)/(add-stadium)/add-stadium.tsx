@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -14,15 +14,51 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const AddStadium = () => {
   const [markerPosition, setMarkerPosition] = useState<Region | null>(null);
-  const { setUserLocation, userLocation } = useUserStore()
+  const [details, setDetails] = useState({ toilet: false, shower: false, shop: false });
+  const { setUserLocation, userLocation } = useUserStore();
+  const [formValues, setFormValues] = useState({
+    name: '',
+    description: '',
+    count: '',
+    price: '',
+    initialPay: '',
+    width: '',
+    height: ''
+  });
 
   useEffect(() => {
-    getUserLocation(setUserLocation)
-  }, [])
+    getUserLocation(setUserLocation);
+  }, []);
 
   const handleMapPress = (e: MapPressEvent) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     setMarkerPosition({ latitude, longitude, latitudeDelta: 0.01, longitudeDelta: 0.01 });
+  };
+  const payload = {
+    name: formValues.name,
+    description: formValues.description,
+    width: +formValues.width,
+    height: +formValues.height,
+    number: +formValues.count,
+    initialPay: +formValues.initialPay,
+    lat: markerPosition?.latitude,
+    lng: markerPosition?.longitude,
+    shower: details.shower,
+    shop: details.shop,
+    toilet: details.toilet,
+  }
+
+  console.log(payload);
+  
+
+  const handleInputChange = (field: string, value: string) => {
+    if (['count', 'price', 'initialPay', 'width', 'height', 'description'].includes(field)) {
+      if (/^\d*\.?\d*$/.test(value)) {
+        setFormValues({ ...formValues, [field]: value });
+      }
+    } else {
+      setFormValues({ ...formValues, [field]: value });
+    }
   };
 
   return (
@@ -34,21 +70,32 @@ const AddStadium = () => {
             labalVisible
             label='Name'
             placeholder='Enter name'
+            value={formValues.name}
+            onChangeText={(value) => handleInputChange('name', value)}
           />
           <Input
             labalVisible
             label='Count'
             placeholder='Enter count'
+            type='numeric'
+            value={formValues.count}
+            onChangeText={(value) => handleInputChange('count', value)}
           />
           <Input
             labalVisible
             label='Price'
             placeholder='Enter price'
+            type='numeric'
+            value={formValues.price}
+            onChangeText={(value) => handleInputChange('price', value)}
           />
           <Input
             labalVisible
             label='Initial pay'
             placeholder='Enter initial pay'
+            type='numeric'
+            value={formValues.initialPay}
+            onChangeText={(value) => handleInputChange('initialPay', value)}
           />
           <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
           <View style={{ borderRadius: 20, overflow: 'hidden', height: screenHeight / 3, marginBottom: 12 }}>
@@ -78,6 +125,9 @@ const AddStadium = () => {
                 labalVisible
                 label='Width'
                 placeholder='Enter width'
+                type='numeric'
+                value={formValues.width}
+                onChangeText={(value) => handleInputChange('width', value)}
               />
             </View>
             <View style={{ width: '47%' }}>
@@ -85,21 +135,56 @@ const AddStadium = () => {
                 labalVisible
                 label='Height'
                 placeholder='Enter height'
+                type='numeric'
+                value={formValues.height}
+                onChangeText={(value) => handleInputChange('height', value)}
               />
             </View>
           </View>
           <View style={{ marginBottom: 12 }}>
             <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
-            <Textarea placeholder='Enter description'/>
+            <Textarea
+              onChangeText={(value) => handleInputChange('description', value)}
+              placeholder='Enter description'
+              value={formValues.description}
+            />
           </View>
-          <View></View>
+          <View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
+              <Text style={[styles.label]}>Toilet</Text>
+              <Switch
+                onValueChange={() => setDetails({ ...details, toilet: !details.toilet })}
+                value={details.toilet}
+                trackColor={{ false: "#767577", true: colors.lightGreen }}
+                thumbColor={'#fff'}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10, marginVertical: 10 }}>
+              <Text style={[styles.label]}>Shop</Text>
+              <Switch
+                onValueChange={() => setDetails({ ...details, shop: !details.shop })}
+                value={details.shop}
+                trackColor={{ false: "#767577", true: colors.lightGreen }}
+                thumbColor={'#fff'}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
+              <Text style={[styles.label]}>Shower</Text>
+              <Switch
+                onValueChange={() => setDetails({ ...details, shower: !details.shower })}
+                value={details.shower}
+                trackColor={{ false: "#767577", true: colors.lightGreen }}
+                thumbColor={'#fff'}
+              />
+            </View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
-export default AddStadium
+export default AddStadium;
 
 const styles = StyleSheet.create({
   container: {
@@ -115,4 +200,4 @@ const styles = StyleSheet.create({
     width: screenWidth * 1.05,
     height: screenHeight / 2,
   },
-})
+});
