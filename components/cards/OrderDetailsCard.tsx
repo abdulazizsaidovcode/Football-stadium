@@ -1,21 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 
-const OrderUSerCard = () => {
+const OrderDetailsCard: React.FC<{ icon: any }> = ({ icon }) => {
     return (
         <View style={styles.container}>
-            <Text>OrderUSerCard</Text>
+            {icon}
         </View>
     )
 }
 
-export default OrderUSerCard
+export default OrderDetailsCard
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
         backgroundColor: '#698474',
-        padding: 10,
+        padding: 20,
         borderRadius: 10
     },
 })
