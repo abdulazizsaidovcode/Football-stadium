@@ -24,9 +24,3 @@ export const stadium_post_master: string = `${BASE_URL}stadium`;
 export const stadium_get_one: string = `${BASE_URL}stadium/one`;
 export const stadium_get_freetime: string = `${BASE_URL}stadium/free/time`;
 
-// statistic 
-    export const statistics_for_year : string = `${BASE_URL}for/master/year?`;
-    export const statistics_for_month : string = `${BASE_URL}statistic/for/client`;
-    export const statistic_get_stadium: string = `${BASE_URL}statistic/for/stadium`;
-    export const statistic_get_by_date: string = `${BASE_URL}statistic/by/date`;
-    export const statistic_get_by_stadium: string = `${BASE_URL}statistic/by/stadium`;

@@ -1,11 +1,11 @@
-import { Button, Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 import NavigationMenu from '@/components/navigation/NavigationMenu'
 import { NavigationProp, useFocusEffect, useRoute } from '@react-navigation/native'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { file_get, stadium_get_freetime, stadium_get_one } from '@/helpers/api/api'
+import { file_get, order_create, stadium_get_freetime, stadium_get_one } from '@/helpers/api/api'
 import { Loading } from '@/components/loading/loading'
 import OrderDetailsCard from '@/components/cards/OrderDetailsCard'
 import { StadiumTypes } from '@/types/stadium/stadium'
@@ -16,6 +16,8 @@ import { Entypo, FontAwesome6, MaterialIcons } from '@expo/vector-icons'
 import { useOrderStory } from '@/helpers/stores/order/order-store'
 import CalendarGrafficEdit from '@/components/calendar/calendar'
 import TimesCard from '@/components/cards/timesCard'
+import calenderStory from '@/helpers/stores/order/graficWorkStore'
+import { useAuthStore } from '@/helpers/stores/auth/auth-store'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -30,11 +32,25 @@ const OrderSave = () => {
     const { freeTime, setFreeTime } = useOrderStory()
     const [activeTime, setActiveTime] = useState('');
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
+    const { calendarDate } = calenderStory()
+    const { phoneNumber } = useAuthStore()
 
-
+    let data = {
+        "stadiumId": id,
+        "startTimeHour": selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 3),
+        "startTimeMinute": selectedTimeSlots[0] && selectedTimeSlots[0].slice(3, 5),
+        "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 3),
+        "endTimeMinute": selectedTimeSlots[1] && selectedTimeSlots[1].slice(3, 5),
+        "date": calendarDate,
+        "paySum": 0,
+        "cardNumber": "string",
+        "clientPhoneNumber": phoneNumber
+    }
+    console.log(data);
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
+    const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
 
     useFocusEffect(
         useCallback(() => {
@@ -42,12 +58,16 @@ const OrderSave = () => {
             freeTimeRes.globalDataFunc()
         }, [])
     )
-    console.log(freeTimeRes.response);
+
+    console.log(CreateOreder.response);
+    console.log(CreateOreder.error);
+
 
 
     if (stadium.loading) {
         return <Loading />
     }
+
     const handleTimeSelect = (time: string) => {
         setActiveTime(time);
         setFreeTime(time);
@@ -78,50 +98,41 @@ const OrderSave = () => {
         });
     };
 
-    const renderItem = ({ item }: any) => (
-        < TouchableOpacity
-            style={[styles.timeButton, activeTime === item && styles.activeTimeButton]}
-            onPress={() => handleTimeSelect(item)}
-        >
-            <Text style={[styles.timeText, activeTime === item && styles.activeTimeText]}>
-                {item.slice(0, 5)}
-            </Text>
-        </ TouchableOpacity>
-    );
+
+    const getRangeIndices = () => {
+        if (selectedTimeSlots.length < 2) return [];
+
+        const indices = selectedTimeSlots
+            .map((slot) => freeTime.indexOf(slot))
+            .sort((a, b) => a - b);
+        const [start, end] = [indices[0], indices[indices.length - 1]];
+
+        return freeTime.slice(start, end + 1);
+    };
+
+    const rangeIndices = getRangeIndices();
 
     return (
         <SafeAreaView style={styles.container}>
             <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
             <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 }}>
                     <OrderDetailsCard icon={<Entypo name="shopping-cart" size={24} color="white" />} />
                     <OrderDetailsCard icon={<MaterialIcons name="shower" size={24} color="white" />} />
                     <OrderDetailsCard icon={<FontAwesome6 name="toilet-portable" size={24} color="white" />} />
                 </View>
                 <View style={styles.imageRow}>
-                    {stadium.response && stadium.response.attechmentIds.map((item: string, index: number) => (
-                        // <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
-                        <Text>{item}</Text>
+                    {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
+                        <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
                     ))}
                 </View>
+            </View>
+            <ScrollView style={{ marginBottom: 30 }}>
+                <Text style={styles.timeTitle}>Kunni tanlash</Text>
                 <CalendarGrafficEdit />
-                <Text style={styles.timeTitle}>Vaqtni tanlash</Text>
-                <View style={styles.timeContainer}>
-                    {
-                        freeTimeRes.response && freeTimeRes.response.length > 0 ? (
-                            <FlatList
-                                numColumns={4}
-                                data={freeTimeRes.response}
-                                renderItem={renderItem}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
-                        ) : (
-                            <Text style={styles.placeholderText}>Нет свободного времени</Text>
-                        )
-                    }
-                </View>
+                <Text style={styles.timeTitle}>Soatni tanlash</Text>
                 <View style={styles.timeListContainer}>
-                    {freeTime.map((time, index) => (
+                    {freeTimeRes.response && freeTimeRes.response.length > 0 && freeTimeRes.response.map((time: any, index: any) => (
                         <TimesCard
                             key={index}
                             title={time}
@@ -132,8 +143,14 @@ const OrderSave = () => {
                         />
                     ))}
                 </View>
-                <Buttons title='Bron qilish' onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} />
-            </View>
+                <Buttons
+                    isDisebled={!!selectedTimeSlots.length && !!calendarDate && !!id}
+                    title='Bron qilish' onPress={() => {
+                        CreateOreder.globalDataFunc()
+                        console.log('ishla');
+                        
+                    }} />
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -193,5 +210,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "center",
         marginTop: 10,
-      },
+        marginBottom: 10
+    },
 })
