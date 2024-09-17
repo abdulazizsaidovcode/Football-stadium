@@ -4,4 +4,5 @@ export const toastMessage = (code: any, message:string) => {
     else if (+code === 5) return alert(message);
     else if (+code === 6) return alert(message);
     else if (+code === 7) return alert(message);
+    else if (+code === 4) return alert(message);
 };

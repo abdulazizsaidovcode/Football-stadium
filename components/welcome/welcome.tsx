@@ -80,7 +80,7 @@ const Welcome: React.FC = () => {
                 <Buttons
                     title="English"
                     onPress={() => {
-                        navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
+                        navigation.navigate("(pages)/(auth)/(register)/register");
                         changeLanguage("en");
                     }}
                 />
