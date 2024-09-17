@@ -9,6 +9,7 @@ export const auth_send_code: string = `${BASE_URL}auth/send-code-to-phone`;
 
 // USER
 export const user_me: string = `${BASE_URL}user/me`;
+export const user_update: string = `${BASE_URL}user/update`;
 
 // FILE 
 export const file_upload: string = `${BASE_URL}file/upload`;
@@ -20,4 +21,3 @@ export const file_delete: string = `${BASE_URL}file/delete`;
 export const stadium_get: string = `${BASE_URL}stadium`;
 export const stadium_get_master: string = `${BASE_URL}stadium/for/master`;
 export const stadium_post_master: string = `${BASE_URL}stadium`;
-export const stadium_get_one: string = `${BASE_URL}stadium/one`;

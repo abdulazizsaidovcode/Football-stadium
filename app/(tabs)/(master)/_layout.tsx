@@ -17,9 +17,9 @@ function MasterTabLayout() {
           tabBarInactiveTintColor: colors.white,
           tabBarStyle: {
             backgroundColor: colors.inDarkGreen,
-            paddingBottom: 10,
-            paddingTop: 5,
-            height: 70
+            paddingBottom: 20,
+            paddingTop: 10,
+            height: 80
           },
           headerShown: false,
         })}
@@ -30,7 +30,7 @@ function MasterTabLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
-              <Octicons name="home" size={27} color={color} />
+              <Octicons name="home" size={30} color={color} />
             )
           }}
         />
@@ -40,11 +40,11 @@ function MasterTabLayout() {
           options={{
             title: "Stadium",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="stadium" size={27} color={color} />
+              <MaterialCommunityIcons name="stadium" size={30} color={color} />
             )
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Profile"
           component={MasterProfile}
           options={{
@@ -52,8 +52,8 @@ function MasterTabLayout() {
             tabBarIcon: ({ color }) => (
               <Feather name="user" size={27} color={color} />
             )
-          }}
-        />
+          }} */}
+        {/* /> */}
       </Tab.Navigator>
     </>
   );

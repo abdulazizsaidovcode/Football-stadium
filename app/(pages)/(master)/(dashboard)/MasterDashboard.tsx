@@ -1,91 +1,99 @@
-import Buttons from '@/components/button/button';
-import { Colors } from '@/constants/Colors';
-import { file_get, user_me } from '@/helpers/api/api';
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import Layout from '@/layout/layout';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-// import AntDesign from '@expo/vector-icons/AntDesign';
+import Layout from '@/layout/layout';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { user_me, user_update } from '@/helpers/api/api';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
+  const userEdit = useGlobalRequest(user_update, 'PUT'); // Move this outside of handleSave
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+  });
+
   useEffect(() => {
     userMee.globalDataFunc();
-  }, [])
+    if (userMee.response) {
+      setFormData({
+        firstName: userMee.response.firstName || '',
+        lastName: userMee.response.lastName || '',
+        phoneNumber: userMee.response.phoneNumber || '',
+      });
+    }
+  }, [userMee.response]);
+
+  const handleEditPress = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      await userEdit.globalDataFunc({
+        id: userMee.response.id,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+      });
+      setIsModalVisible(false);
+      userMee.globalDataFunc(); // Refresh data after update
+    } catch (error) {
+      // console.error("Failed to update user:", error);
+    }
+  };
 
   return (
     <Layout padding scroll>
       <View style={styles.header}>
         <View style={styles.profile}>
-          <Text>
-            {userMee.response && userMee.response.attaachmentId ?
-              <Image source={file_get + userMee.response.attaachmentId} style={styles.avatar} />
-              : <AntDesign name="user" size={70} color="white" />
-            }
-          </Text>
           <View style={styles.profileInfo}>
-            <Text style={styles.name}>{userMee.response && userMee.response.lastName || "Network error"}  {userMee.response && userMee.response.firstName || "Network error"}</Text>
-            <Text style={styles.phone}>{userMee.response && userMee.response.phoneNumber || "Network error"}</Text>
+            <Text style={styles.name}>
+              {userMee.response?.lastName || "Network error"} {userMee.response?.firstName || "Network error"}
+            </Text>
+            <Text style={styles.phone}>{userMee.response?.phoneNumber || "Network error"}</Text>
           </View>
+          <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
+            <AntDesign name="edit" size={24} color="white" />
+          </TouchableOpacity>
         </View>
       </View>
 
-      <View style={styles.clientsSection}>
-        <Text style={styles.clientsTitle}>Мои клиенты</Text>
-        <Text style={styles.clientsCount}>0</Text>
-        <View style={styles.statsContainer}>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>Выполненные записи</Text>
-            <Text style={styles.statValue}>0/0</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>Доход на сегодня (сум)</Text>
-            <Text style={styles.statValue}>0</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>
-              Запросы на бронирования
-            </Text>
-            <Text style={styles.statValue}>
-              0
-            </Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>В зале ожидания</Text>
-            <Text style={styles.statValue}>0</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>Отменённые записи</Text>
-            <Text style={styles.statValue}>0</Text>
-          </View>
-          <View style={styles.statBox}>
-            <Text style={styles.statTitle}>Мой доход</Text>
-            <Text style={styles.statValue}>0</Text>
+      {/* Edit Modal */}
+      <Modal visible={isModalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.input}
+              placeholder="First Name"
+              value={formData.firstName}
+              onChangeText={(text) => setFormData({ ...formData, firstName: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChangeText={(text) => setFormData({ ...formData, lastName: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={formData.phoneNumber}
+              onChangeText={(text) => setFormData({ ...formData, phoneNumber: text })}
+            />
+            <Button title="Save" onPress={handleSave} />
+            <Button title="Cancel" color="red" onPress={() => setIsModalVisible(false)} />
           </View>
         </View>
-      </View>
-      <View style={styles.schedule}>
-        <Text style={styles.sectionTitle}>все заказы сегодня</Text>
-        <Text style={styles.sectionSubtitle}>еще не доступен</Text>
-        <View style={styles.scheduleButtons}>
-          <TouchableOpacity style={styles.scheduleButton}>
-            <Buttons title='Break Up' />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.scheduleButton}>
-            <Buttons title='edit' />
-          </TouchableOpacity>
-        </View>
-      </View>
+      </Modal>
     </Layout>
   );
 }
 
+
 const styles = StyleSheet.create({
-  padding: {
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-  },
   header: {
     marginTop: 0,
     marginBottom: 20,
@@ -96,12 +104,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
   profileInfo: {
+    flex: 1,
     marginLeft: 16,
   },
   name: {
@@ -113,105 +117,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
   },
-  role: {
-    fontSize: 14,
-    color: '#fff',
+  editButton: {
+    padding: 10,
   },
-  settingsButton: {
-    // backgroundColor: '#F94D5A',
-    paddingVertical: 10,
-    // paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  settingsText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  schedule: {
-    marginTop: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  sectionSubtitle: {
-    color: '#A9A9A9',
-    marginBottom: 20,
-  },
-  scheduleButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  scheduleButton: {
+  modalContainer: {
     flex: 1,
-    // backgroundColor: '#2A2839',
-    paddingVertical: 10,
-    borderRadius: 10,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  scheduleButtonText: {
-    color: '#fff',
-  },
-  clientsSection: {
-    marginTop: 30,
-  },
-  clientsTitle: {
-    fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  clientsCount: {
-    fontSize: 36,
-    color: '#C4DAD2',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  statBox: {
-    backgroundColor: '#698474',
-    width: '48%',
-    paddingVertical: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: '#fff',
     borderRadius: 10,
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
     marginBottom: 20,
-  },
-  statTitle: {
-    color: '#000',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  statValue: {
-    fontSize: 18,
-    color: '#C4DAD2',
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  businessCardButton: {
-    backgroundColor: '#F94D5A',
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  businessCardText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
 });
+
