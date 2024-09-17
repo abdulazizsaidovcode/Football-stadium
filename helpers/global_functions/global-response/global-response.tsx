@@ -18,8 +18,6 @@ export function useGlobalRequest<T>(
     const mutation = useMutation({
         mutationFn: async () => {
             let res;
-            console.log(url);
-            
             const config = await getConfig();
             switch (method) {
                 case 'GET':

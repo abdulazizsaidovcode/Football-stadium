@@ -8,7 +8,7 @@ import { colors } from '@/constants/Colors';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import { useNavigation } from '@react-navigation/native';
-import AddStadium from './(addStadium)/AddStadium';
+import AddStadium from './(add-stadium)/add-stadium';
 
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
@@ -27,7 +27,7 @@ const Stadium = () => {
             <Entypo name="share" size={27} color="white" />
           </View>
         </View>
-        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(addStadium)/AddStadium')} />
+        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
         {stadiums.response && stadiums.response.map((stadium: any) => (
           <View key={stadium.id} style={styles.card}>
             <Image

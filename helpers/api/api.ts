@@ -10,6 +10,7 @@ export const auth_send_code: string = `${BASE_URL}auth/send-code-to-phone`;
 // USER
 export const user_me: string = `${BASE_URL}user/me`;
 export const user_update: string = `${BASE_URL}user/update`;
+export const user_found: string = `${BASE_URL}user/is/found`;
 
 // FILE 
 export const file_upload: string = `${BASE_URL}file/upload`;
