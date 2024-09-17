@@ -16,7 +16,7 @@ const Index = () => {
       setRole(role);
       setToken(token);
     }
-    
+
     getToken()
   }, []);
 

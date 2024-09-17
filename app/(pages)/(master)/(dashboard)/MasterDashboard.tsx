@@ -7,14 +7,14 @@ import { user_me, user_update } from '@/helpers/api/api';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
-  const userEdit = useGlobalRequest(user_update, 'PUT'); // Move this outside of handleSave
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     phoneNumber: '',
   });
-
+  console.log(userMee.response);
+  
   useEffect(() => {
     userMee.globalDataFunc();
     if (userMee.response) {
@@ -24,24 +24,19 @@ export default function Dashboard() {
         phoneNumber: userMee.response.phoneNumber || '',
       });
     }
-  }, [userMee.response]);
-
+  }, []);
+  
   const handleEditPress = () => {
     setIsModalVisible(true);
   };
-
+  
   const handleSave = async () => {
     try {
-      await userEdit.globalDataFunc({
-        id: userMee.response.id,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        phoneNumber: formData.phoneNumber,
-      });
+      const userEdit = useGlobalRequest(user_update, 'PUT' ,formData); 
       setIsModalVisible(false);
-      userMee.globalDataFunc(); // Refresh data after update
+      userMee.globalDataFunc();
     } catch (error) {
-      // console.error("Failed to update user:", error);
+      console.error("Failed to update user:", error);
     }
   };
 
