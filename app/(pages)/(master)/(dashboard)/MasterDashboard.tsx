@@ -4,16 +4,17 @@ import { AntDesign } from '@expo/vector-icons';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { user_me, user_update } from '@/helpers/api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
-  const userEdit = useGlobalRequest(user_update, 'PUT'); // Move this outside of a
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     phoneNumber: '',
   });
+  const userEdit = useGlobalRequest(user_update, 'PUT', formData);
   console.log(userMee.response);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Dashboard() {
 
   const handleSave = async () => {
     try {
-      await userEdit.globalDataFunc(formData);
+      await userEdit.globalDataFunc();
       setIsModalVisible(false);
       userMee.globalDataFunc();
     } catch (error) {
