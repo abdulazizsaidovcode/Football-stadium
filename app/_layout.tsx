@@ -22,6 +22,7 @@ import editStadium from './(pages)/(master)/(stadium)/(editStaidium)/editStadium
 import ClientDashboard from './(pages)/(client)/(dashboard)/dashboard';
 import OrderSave from './(pages)/(order)/(order-save)/order-save';
 import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
+import UserInfo from './(pages)/(auth)/(register)/getInfo';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -83,6 +84,11 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(auth)/(register)/register"
             component={Register}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(auth)/(register)/getInfo"
+            component={UserInfo}
             options={{ headerShown: false }}
           />
           <Stack.Screen
