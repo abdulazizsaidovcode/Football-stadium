@@ -18,7 +18,7 @@ const UserInfo: React.FC = () => {
         lastName: lastName,
         phoneNumber: phoneNumber,
     }
-    
+
     const register = useGlobalRequest(`${auth_register}?ROLE_NAME=${role}`, 'POST', info)
 
     const handleFirstNameChange = (name: string): void => {
@@ -45,6 +45,7 @@ const UserInfo: React.FC = () => {
 
             async function setToken() {
                 await AsyncStorage.setItem('token', register.response.token)
+                await AsyncStorage.setItem('role', role)
             }
             setToken()
         }

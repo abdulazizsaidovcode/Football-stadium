@@ -20,7 +20,7 @@ const Index = () => {
     getToken()
   }, []);
 
-  return token && role ? role === 'ROLE_CLIENT' ? <ClientTabLayout /> : <MasterTabLayout /> : <Welcome />
+  return token && role ? role === 'CLIENT' ? <ClientTabLayout /> : <MasterTabLayout /> : <Welcome />
 }
 
 export default Index;
