@@ -17,6 +17,8 @@ import Master from './(pages)/(master)/master';
 import Login from './(pages)/(auth)/(login)/login';
 import CheckCode from './(pages)/(auth)/(check-code)/check-code';
 import AddStadium from './(pages)/(master)/(stadium)/(addStadium)/AddStadium';
+import InternetNotice from '@/components/internet-notice/internet-notice';
+import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -42,6 +44,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <InternetNotice />
         <Stack.Navigator initialRouteName="index" screenOptions={{ animation: 'none' }}>
           <Stack.Screen
             name="index"
@@ -58,7 +61,7 @@ export default function RootLayout() {
             component={ClientTabLayout}
             options={{ headerShown: false }}
           />
-          
+
           <Stack.Screen
             name="(pages)/(master)/master"
             component={Master}
@@ -79,7 +82,7 @@ export default function RootLayout() {
             component={MasterRegister}
             options={{ headerShown: false }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="(pages)/(master)/(stadium)/(addStadium)/AddStadium"
             component={AddStadium}
             options={{ headerShown: false }}
@@ -99,6 +102,12 @@ export default function RootLayout() {
             component={CheckCode}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="(pages)/(maps)/(stadium-locations)/stadium-locations"
+            component={StadiumLoacations}
+            options={{ headerShown: false }}
+          />
+          {/* app\(pages)\(maps)\(stadium-loacations)\stadium-loacations.tsx */}
         </Stack.Navigator>
       </ThemeProvider>
     </QueryClientProvider>

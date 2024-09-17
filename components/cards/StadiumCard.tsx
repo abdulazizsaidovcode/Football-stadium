@@ -5,17 +5,20 @@ import Buttons from '../button/button'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
 
-const ClientDashboardCard: React.FC<{ data: StadiumTypes }> = ({ data }) => {
+const StadiumCard: React.FC<{ data: StadiumTypes, onMapPress: () => void, onPress: () => void }> = ({ data, onMapPress, onPress }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{data.name}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text style={styles.title}>{data.name}</Text>
+                <Text style={styles.priceTitle}>{data.price} sum</Text>
+            </View>
             <Image height={200} style={{ objectFit: 'cover', borderRadius: 10 }} source={{ uri: 'https://picsum.photos/200/300' }} />
             <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
-                <View style={{ width: '82%' }}>
-                    <Buttons title='Записаться' />
+                <View style={{ width: '85%' }}>
+                    <Buttons onPress={onPress} title='Записаться' />
                 </View>
-                <TouchableOpacity style={styles.locationBtn}>
+                <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
                     <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
             </View>
@@ -23,7 +26,7 @@ const ClientDashboardCard: React.FC<{ data: StadiumTypes }> = ({ data }) => {
     )
 }
 
-export default ClientDashboardCard
+export default StadiumCard
 
 const styles = StyleSheet.create({
     container: {
@@ -37,6 +40,11 @@ const styles = StyleSheet.create({
         color: colors.white,
         marginVertical: 5
     },
+    priceTitle: {
+        fontSize: 15,
+        color: colors.lightGreen,
+        marginVertical: 5
+    },
     description: {
         fontSize: 13,
         color: colors.white,
@@ -48,7 +56,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: colors.green,
         borderRadius: 50,
-        width: 50,
+        width: 46,
     },
     btnContainer: {
         flexDirection: 'row',
