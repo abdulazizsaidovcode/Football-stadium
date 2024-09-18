@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Modal, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { order_day_master, stadium_get_master, statistics_for_year, user_me, user_update } from '@/helpers/api/api';
+import { order_day_master, stadium_get_master, user_me } from '@/helpers/api/api';
 import Buttons from '@/components/button/button';
 import { colors } from '@/constants/Colors';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
 import { RootStackParamList } from '@/types/root/root';
 import { NavigationProp } from '@react-navigation/native';
@@ -19,7 +19,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 export default function MasterOrder() {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('java');
+    const [selectedValue, setSelectedValue] = useState('');
 
     const userMee = useGlobalRequest(user_me, 'GET');
     const OrdersDay = useGlobalRequest(order_day_master, 'GET');
@@ -28,14 +28,24 @@ export default function MasterOrder() {
 
 
     const openModal = () => setIsModalVisible(!isModalVisible);
-    const navigateToOrder = () => navigation.navigate('(pages)/(order)/(order-save)/order-save')
+    
+    const navigateToOrder = () => {
+        if (selectedValue) {
+            navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: selectedValue })
+        } else {
+            alert('Bron qilinga stadiumni tanlang!')
+            console.log(selectedValue, 87);
+        }
+        openModal()
+    }
+
+    console.log(selectedValue, 87);
 
     useEffect(() => {
         OrdersDay.globalDataFunc();
         stadiums.globalDataFunc()
     }, []);
 
-    console.log(stadiums.response, 'stadium');
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.darkGreen, paddingHorizontal: 16 }}>
@@ -52,7 +62,6 @@ export default function MasterOrder() {
 
                                     </Text>
                                     <Text style={styles.OrderText}>
-                                        cdhybuj
                                         Stadium: {item.stadiumNumber}
                                     </Text>
                                     <Text style={styles.OrderText}>
@@ -81,7 +90,6 @@ export default function MasterOrder() {
                     console.log(stadiums.response, 'ooooo');
                     console.log(stadiums.response[0].id, 'ooooo');
                     navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: stadiums.response[0].id })
-                    
                 }
                 if (stadiums.response && stadiums.response.length > 1) {
                     openModal()
@@ -102,13 +110,19 @@ export default function MasterOrder() {
                     <Picker
                         selectedValue={selectedValue}
                         style={styles.picker}
+                        mode="dropdown"
+                        prompt="Stadionni tanlang"
+                        itemStyle={{ color: '#fff', zIndex: 100, backgroundColor: colors.green, width: '100%', height: '100%', justifyContent: 'flex-start' }}
                         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
                     >
-                        <Picker.Item label="Java" value="java" />
-                        <Picker.Item label="JavaScript" value="js" />
-                        <Picker.Item label="Python" value="python" />
+                        {stadiums.response && stadiums.response.map((res: any, index: any) => (
+                            <Picker.Item label={`${index + 1}: ${res.name}`} value={res.id} />
+                        ))}
                     </Picker>
-                    <Text style={{ color: '#fff', fontSize: 16 }}>Tanlangan stadion: {selectedValue}</Text>
+                    <Text style={{ color: '#fff', fontSize: 16 }}>
+                        Tanlangan stadion:
+                        {stadiums.response && stadiums.response.find((item: any) => item.id == selectedValue)?.name}
+                    </Text>
                 </View>
             </CenteredModal>
         </SafeAreaView>
@@ -216,7 +230,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 12,
-        height: 50,
+        height: 60,
         width: "100%",
     },
 });
