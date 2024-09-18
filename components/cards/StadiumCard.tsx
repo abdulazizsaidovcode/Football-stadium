@@ -6,7 +6,7 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 
-const StadiumCard: React.FC<{ data: StadiumTypes, onMapPress: () => void, onPress: () => void }> = ({ data, onMapPress, onPress }) => {
+const StadiumCard: React.FC<{ data: StadiumTypes, onFavPress?: () => void, onMapPress: () => void, onPress: () => void, iconColor?: string | any }> = ({ data, onMapPress, onPress, onFavPress, iconColor = 'white' }) => {
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -16,11 +16,14 @@ const StadiumCard: React.FC<{ data: StadiumTypes, onMapPress: () => void, onPres
             <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
             <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
-                <View style={{ width: '85%' }}>
+                <View style={{ width: '70%' }}>
                     <Buttons onPress={onPress} title='Записаться' />
                 </View>
                 <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
-                    <FontAwesome6 name="location-dot" size={24} color="white" />
+                    <FontAwesome6 name="location-dot" size={24} color="white" color={iconColor} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
+                    <FontAwesome6 name="bookmark" size={24} color="white" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -61,6 +64,7 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         flexDirection: 'row',
+        gap: 3,
         justifyContent: 'space-between'
     }
 })  
