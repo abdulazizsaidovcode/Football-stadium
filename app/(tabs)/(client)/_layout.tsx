@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import ClientDashboard from './dashboard';
 import ClientProfile from './profile';
+import OrdersDay from './ordersDay';
 
 export default function ClientTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -16,9 +17,9 @@ export default function ClientTabLayout() {
           tabBarInactiveTintColor: colors.white,
           tabBarStyle: {
             backgroundColor: colors.inDarkGreen,
-            paddingBottom: 10,
+            paddingBottom: 20,
             paddingTop: 5,
-            height: 70
+            height: 80
           },
           headerShown: false,
         })}
@@ -30,6 +31,16 @@ export default function ClientTabLayout() {
             title: "Home",
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="space-dashboard" size={27} color={color} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="orders"
+          component={OrdersDay}
+          options={{
+            title: "Orders Day",
+            tabBarIcon: ({ color }) => (
+              <FontAwesome5 name="user-alt" size={24} color={color} />
             )
           }}
         />
