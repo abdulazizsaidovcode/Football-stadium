@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { order_day_master, stadium_get_master, user_me } from '@/helpers/api/api';
+import { order_day_master, order_reject, stadium_get_master, user_me } from '@/helpers/api/api';
 import Buttons from '@/components/button/button';
 import { colors } from '@/constants/Colors';
 import { Entypo } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import CenteredModal from '@/components/modal/sentralmodal';
 import { StadiumTypes } from '@/types/stadium/stadium';
+import OrderCard from '@/components/cards/orderCard';
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -19,16 +20,19 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 export default function MasterOrder() {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState('');
 
     const userMee = useGlobalRequest(user_me, 'GET');
+    const orderReject = useGlobalRequest(order_reject + 'id', 'PUT');
     const OrdersDay = useGlobalRequest(order_day_master, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
 
 
     const openModal = () => setIsModalVisible(!isModalVisible);
-    
+    const openRejectModal = () => setIsRejectModalVisible(!isRejectModalVisible)
+
     const navigateToOrder = () => {
         if (selectedValue) {
             navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: selectedValue })
@@ -45,6 +49,8 @@ export default function MasterOrder() {
         OrdersDay.globalDataFunc();
         stadiums.globalDataFunc()
     }, []);
+    console.log(OrdersDay.response);
+
 
 
     return (
@@ -55,26 +61,7 @@ export default function MasterOrder() {
 
                     {
                         OrdersDay.response && OrdersDay.response.length > 0 ? (
-                            OrdersDay.response.map((item: { clientFirstName: string, clientLastName: string, endTime: string, stadiumNumber: string, date: string, startTime: string, startPrice: string, }) => (
-                                <TouchableOpacity style={styles.order} activeOpacity={1}>
-                                    <Text style={styles.orderTitle}>
-                                        {item.clientFirstName} {item.clientLastName}
-
-                                    </Text>
-                                    <Text style={styles.OrderText}>
-                                        Stadium: {item.stadiumNumber}
-                                    </Text>
-                                    <Text style={styles.OrderText}>
-                                        Date: {item.date}
-                                    </Text>
-                                    <Text style={styles.OrderText}>
-                                        Time: {item.startTime && item.startTime.slice(0, 5)} - {item.endTime.slice(0, 5)}
-                                    </Text>
-                                    <Text style={styles.OrderText}>
-                                        Price: ${item.startPrice}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))
+                            OrdersDay.response.map((item: any) => <OrderCard data={item} onPress={() => openRejectModal()} />)
                         ) : (
                             <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Order Mavjut emas</Text>
                         )
@@ -125,6 +112,16 @@ export default function MasterOrder() {
                     </Text>
                 </View>
             </CenteredModal>
+            <CenteredModal
+                isModal={isRejectModalVisible}
+                toggleModal={openRejectModal}
+                btnWhiteText="Close"
+                btnRedText="Reject"
+                isFullBtn={true}
+                onConfirm={() => { }}
+            >
+                <Text style={[styles.OrderText, { paddingVertical: 10 }]}>Orderni rad etmoqchimisiz </Text>
+            </CenteredModal>
         </SafeAreaView>
     );
 }
@@ -135,6 +132,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginBottom: 40,
         borderBottomColor: "#000",
+        paddingHorizontal: 10
     },
     Buttons: {
         display: "flex",
