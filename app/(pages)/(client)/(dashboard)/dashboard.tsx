@@ -111,7 +111,6 @@ const ClientDashboard = () => {
                     </View>
                 </View>}
                 <View style={{ marginTop: 15 }}>
-                    {/* <Buttons title='Buti masterom'/> */}
                     <View>
                         <Input value={inputValue ? inputValue : ""} onChangeText={(text) => {
                             setinputValue(text);
