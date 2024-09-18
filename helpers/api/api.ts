@@ -22,6 +22,7 @@ export const file_delete: string = `${BASE_URL}file/delete`;
 export const stadium_get: string = `${BASE_URL}stadium`;
 export const stadium_get_master: string = `${BASE_URL}stadium/for/master`;
 export const stadium_post_master: string = `${BASE_URL}stadium`;
+export const stadium_add_attachment :string = `${BASE_URL}stadium/attachment`;
 export const stadium_get_one: string = `${BASE_URL}stadium/one`;
 export const stadium_get_freetime: string = `${BASE_URL}stadium/free/time`;
 export const stadium_search: string = `${BASE_URL}stadium/search`;

@@ -1,31 +1,34 @@
-import { Dimensions, Keyboard, Pressable, ScrollView, StyleSheet, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Dimensions, Image, Keyboard, Pressable, ScrollView, StyleSheet, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import { colors } from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
 import Input from '@/components/input/input';
 import Textarea from '@/components/textarea/textarea';
 import MapView, { MapPressEvent, Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
-import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions';
-import { useUserStore } from '@/helpers/stores/user/user-store';
 import { mapCustomStyle } from '@/types/map/map';
 import { Entypo, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import axios from 'axios'; // Import axios
-import { stadium_post_master } from '@/helpers/api/api';
-import { useNavigation } from '@react-navigation/native';
-import { getConfig } from '@/helpers/api/token';
+import { stadium_add_attachment, stadium_get, stadium_get_one } from '@/helpers/api/api';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { getConfig, getConfigImg } from '@/helpers/api/token';
 import { Loading } from '@/components/loading/loading';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import * as ImagePicker from 'expo-image-picker';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const AddStadium = () => {
+const EditStadium = () => {
+  const route = useRoute();
+  const { id } = route.params as { id: string | number };
+
+  const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
   const [markerPosition, setMarkerPosition] = useState<Region | null>(null);
-  // const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<any[]>([]);
   // const [attachmentId, setAttachmentId] = useState<string[]>([]);
   const [details, setDetails] = useState({ toilet: false, shower: false, shop: false });
-  const { setUserLocation, userLocation } = useUserStore();
   const navigation = useNavigation();
   const [isFormValid, setIsFormValid] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
@@ -58,6 +61,45 @@ const AddStadium = () => {
     setEndTime(date);
     hideEndPicker();
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      stadium.globalDataFunc();
+    }, [id])
+  );
+
+  useEffect(() => {
+    if (stadium.response) {
+      const stadiumData = stadium.response;
+      setFormValues({
+        name: stadiumData.name || '',
+        description: stadiumData.description || '',
+        count: stadiumData.number ? stadiumData.number.toString() : '',
+        price: stadiumData.price ? stadiumData.price.toString() : '',
+        initialPay: stadiumData.initialPay ? stadiumData.initialPay.toString() : '',
+        width: stadiumData.width ? stadiumData.width.toString() : '',
+        height: stadiumData.length ? stadiumData.length.toString() : ''
+      });
+
+      setDetails({
+        toilet: stadiumData.toilet || false,
+        shower: stadiumData.shower || false,
+        shop: stadiumData.shopping || false,
+      });
+
+      setMarkerPosition({
+        latitude: stadiumData.lat,
+        longitude: stadiumData.lang,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+
+      setStartTime(new Date(new Date().setHours(stadiumData.startHour, stadiumData.startMinute)));
+      setEndTime(new Date(new Date().setHours(stadiumData.endHour, stadiumData.endMinute)));
+    }
+  }, [stadium.response]);
+
+
   useEffect(() => {
     const validateForm = () => {
       const isValid: any =
@@ -70,79 +112,49 @@ const AddStadium = () => {
       setIsFormValid(isValid);
     }
     validateForm()
-  }, [formValues, markerPosition])
+  }, [formValues, markerPosition]);
 
-  useEffect(() => {
-    getUserLocation(setUserLocation);
-  }, [setUserLocation]);
+  const pickImageFromCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Camera permissions are required!");
+      return;
+    }
 
-  // useEffect(() => {
-  //   if (images.length > 0) {
-  //     uploadImages();
-  //   }
-  // }, [images]);
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
 
-  // const uploadImages = async () => {
-  //   const uploadedIds: string[] = [];
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setImages([...images, result.assets[0].uri]);
+    } else {
+      console.log("Camera action was canceled or no assets were selected.");
+    }
+  };
 
-  //   for (let i = 0; i < images.length; i++) {
-  //     const data = new FormData();
-  //     data.append('file', {
-  //       uri: images[i],
-  //       name: `image_${i}.jpg`,
-  //       type: 'image/jpeg',
-  //     } as any);
-  //     0
-  //     try {
-  //       const config = await getConfigImg()
-  //       const response = await axios.post(file_upload, data, config ? config : {});
-  //       if (response.data.data) {
-  //         uploadedIds.push(response.data.data);
-  //       }
-  //     } catch (error) {
-  //       console.error('File upload error:', error);
-  //     }
-  //   }
+  const pickImageFromGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Media library permissions are required!");
+      return;
+    }
 
-  //   if (uploadedIds.length > 0) {
-  //     setAttachmentId(uploadedIds);
-  //   }
-  // };
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      quality: 1,
+    });
 
-  // const pickImageFromGallery = async () => {
-  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //   if (status !== "granted") {
-  //     alert("Rasm tanlash uchun ruxsat kerak!");
-  //     return;
-  //   }
-  //   const result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //     allowsMultipleSelection: true,
-  //     quality: 1,
-  //   });
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const newImages = result.assets.map(asset => asset.uri);
+      setImages([...images, ...newImages]);
+    } else {
+      console.log("Gallery action was canceled or no assets were selected.");
+    }
+  };
 
-  //   if (!result.canceled && result.assets && result.assets.length > 0) {
-  //     const newImages = result.assets.map(asset => asset.uri);
-  //     setImages([...images, ...newImages]);
-  //   }
-  // };
-
-  // const pickImageFromCamera = async () => {
-  //   const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  //   if (status !== "granted") {
-  //     alert("Kamera uchun ruxsat kerak!");
-  //     return;
-  //   }
-  //   const result = await ImagePicker.launchCameraAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   if (!result.canceled && result.assets && result.assets.length > 0) {
-  //     setImages([...images, result.assets[0].uri]);
-  //   }
-  // };
 
   const handleMapPress = (e: MapPressEvent) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
@@ -182,9 +194,9 @@ const AddStadium = () => {
     setIsLoading(true)
     try {
       const config = await getConfig()
-      const { data } = await axios.post(stadium_post_master, payload, config || {});
+      const { data } = await axios.post(`${stadium_get}?id=${id}`, payload, config || {});
       if (data.data) {
-        navigation.goBack();
+        images.length === 0 && navigation.goBack();
         setFormValues({
           count: '',
           description: '',
@@ -204,18 +216,49 @@ const AddStadium = () => {
     } catch (error) {
       console.error('Error posting stadium:', error);
     } finally {
+      images.length === 0 && setIsLoading(false)
+    }
+  };
+  const addImage = async () => {
+    try {
+      const formData = new FormData();
+      images.forEach((image, index) => {
+        formData.append('photos', {
+          uri: image,
+          name: `photos[${index}].jpg`,
+          type: 'image/jpeg',
+        } as any);
+      });
+
+      formData.append('mainPhotos', images[0])
+
+      const config = await getConfigImg()
+      const { data } = await axios.post(`${stadium_add_attachment}/${id}`, formData, config || {});
+      if (data.data) {
+        console.log('aaaaaaaaaaaaaaaa');
+
+        navigation.goBack();
+      }
+    } catch (error) {
+      console.error('Error add images:', error);
+    } finally {
       setIsLoading(false)
     }
   };
 
-  if (isLoading) {
+  const handleSubmit = () => {
+    submitStadiumPost();
+    images.length !== 0 && addImage()
+  }
+
+  if (stadium.loading || isLoading) {
     return <Loading />
   }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <NavigationMenu name='Add stadium' />
+        <NavigationMenu name={stadium.response && stadium.response.name} />
         <ScrollView style={{ paddingHorizontal: 16 }}>
           <View>
             <Input
@@ -258,8 +301,8 @@ const AddStadium = () => {
                 onPress={handleMapPress}
                 showsUserLocation
                 initialRegion={{
-                  latitude: userLocation?.coords ? userLocation.coords.latitude : 0,
-                  longitude: userLocation?.coords ? userLocation.coords.longitude : 0,
+                  latitude: markerPosition?.latitude ? markerPosition.latitude : 0,
+                  longitude: markerPosition?.longitude ? markerPosition.longitude : 0,
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421,
                 }}
@@ -337,19 +380,6 @@ const AddStadium = () => {
                 />
               </View>
             </View>
-            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-              <View style={{ width: '47%' }}>
-                <Buttons title='Загрузить фото' onPress={pickImageFromGallery} />
-              </View>
-              <View style={{ width: '47%' }}>
-                <Buttons title='Сделать фото' onPress={pickImageFromCamera} />
-              </View>
-            </View>
-            <View style={[styles.imageRow, { marginVertical: 10 }]}>
-              {images.map((image, index) => (
-                <Image source={{ uri: image }} key={index} style={styles.image} />
-              ))}
-            </View> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ width: '47%' }}>
                 <Text style={[styles.label]}>Start Time</Text>
@@ -377,20 +407,24 @@ const AddStadium = () => {
                   date={endTime}
                 />
               </View>
-              {/* <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>End Time</Text>
-                <Buttons title="Set End Time" onPress={showEndPicker} />
-                <DateTimePickerModal
-                  isVisible={isEndPickerVisible}
-                  mode="time"
-                  onConfirm={handleEndConfirm}
-                  onCancel={hideEndPicker}
-                  date={endTime}
-                />
-              </View> */}
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+              <View style={{ width: '47%' }}>
+                <Buttons title='Загрузить фото' onPress={pickImageFromGallery} />
+              </View>
+              <View style={{ width: '47%' }}>
+                <Buttons title='Сделать фото' onPress={pickImageFromCamera} />
+              </View>
+            </View>
+            <View style={{ justifyContent: 'center' }}>
+              <View style={[styles.imageRow, { marginVertical: 10 }]}>
+                {images.map((image, index) => (
+                  <Image source={{ uri: image }} key={index} style={styles.image} />
+                ))}
+              </View>
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='Сохранить' loading={isLoading} onPress={submitStadiumPost} />
+              <Buttons isDisebled={isFormValid} title='Сохранить' loading={isLoading} onPress={handleSubmit} />
             </View>
           </View>
         </ScrollView>
@@ -399,7 +433,7 @@ const AddStadium = () => {
   );
 }
 
-export default AddStadium;
+export default EditStadium;
 
 const styles = StyleSheet.create({
   container: {
@@ -414,14 +448,14 @@ const styles = StyleSheet.create({
     width: screenWidth * 1.05,
     height: screenHeight / 2,
   },
-  // imageRow: {
-  //   flexDirection: 'row',
-  //   flexWrap: 'wrap',
-  //   gap: 10,
-  // },
-  // image: {
-  //   width: screenWidth / 3 - 25,
-  //   height: screenHeight / 7,
-  //   borderRadius: 15,
-  // },
+  imageRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  image: {
+    width: screenWidth / 3 - 25,
+    height: screenHeight / 7,
+    borderRadius: 15,
+  },
 });
