@@ -6,7 +6,7 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 
-const StadiumCard: React.FC<{ data: StadiumTypes, onFavPress?: () => void, onMapPress: () => void, onPress: () => void, iconColor?: string | any }> = ({ data, onMapPress, onPress, onFavPress, iconColor = 'white' }) => {
+const StadiumCard: React.FC<{ disabled?: boolean,data: StadiumTypes, onFavPress?: () => void, onMapPress: () => void, onPress: () => void, iconColor?: string | any }> = ({disabled, data, onMapPress, onPress, onFavPress, iconColor }) => {
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -19,11 +19,11 @@ const StadiumCard: React.FC<{ data: StadiumTypes, onFavPress?: () => void, onMap
                 <View style={{ width: '70%' }}>
                     <Buttons onPress={onPress} title='Записаться' />
                 </View>
-                <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
-                    <FontAwesome6 name="location-dot" size={24} color="white" color={iconColor} />
+                <TouchableOpacity  onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
+                    <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
-                    <FontAwesome6 name="bookmark" size={24} color="white" />
+                <TouchableOpacity disabled={disabled} onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
+                    {iconColor || <FontAwesome6 name="bookmark" size={24} />}
                 </TouchableOpacity>
             </View>
         </View>
