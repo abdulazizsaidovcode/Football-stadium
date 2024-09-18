@@ -24,6 +24,7 @@ import OrderSave from './(pages)/(order)/(order-save)/order-save';
 import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
 import UserInfo from './(pages)/(auth)/(register)/getInfo';
 import Payment from './(pages)/(order)/(payment)/payment';
+import OrdersDay from './(tabs)/(client)/ordersDay';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -66,7 +67,6 @@ export default function RootLayout() {
             component={ClientTabLayout}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="(pages)/(master)/master"
             component={Master}

@@ -1,3 +1,4 @@
+import NavigationMenu from '@/components/navigation/NavigationMenu';
 import { colors } from '@/constants/Colors';
 import { order_today } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
@@ -11,7 +12,11 @@ export default function OrdersDay() {
         getOrdersTodey.globalDataFunc()
     }, [])
     return (
-        <Layout scroll>
+        <Layout scroll style={styles.container}>
+            {/* <NavigationMenu name='History' /> */}
+            <Text style={styles.title}>
+                bugungi qilingan Orderlar
+            </Text>
             {getOrdersTodey.response && getOrdersTodey.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
                 <View key={item.id} style={styles.itemContainer}>
                     <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
@@ -32,6 +37,13 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         paddingTop: 16,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 20,
+        color: "white",
+        marginBottom: 16,
     },
     itemContainer: {
         backgroundColor: '#698474',
