@@ -23,7 +23,7 @@ const Login = () => {
   const [isPhoneNumberComplete, setIsPhoneNumberComplete] = useState(false); // New state to track phone number completeness
 
   useEffect(() => {
-    if (sendCode.response === 'Success') {
+    if (sendCode.response === 1111) {
       navigation.navigate('(pages)/(auth)/(check-code)/check-code');
     }
   }, [sendCode.response]);

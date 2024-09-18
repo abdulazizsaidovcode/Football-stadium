@@ -37,3 +37,4 @@ export const order_create: string = `${BASE_URL}order/create-order`
 // History 
 
 export const order_history: string = `${BASE_URL}order/history`;
+export const order_today: string = `${BASE_URL}order/today`;
