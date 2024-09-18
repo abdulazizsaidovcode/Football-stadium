@@ -1,5 +1,5 @@
-import { Button, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import { Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 import NavigationMenu from '@/components/navigation/NavigationMenu'
@@ -18,6 +18,7 @@ import CalendarGrafficEdit from '@/components/calendar/calendar'
 import TimesCard from '@/components/cards/timesCard'
 import calenderStory from '@/helpers/stores/order/graficWorkStore'
 import { useAuthStore } from '@/helpers/stores/auth/auth-store'
+import LoadingButtons from '@/components/button/loadingButton'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -29,29 +30,65 @@ const OrderSave = () => {
     const route = useRoute();
     const { id } = route.params as { id: string | number };
     const navigation = useNavigation<SettingsScreenNavigationProp>();
-    const { freeTime, setFreeTime } = useOrderStory()
+    const { freeTime, setFreeTime, pay, setPay } = useOrderStory()
     const [activeTime, setActiveTime] = useState('');
+    const [creasePay, setCreasePay] = useState(1)
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
     const { calendarDate } = calenderStory()
     const { phoneNumber } = useAuthStore()
 
     let data = {
         "stadiumId": id,
-        "startTimeHour": selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 3),
-        "startTimeMinute": selectedTimeSlots[0] && selectedTimeSlots[0].slice(3, 5),
-        "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 3),
-        "endTimeMinute": selectedTimeSlots[1] && selectedTimeSlots[1].slice(3, 5),
+        "startTimeHour": selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 2),
+        "startTimeMinute": selectedTimeSlots[0] && +(selectedTimeSlots[0].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[0].slice(3, 5))),
+        "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2),
+        "endTimeMinute": selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5))),
         "date": calendarDate,
-        "paySum": 0,
-        "cardNumber": "string",
-        "clientPhoneNumber": phoneNumber
+        "paySum": +pay,
+        "cardNumber": null,
+        "clientPhoneNumber": phoneNumber ? phoneNumber : null
     }
-    console.log(data);
+
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
+    console.log(id, freeTimeRes);
 
+    useEffect(() => {
+        if (CreateOreder.response === 'Stadium has been successfully reserved') {
+            alert(CreateOreder.response.response)
+        }
+    }, [CreateOreder.response])
+
+
+
+    useFocusEffect(
+        useCallback(() => {
+            if (selectedTimeSlots.length < 2) {
+                setCreasePay(1);
+                console.log("Less than 2 time slots selected");
+            } else if (selectedTimeSlots.length === 2) {
+                let a = selectedTimeSlots[0].slice(0, 2);
+                let b = selectedTimeSlots[1].slice(0, 2);
+                console.log(`Time slots: ${a}, ${b}`);
+                let c = Number(b) - Number(a);
+                if (!isNaN(c)) {
+                    setCreasePay(c);
+                    console.log(`Calculated crease pay: ${c}`);
+                } else {
+                    setCreasePay(1);
+                    console.log("Calculation resulted in NaN");
+                }
+            }
+        }, [selectedTimeSlots, freeTime])
+    )
+
+    useFocusEffect(
+        useCallback(() => {
+            freeTimeRes.globalDataFunc()
+        }, [calendarDate])
+    )
     useFocusEffect(
         useCallback(() => {
             stadium.globalDataFunc();
@@ -59,19 +96,17 @@ const OrderSave = () => {
         }, [])
     )
 
-    console.log(CreateOreder.response);
-    console.log(CreateOreder.error);
-
-
-
     if (stadium.loading) {
         return <Loading />
     }
+    console.log(stadium.response);
+
 
     const handleTimeSelect = (time: string) => {
         setActiveTime(time);
         setFreeTime(time);
     };
+
     const sortSelectedTimeSlots = (slots: string[]): string[] => {
         return slots.sort((a, b) => freeTime.indexOf(a) - freeTime.indexOf(b));
     };
@@ -98,7 +133,6 @@ const OrderSave = () => {
         });
     };
 
-
     const getRangeIndices = () => {
         if (selectedTimeSlots.length < 2) return [];
 
@@ -116,18 +150,31 @@ const OrderSave = () => {
         <SafeAreaView style={styles.container}>
             <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
             <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 }}>
-                    <OrderDetailsCard icon={<Entypo name="shopping-cart" size={24} color="white" />} />
-                    <OrderDetailsCard icon={<MaterialIcons name="shower" size={24} color="white" />} />
-                    <OrderDetailsCard icon={<FontAwesome6 name="toilet-portable" size={24} color="white" />} />
-                </View>
+                <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>Mavjud xizmatlar</Text>
+                <ScrollView
+                    horizontal={true}
+                    contentContainerStyle={{ paddingBottom: 10, gap: 5 }}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {stadium.response && stadium.response.shower &&
+                        <OrderDetailsCard icon={<MaterialIcons name="shower" size={34} color="white" />} />
+                    }
+                    {stadium.response && stadium.response.toilet &&
+                        <OrderDetailsCard icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
+                    }
+                    {stadium.response && stadium.response.shopping &&
+                        <OrderDetailsCard icon={<Entypo name="shopping-cart" size={34} color="white" />} />
+                    }
+                </ScrollView>
                 <View style={styles.imageRow}>
                     {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
                         <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
                     ))}
                 </View>
             </View>
-            <ScrollView style={{ marginBottom: 30 }}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ marginBottom: 30 }}>
                 <Text style={styles.timeTitle}>Kunni tanlash</Text>
                 <CalendarGrafficEdit />
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>
@@ -143,13 +190,45 @@ const OrderSave = () => {
                         />
                     ))}
                 </View>
-                <Buttons
-                    isDisebled={!!selectedTimeSlots.length && !!calendarDate && !!id}
-                    title='Bron qilish' onPress={() => {
-                        CreateOreder.globalDataFunc()
-                        console.log('ishla');
-                        
-                    }} />
+                <View style={styles.payCard}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.timeTitle}>Kutilayotgan to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
+                        {creasePay > 1 &&
+                            <Text style={[styles.timeTitle, { color: colors.inDarkGreen }]}> jami: {creasePay} soat uchun  </Text>
+                        }
+                    </View>
+                    {pay ?
+                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <Text style={styles.timeTitle}>to'lanmoqda: {pay} so'm</Text>
+                            <Pressable
+                                onPress={() => {
+                                    navigation.navigate('(pages)/(order)/(payment)/payment')
+                                }}>
+                                <Text style={[styles.timeText, { marginTop: 25, textDecorationLine: 'underline' }]}>edit</Text>
+                            </Pressable>
+                        </View>
+                        :
+                        <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
+                    }
+                </View>
+                {!pay && <Buttons
+                    title="To'lovni so'mmani kiritish" onPress={() => {
+                        navigation.navigate('(pages)/(order)/(payment)/payment')
+                    }} />}
+                <View style={{ marginBottom: 10 }}></View>
+                {CreateOreder.loading ?
+                    <LoadingButtons title='Bron qilish' />
+                    :
+                    <Buttons
+                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== ''}
+                        title='Bron qilish' onPress={() => {
+                            CreateOreder.globalDataFunc()
+                            if (CreateOreder.response == 'Stadium has been successfully reserved') {
+                                setPay('')
+                                setSelectedTimeSlots([])
+                            }
+                        }} />
+                }
             </ScrollView>
         </SafeAreaView>
     )
@@ -185,6 +264,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         margin: 3
+    },
+    payCard: {
+        width: "100%",
+        padding: 10,
+        backgroundColor: colors.green,
+        borderRadius: 10,
+        marginBottom: 10,
     },
     activeTimeButton: {
         backgroundColor: colors.inDarkGreen,
