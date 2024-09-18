@@ -29,8 +29,7 @@ const ClientDashboard = () => {
     const [inputValue, setinputValue] = useState<string | null>('')
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>('')
-    const staduims = useGlobalRequest(`${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
-    const staduimSearch = useGlobalRequest(`${stadium_search}?name=${inputValue}`, 'GET');
+    const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
 
     useFocusEffect(
@@ -72,17 +71,27 @@ const ClientDashboard = () => {
 
     useFocusEffect(
         useCallback(() => {
+            if (staduims.response) {
+                setstadiumData(staduims.response)
+            } else if (staduims.error) {
+                setstadiumData(null)
+            }
+        }, [staduims.error, staduims.response])
+    );
+
+    useFocusEffect(
+        useCallback(() => {
             userLocation?.coords && staduims.globalDataFunc();
         }, [userLocation?.coords])
     );
 
     useFocusEffect(
         useCallback(() => {
-            inputValue && staduimSearch.globalDataFunc();
+            inputValue && staduims.globalDataFunc();
         }, [inputValue])
     );
 
-    console.log("Response ", staduimSearch.response);
+    console.log("Response ", staduims.response);
     console.log("Respinput valueonse ", stadiumData);
 
 
