@@ -9,7 +9,7 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import { useNavigation } from '@react-navigation/native';
 import AddStadium from './(add-stadium)/add-stadium';
-
+import Stadion from '@/assets/images/Real.jpg';
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
   const navigation = useNavigation()
@@ -19,12 +19,13 @@ const Stadium = () => {
 
   return (
     <Layout scroll>
-
+      <Image source={Stadion} style={styles.Image} />
+      <Text style={styles.ImageBox}></Text>
       <ScrollView contentContainerStyle={styles.stadiumList}>
         <View style={styles.header}>
           <Text style={styles.title}>Стадионы</Text>
           <View style={styles.headerIcon}>
-            <Entypo name="share" size={27} color="white" />
+            {/* <Entypo name="share" size={27} color="white" /> */}
           </View>
         </View>
         <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 70,
     marginBottom: 30
   },
   headerIcon: {
@@ -70,7 +71,23 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: colors.white
   },
-
+  Image: {
+    width: '120%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: 130,
+    zIndex: -2,
+  },
+  ImageBox: {
+    width: '120%',
+    position: 'absolute',
+    opacity: 0.8,
+    backgroundColor: "black",
+    top: 0,
+    left: 0,
+    height: 130,
+  },
   card: {
     backgroundColor: '#698474',
     borderRadius: 10,

@@ -21,7 +21,7 @@ export interface DateObject {
 const CalendarGrafficEdit: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<MarkedDates>({});
     const { setCalendarDate } = calenderStory();
-    
+
 
     useFocusEffect(
         useCallback(() => {
@@ -44,7 +44,7 @@ const CalendarGrafficEdit: React.FC = () => {
         const today = moment().format("YYYY-MM-DD");
 
         if (moment(day.dateString).isBefore(today)) {
-            Toast.show('Вы не можете выбрать дату до сегодняшнего дня.', Toast.LONG);
+            // Toast.show('Вы не можете выбрать дату до сегодняшнего дня.', Toast.LONG);
             return;
         }
 
