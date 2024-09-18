@@ -14,7 +14,7 @@ export function useGlobalRequest<T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     data?: T,
-    configType?: 'DEFAULT' | 'IMAGE'
+    configType: 'DEFAULT' | 'IMAGE' = 'DEFAULT' 
 ): UseGlobalResponse<T> {
     const mutation = useMutation({
         mutationFn: async () => {
@@ -39,7 +39,6 @@ export function useGlobalRequest<T>(
 
             if (method !== 'GET') {
                 if (res.data.error) toastMessage(res.data.error.code, res.data.error.message);
-     
             }
             return res.data.data;
         },
