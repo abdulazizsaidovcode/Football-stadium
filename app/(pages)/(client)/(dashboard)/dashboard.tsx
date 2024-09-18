@@ -15,6 +15,7 @@ import { Loading } from '@/components/loading/loading'
 import StadiumCard from '@/components/cards/StadiumCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Buttons from '@/components/button/button'
+import Input from '@/components/input/input'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -88,6 +89,7 @@ const ClientDashboard = () => {
                 <View style={{ marginTop: 15 }}>
                     {/* <Buttons title='Buti masterom'/> */}
                     <View>
+                        <Input label='Поиск по имени'/>
                         <Text style={styles.subTitle}>{role && token ? "Мои записи" : "Stadionlar"}</Text>
                         <View style={{ marginTop: 15, gap: 10 }}>
                             {staduims.response && staduims.response.map((item: StadiumTypes, index: number) => (
@@ -100,7 +102,7 @@ const ClientDashboard = () => {
                             ))}
                         </View>
                     </View>
-                    <Buttons onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} title='Login'/>
+                    <Buttons onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} title='Login' />
                 </View>
             </ScrollView>
         </SafeAreaView>
