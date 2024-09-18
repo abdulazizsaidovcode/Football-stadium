@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
@@ -9,17 +9,17 @@ import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import { useNavigation } from '@react-navigation/native';
 import AddStadium from './(add-stadium)/add-stadium';
-import Stadion from '@/assets/images/Real.jpg';
+
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   useEffect(() => {
     stadiums.globalDataFunc();
   }, []);
 
   return (
     <Layout scroll>
-      <Image source={Stadion} style={styles.Image} />
+      <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
       <Text style={styles.ImageBox}></Text>
       <ScrollView contentContainerStyle={styles.stadiumList}>
         <View style={styles.header}>
@@ -30,7 +30,7 @@ const Stadium = () => {
         </View>
         <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
         {stadiums.response && stadiums.response.map((stadium: any) => (
-          <View key={stadium.id} style={styles.card}>
+          <TouchableOpacity onPress={() => navigation.navigate('')} activeOpacity={.8} key={stadium.id} style={styles.card}>
             <Image
               source={{ uri: `${file_get}${stadium.isMainAttachmentId}` }}
               style={styles.cardImage}
@@ -38,11 +38,8 @@ const Stadium = () => {
             <View style={styles.cardContent}>
               <Text style={styles.titleCard}>{stadium.name}</Text>
               <Text style={styles.description}>{stadium.description}</Text>
-              <Text style={styles.location}>
-                Location: {stadium.lat}, {stadium.lang}
-              </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </Layout>

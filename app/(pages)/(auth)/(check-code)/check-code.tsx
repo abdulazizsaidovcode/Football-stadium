@@ -37,9 +37,6 @@ const CheckCode = () => {
         }
     };
 
-    console.log(+code.join(''));
-
-
     useEffect(() => {
         const confirm = async () => {
             if (checkCode.response !== false) {
@@ -62,7 +59,6 @@ const CheckCode = () => {
         }
     }, [code]);
 
-    console.log('STATUS', status);
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>

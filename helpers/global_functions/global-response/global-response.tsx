@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 import axios from "axios";
 import { toastMessage } from "../toast-message/toast-message";
-import { getConfig } from "@/helpers/api/token";
+import { getConfig, getConfigImg } from "@/helpers/api/token";
 
 export interface UseGlobalResponse<T> {
     loading: boolean;
@@ -13,12 +13,13 @@ export interface UseGlobalResponse<T> {
 export function useGlobalRequest<T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    data?: T
+    data?: T,
+    configType?: 'DEFAULT' | 'IMAGE'
 ): UseGlobalResponse<T> {
     const mutation = useMutation({
         mutationFn: async () => {
             let res;
-            const config = await getConfig();
+            const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
@@ -35,7 +36,10 @@ export function useGlobalRequest<T>(
                 default:
                     return alert('Method xaltolik yuz berdi!');
             }
-            if (res.data.error) toastMessage(res.data.error.code, res.data.error.message);
+
+            if (method !== 'GET') {
+                if (res.data.error) toastMessage(res.data.error.code, res.data.error.message);
+            }
             return res.data.data;
         },
         onError: (error: any) => console.log(error)
