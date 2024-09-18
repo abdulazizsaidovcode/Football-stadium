@@ -3,9 +3,9 @@ import React from 'react'
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 
-const OrderDetailsCard: React.FC<{ icon: any }> = ({ icon }) => {
+const OrderDetailsCard: React.FC<{ icon: any, bac?: string }> = ({ icon, bac }) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: bac ? bac : '#828282' }]}>
             {icon}
         </View>
     )
@@ -15,7 +15,6 @@ export default OrderDetailsCard
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#698474',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',

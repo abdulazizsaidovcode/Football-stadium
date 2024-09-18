@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { colors } from '@/constants/Colors';
 import MasterDashboardScreen from './dashboard';
 import MasterStadiumScreen from './stadium';
@@ -17,9 +17,9 @@ function MasterTabLayout() {
           tabBarInactiveTintColor: colors.white,
           tabBarStyle: {
             backgroundColor: colors.inDarkGreen,
-            paddingBottom: 20,
+            paddingBottom: 13,
             paddingTop: 10,
-            height: 80
+            height: 70
           },
           headerShown: false,
         })}
@@ -50,7 +50,7 @@ function MasterTabLayout() {
           options={{
             title: "order",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="stadium" size={30} color={color} />
+              <Entypo name="ticket" size={30} color="#fff" />
             )
           }}
         />

@@ -1,4 +1,4 @@
-import { Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
@@ -28,6 +28,8 @@ type SettingsScreenNavigationProp = NavigationProp<
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const OrderSave = () => {
+    const [role, setRole] = useState<any>('')
+    const [userPhone, setUserPhone] = useState<string>('')
     const route = useRoute();
     const { id } = route.params as { id: string | number };
     const navigation = useNavigation<SettingsScreenNavigationProp>();
@@ -47,14 +49,15 @@ const OrderSave = () => {
         "date": calendarDate,
         "paySum": +pay,
         "cardNumber": null,
-        "clientPhoneNumber": phoneNumber ? phoneNumber : null
+        "clientPhoneNumber": role == 'MASTER' ? userPhone : null
     }
 
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
-    console.log(id, freeTimeRes);
+
+    console.log(data);
 
     useFocusEffect(
         useCallback(() => {
@@ -95,6 +98,7 @@ const OrderSave = () => {
         useCallback(() => {
             stadium.globalDataFunc();
             freeTimeRes.globalDataFunc()
+            getRole()
         }, [])
     )
     useEffect(() => {
@@ -110,7 +114,13 @@ const OrderSave = () => {
     }
     console.log(stadium.response);
 
+    async function getRole() {
+        let selRole = await AsyncStorage.getItem('role')
+        if (selRole) {
+            setRole(selRole)
+        }
 
+    }
     const handleTimeSelect = (time: string) => {
         setActiveTime(time);
         setFreeTime(time);
@@ -153,28 +163,27 @@ const OrderSave = () => {
         return freeTime.slice(start, end + 1);
     };
 
+    const handleFirstNameChange = (name: string): void => {
+        setUserPhone(name);
+    };
+
 
     const rangeIndices = getRangeIndices();
+    console.log(role, '12345');
 
     return (
         <SafeAreaView style={styles.container}>
             <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
             <View>
-                <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>Mavjud xizmatlar</Text>
+                <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
                 <ScrollView
                     horizontal={true}
                     contentContainerStyle={{ paddingBottom: 10, gap: 5 }}
                     showsHorizontalScrollIndicator={false}
                 >
-                    {stadium.response && stadium.response.shower &&
-                        <OrderDetailsCard icon={<MaterialIcons name="shower" size={34} color="white" />} />
-                    }
-                    {stadium.response && stadium.response.toilet &&
-                        <OrderDetailsCard icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
-                    }
-                    {stadium.response && stadium.response.shopping &&
-                        <OrderDetailsCard icon={<Entypo name="shopping-cart" size={34} color="white" />} />
-                    }
+                    <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={34} color="white" />} />
+                    <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
+                    <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={34} color="white" />} />
                 </ScrollView>
                 <View style={styles.imageRow}>
                     {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
@@ -200,6 +209,19 @@ const OrderSave = () => {
                         />
                     ))}
                 </View>
+                {role == 'MASTER' &&
+                    <View style={{ marginBottom: 15 }}>
+                        <Text style={styles.label}>{"Telifon raqam kiritish"}</Text>
+                        <TextInput
+                            keyboardType='numeric'
+                            style={styles.input}
+                            placeholder={("telifon raqam")}
+                            placeholderTextColor="#FFF"
+                            value={userPhone}
+                            onChangeText={handleFirstNameChange}
+                        />
+                    </View>
+                }
                 <View style={styles.payCard}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.timeTitle}>Kutilayotgan to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
@@ -230,7 +252,7 @@ const OrderSave = () => {
                     <LoadingButtons title='Bron qilish' />
                     :
                     <Buttons
-                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== ''}
+                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== '' && userPhone !== ''}
                         title='Bron qilish' onPress={async () => {
                             let isLogining = await isLogin().then((res) => res)
                             if (isLogining) {
@@ -241,7 +263,7 @@ const OrderSave = () => {
                         }} />
                 }
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
@@ -279,9 +301,12 @@ const styles = StyleSheet.create({
     payCard: {
         width: "100%",
         padding: 10,
-        backgroundColor: colors.green,
+        backgroundColor: colors.inDarkGreen,
         borderRadius: 10,
         marginBottom: 10,
+        borderBlockColor: '#333',
+        borderWidth: 1,
+        borderStyle: 'solid'
     },
     activeTimeButton: {
         backgroundColor: colors.inDarkGreen,
@@ -308,5 +333,20 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 10,
         marginBottom: 10
+    },
+    label: {
+        color: '#FFFFFF',
+        fontSize: 18,
+        marginTop: 20,
+    },
+    input: {
+        height: 55,
+        borderColor: '#4B4B64',
+        backgroundColor: colors.inDarkGreen,
+        borderWidth: 1,
+        borderRadius: 10,
+        marginTop: 20,
+        paddingHorizontal: 10,
+        color: '#FFFFFF',
     },
 })
