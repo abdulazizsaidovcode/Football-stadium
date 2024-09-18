@@ -54,10 +54,10 @@ const ClientDashboard = () => {
                     alert("Orqaga qaytish uchun yana bir marta bosing");
                     setTimeout(() => {
                         setBackPressCount(0);
-                    }, 2000); // 2 soniya ichida ikkinchi marta bosilmasa, holatni qayta boshlaydi
-                    return true; // Orqaga qaytishni bloklaydi
+                    }, 2000); 
+                    return true; 
                 } else {
-                    BackHandler.exitApp(); // Ilovadan chiqish
+                    BackHandler.exitApp();
                     return false;
                 }
             };
