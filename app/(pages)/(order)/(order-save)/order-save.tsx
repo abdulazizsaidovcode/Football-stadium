@@ -19,6 +19,7 @@ import TimesCard from '@/components/cards/timesCard'
 import calenderStory from '@/helpers/stores/order/graficWorkStore'
 import { useAuthStore } from '@/helpers/stores/auth/auth-store'
 import LoadingButtons from '@/components/button/loadingButton'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -55,14 +56,6 @@ const OrderSave = () => {
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
     console.log(id, freeTimeRes);
 
-    useEffect(() => {
-        if (CreateOreder.response === 'Stadium has been successfully reserved') {
-            alert(CreateOreder.response.response)
-        }
-    }, [CreateOreder.response])
-
-
-
     useFocusEffect(
         useCallback(() => {
             if (selectedTimeSlots.length < 2) {
@@ -83,18 +76,34 @@ const OrderSave = () => {
             }
         }, [selectedTimeSlots, freeTime])
     )
+    async function isLogin() {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     useFocusEffect(
         useCallback(() => {
             freeTimeRes.globalDataFunc()
         }, [calendarDate])
     )
+
     useFocusEffect(
         useCallback(() => {
             stadium.globalDataFunc();
             freeTimeRes.globalDataFunc()
         }, [])
     )
+    useEffect(() => {
+        if (CreateOreder.response === 'Stadium has been successfully reserved') {
+            alert(CreateOreder.response.response)
+            setPay('')
+            setSelectedTimeSlots([])
+        }
+    }, [CreateOreder.response])
 
     if (stadium.loading) {
         return <Loading />
@@ -143,6 +152,7 @@ const OrderSave = () => {
 
         return freeTime.slice(start, end + 1);
     };
+
 
     const rangeIndices = getRangeIndices();
 
@@ -221,11 +231,12 @@ const OrderSave = () => {
                     :
                     <Buttons
                         isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== ''}
-                        title='Bron qilish' onPress={() => {
-                            CreateOreder.globalDataFunc()
-                            if (CreateOreder.response == 'Stadium has been successfully reserved') {
-                                setPay('')
-                                setSelectedTimeSlots([])
+                        title='Bron qilish' onPress={async () => {
+                            let isLogining = await isLogin().then((res) => res)
+                            if (isLogining) {
+                                CreateOreder.globalDataFunc()
+                            } else {
+                                navigation.navigate('(pages)/(auth)/(login)/login')
                             }
                         }} />
                 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather, FontAwesome5, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
-import MasterDashboard from './dashboard';
-import MasterStadium from './stadium';
-import MasterProfile from './profile';
+import { MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { colors } from '@/constants/Colors';
+import MasterDashboardScreen from './dashboard';
+import MasterStadiumScreen from './stadium';
+import MasterOrdersScreen from './orders';
 
 function MasterTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ function MasterTabLayout() {
       >
         <Tab.Screen
           name="dashboard"
-          component={MasterDashboard}
+          component={MasterDashboardScreen}
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
@@ -36,9 +36,19 @@ function MasterTabLayout() {
         />
         <Tab.Screen
           name="Stadium"
-          component={MasterStadium}
+          component={MasterStadiumScreen}
           options={{
             title: "Stadium",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="stadium" size={30} color={color} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="order"
+          component={MasterOrdersScreen}
+          options={{
+            title: "order",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="stadium" size={30} color={color} />
             )

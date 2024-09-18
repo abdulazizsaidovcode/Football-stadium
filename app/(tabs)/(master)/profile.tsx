@@ -4,13 +4,13 @@ import Layout from '@/layout/layout'
 import { colors } from '@/constants/Colors'
 import Profile from '@/app/(pages)/(master)/(profile)/masterProfile'
 
-const MasterProfile = () => {
+const MasterProfileScreen = () => {
   return ( 
   <Profile/>
   )
 }
 
-export default MasterProfile;
+export default MasterProfileScreen;
 
 // const styles = StyleSheet.create({
 //     title: {

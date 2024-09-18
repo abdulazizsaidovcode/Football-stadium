@@ -1,12 +1,12 @@
-import Stadium from '@/app/(pages)/(master)/(stadium)/stadium'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class MasterStadium extends Component {
-  render() {
-    return (
-      <Stadium />
-    )
-  }
+const MasterStadiumScreen = () => {
+  return (
+    <View>
+      <Text>MasterStadiumScreen</Text>
+    </View>
+  )
 }
 
-export default MasterStadium;
+export default MasterStadiumScreen
