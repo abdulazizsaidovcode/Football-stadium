@@ -34,3 +34,6 @@ export const statistics_for_year: string = `${BASE_URL}for/master/year?`;
 // order 
 
 export const order_create: string = `${BASE_URL}order/create-order`
+// History 
+
+export const order_history: string = `${BASE_URL}order/history`;
