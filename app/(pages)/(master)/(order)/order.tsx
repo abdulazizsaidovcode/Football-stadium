@@ -1,51 +1,117 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Modal, TextInput } from 'react-native';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { order_day_master, statistics_for_year, user_me, user_update } from '@/helpers/api/api';
+import { order_day_master, stadium_get_master, statistics_for_year, user_me, user_update } from '@/helpers/api/api';
+import Buttons from '@/components/button/button';
+import { colors } from '@/constants/Colors';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
+import { RootStackParamList } from '@/types/root/root';
+import { NavigationProp } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+import CenteredModal from '@/components/modal/sentralmodal';
+import { StadiumTypes } from '@/types/stadium/stadium';
 
+type SettingsScreenNavigationProp = NavigationProp<
+    RootStackParamList,
+    "(pages)/(client)/(dashboard)/dashboard"
+>;
 export default function MasterOrder() {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('java');
+
     const userMee = useGlobalRequest(user_me, 'GET');
     const OrdersDay = useGlobalRequest(order_day_master, 'GET');
+    const navigation = useNavigation<SettingsScreenNavigationProp>();
+    const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
+
+
+    const openModal = () => setIsModalVisible(!isModalVisible);
+    const navigateToOrder = () => navigation.navigate('(pages)/(order)/(order-save)/order-save')
 
     useEffect(() => {
         OrdersDay.globalDataFunc();
+        stadiums.globalDataFunc()
     }, []);
 
+    console.log(stadiums.response, 'stadium');
+
     return (
-        <Layout scroll>
-            <View style={styles.Container}>
-                <Text style={styles.title}>Bugungi qilinga bronlaringiz</Text>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.darkGreen, paddingHorizontal: 16 }}>
+            <Layout scroll>
+                <View style={styles.Container}>
+                    <Text style={styles.title}>Bugungi qilinga bronlaringiz</Text>
 
-                {
-                    OrdersDay.response && OrdersDay.response.length > 0 ? (
-                        OrdersDay.response.map((item: { clientFirstName: string, clientLastName: string, endTime: string, stadiumNumber: string, date: string, startTime: string, startPrice: string, }) => (
-                            <TouchableOpacity style={styles.order} activeOpacity={1}>
-                                <Text style={styles.orderTitle}>
-                                    {item.clientFirstName} {item.clientLastName}
+                    {
+                        OrdersDay.response && OrdersDay.response.length > 0 ? (
+                            OrdersDay.response.map((item: { clientFirstName: string, clientLastName: string, endTime: string, stadiumNumber: string, date: string, startTime: string, startPrice: string, }) => (
+                                <TouchableOpacity style={styles.order} activeOpacity={1}>
+                                    <Text style={styles.orderTitle}>
+                                        {item.clientFirstName} {item.clientLastName}
 
-                                </Text>
-                                <Text style={styles.OrderText}>
-                                    cdhybuj
-                                    Stadium: {item.stadiumNumber}
-                                </Text>
-                                <Text style={styles.OrderText}>
-                                    Date: {item.date}
-                                </Text>
-                                <Text style={styles.OrderText}>
-                                    Time: {item.startTime && item.startTime.slice(0, 5)} - {item.endTime.slice(0, 5)}
-                                </Text>
-                                <Text style={styles.OrderText}>
-                                    Price: ${item.startPrice}
-                                </Text>
-                            </TouchableOpacity>
-                        ))
-                    ) : (
-                        <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>order Mavjut emas</Text>
-                    )
+                                    </Text>
+                                    <Text style={styles.OrderText}>
+                                        cdhybuj
+                                        Stadium: {item.stadiumNumber}
+                                    </Text>
+                                    <Text style={styles.OrderText}>
+                                        Date: {item.date}
+                                    </Text>
+                                    <Text style={styles.OrderText}>
+                                        Time: {item.startTime && item.startTime.slice(0, 5)} - {item.endTime.slice(0, 5)}
+                                    </Text>
+                                    <Text style={styles.OrderText}>
+                                        Price: ${item.startPrice}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))
+                        ) : (
+                            <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Order Mavjut emas</Text>
+                        )
+                    }
+                </View>
+            </Layout>
+            <Buttons onPress={() => {
+                // userMee.globalDataFunc();
+                if (stadiums.response && stadiums.response.length == 0) {
+                    alert('avval ozingizga staduin qoshishingiz kerak')
                 }
-            </View>
-        </Layout>
+                if (stadiums.response && stadiums.response.length == 1) {
+                    console.log(stadiums.response, 'ooooo');
+                    console.log(stadiums.response[0].id, 'ooooo');
+                    navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: stadiums.response[0].id })
+                    
+                }
+                if (stadiums.response && stadiums.response.length > 1) {
+                    openModal()
+                }
+            }} title="Bron qo'shish" icon={<Entypo name="plus" size={24} color="white" />} />
+            <View style={{ marginBottom: 10 }}></View>
+
+            <CenteredModal
+                isModal={isModalVisible}
+                toggleModal={openModal}
+                btnWhiteText="Close"
+                btnRedText="Confirm"
+                isFullBtn={true}
+                onConfirm={navigateToOrder}
+            >
+                <View style={styles.modalContent}>
+                    <Text style={{ color: '#fff', fontSize: 20, marginBottom: 10 }}>Stadionni tanlang</Text>
+                    <Picker
+                        selectedValue={selectedValue}
+                        style={styles.picker}
+                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                    >
+                        <Picker.Item label="Java" value="java" />
+                        <Picker.Item label="JavaScript" value="js" />
+                        <Picker.Item label="Python" value="python" />
+                    </Picker>
+                    <Text style={{ color: '#fff', fontSize: 16 }}>Tanlangan stadion: {selectedValue}</Text>
+                </View>
+            </CenteredModal>
+        </SafeAreaView>
     );
 }
 
@@ -55,7 +121,6 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginBottom: 40,
         borderBottomColor: "#000",
-        paddingHorizontal: 16
     },
     Buttons: {
         display: "flex",
@@ -135,11 +200,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        width: 300,
-        padding: 20,
-        backgroundColor: '#698474',
-        color: '#fff',
-        borderRadius: 10,
+        width: "100%",
     },
     input: {
         borderBottomWidth: 1,
@@ -148,6 +209,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingVertical: 5,
         paddingHorizontal: 10,
+    },
+    picker: {
+        backgroundColor: colors.green,
+        color: '#fff',
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        borderRadius: 12,
+        height: 50,
+        width: "100%",
     },
 });
 
