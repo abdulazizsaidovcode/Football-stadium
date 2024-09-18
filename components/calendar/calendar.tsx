@@ -5,7 +5,6 @@ import { SafeAreaView, StyleSheet, Platform } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { MarkedDates } from "react-native-calendars/src/types";
 import moment from "moment";
-import Toast from 'react-native-simple-toast';
 import { useFocusEffect } from "expo-router";
 import calenderStory from "@/helpers/stores/order/graficWorkStore";
 import { colors } from "@/constants/Colors";
@@ -44,7 +43,7 @@ const CalendarGrafficEdit: React.FC = () => {
         const today = moment().format("YYYY-MM-DD");
 
         if (moment(day.dateString).isBefore(today)) {
-            // Toast.show('Вы не можете выбрать дату до сегодняшнего дня.', Toast.LONG);
+            alert('Вы не можете выбрать дату до сегодняшнего дня.');
             return;
         }
 
@@ -58,7 +57,7 @@ const CalendarGrafficEdit: React.FC = () => {
         };
 
         setSelectedDate(newSelectedDate);
-        setCalendarDate(day.dateString); // Tanlangan sanani saqlash
+        setCalendarDate(day.dateString); 
     };
 
     useFocusEffect(

@@ -25,8 +25,12 @@ export const stadium_post_master: string = `${BASE_URL}stadium`;
 export const stadium_get_one: string = `${BASE_URL}stadium/one`;
 export const stadium_get_freetime: string = `${BASE_URL}stadium/free/time`;
 
-export const statistics_for_year: string = `${BASE_URL}for/master/year?`;
 
 // ORDERS
 
 export const order_day_master: string = `${BASE_URL}order/today/orders`;
+export const statistics_for_year: string = `${BASE_URL}for/master/year?`;
+
+// order 
+
+export const order_create: string = `${BASE_URL}order/create-order`
