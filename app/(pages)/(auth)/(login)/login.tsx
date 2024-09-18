@@ -17,13 +17,15 @@ type SettingsScreenNavigationProp = NavigationProp<
 const Login = () => {
   const { phoneNumber, setPhoneNumber, status, setStatus } = useAuthStore();
   const navigation = useNavigation<SettingsScreenNavigationProp>();
-  const sendCode = useGlobalRequest(auth_send_code, 'POST', { phoneNumber: '+998' + phoneNumber.split(' ').join('') });
+  const sendCode = useGlobalRequest(auth_send_code, 'POST', { phoneNumber: '+998' + phoneNumber.split(' ').join('') }, 'DEFAULT');
   const userFound = useGlobalRequest(`${user_found}?phone=${'%2B998' + phoneNumber.split(' ').join('')}`, 'GET');
 
   const [isPhoneNumberComplete, setIsPhoneNumberComplete] = useState(false); // New state to track phone number completeness
 
   useEffect(() => {
-    if (sendCode.response === 1111) {
+    console.log("data kelyapti", sendCode);
+    
+    if (sendCode.response) {
       navigation.navigate('(pages)/(auth)/(check-code)/check-code');
     }
   }, [sendCode.response]);

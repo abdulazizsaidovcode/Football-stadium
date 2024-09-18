@@ -39,6 +39,7 @@ export function useGlobalRequest<T>(
 
             if (method !== 'GET') {
                 if (res.data.error) toastMessage(res.data.error.code, res.data.error.message);
+     
             }
             return res.data.data;
         },

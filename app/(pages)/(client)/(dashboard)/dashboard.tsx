@@ -8,7 +8,7 @@ import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation
 import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions'
 import { useUserStore } from '@/helpers/stores/user/user-store'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { stadium_get } from '@/helpers/api/api'
+import { stadium_get, stadium_search } from '@/helpers/api/api'
 import { RootStackParamList } from '@/types/root/root'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { Loading } from '@/components/loading/loading'
@@ -25,9 +25,12 @@ type SettingsScreenNavigationProp = NavigationProp<
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>('')
+    const [stadiumData, setstadiumData] = useState<any>(null)
+    const [inputValue, setinputValue] = useState<string | null>('')
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>('')
     const staduims = useGlobalRequest(`${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
+    const staduimSearch = useGlobalRequest(`${stadium_search}?name=${inputValue}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
 
     useFocusEffect(
@@ -41,6 +44,8 @@ const ClientDashboard = () => {
             getConfig()
         }, [])
     );
+
+
 
     useFocusEffect(
         useCallback(() => {
@@ -71,6 +76,16 @@ const ClientDashboard = () => {
         }, [userLocation?.coords])
     );
 
+    useFocusEffect(
+        useCallback(() => {
+            inputValue && staduimSearch.globalDataFunc();
+        }, [inputValue])
+    );
+
+    console.log("Response ", staduimSearch.response);
+    console.log("Respinput valueonse ", stadiumData);
+
+
     if (staduims.loading) {
         return <Loading />
     }
@@ -89,10 +104,12 @@ const ClientDashboard = () => {
                 <View style={{ marginTop: 15 }}>
                     {/* <Buttons title='Buti masterom'/> */}
                     <View>
-                        <Input label='Поиск по имени'/>
+                        <Input value={inputValue ? inputValue : ""} onChangeText={(text) => {
+                            setinputValue(text);
+                        }} label='Поиск по имени' />
                         <Text style={styles.subTitle}>{role && token ? "Мои записи" : "Stadionlar"}</Text>
                         <View style={{ marginTop: 15, gap: 10 }}>
-                            {staduims.response && staduims.response.map((item: StadiumTypes, index: number) => (
+                            {stadiumData && stadiumData.map((item: StadiumTypes, index: number) => (
                                 <StadiumCard
                                     key={index}
                                     data={item}
