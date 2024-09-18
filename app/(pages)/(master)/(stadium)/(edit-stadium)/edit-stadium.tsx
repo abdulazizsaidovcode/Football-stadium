@@ -191,12 +191,12 @@ const EditStadium = () => {
   };
 
   const submitStadiumPost = async () => {
-    images.length > 0 && setIsLoading(true)
+    setIsLoading(true)
     try {
       const config = await getConfig()
       const { data } = await axios.post(`${stadium_get}?id=${id}`, payload, config || {});
       if (data.data) {
-        images.length > 0 && navigation.goBack();
+        images.length === 0 && navigation.goBack();
         setFormValues({
           count: '',
           description: '',
@@ -216,7 +216,7 @@ const EditStadium = () => {
     } catch (error) {
       console.error('Error posting stadium:', error);
     } finally {
-      images.length > 0 && setIsLoading(false)
+      images.length === 0 && setIsLoading(false)
     }
   };
   const addImage = async () => {
@@ -236,20 +236,22 @@ const EditStadium = () => {
       const { data } = await axios.post(`${stadium_add_attachment}/${id}`, formData, config || {});
       if (data.data) {
         console.log('aaaaaaaaaaaaaaaa');
-        
+
         navigation.goBack();
       }
     } catch (error) {
       console.error('Error add images:', error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
   const handleSubmit = () => {
     submitStadiumPost();
-    images.length > 0 && addImage()
+    images.length !== 0 && addImage()
   }
 
-  if (stadium.loading) {
+  if (stadium.loading || isLoading) {
     return <Loading />
   }
 

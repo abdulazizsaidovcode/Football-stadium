@@ -1,21 +1,22 @@
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { BASE_URL, file_get, stadium_get_master } from '@/helpers/api/api';
+import { file_get, stadium_get_master } from '@/helpers/api/api';
 import { StadiumTypes } from '@/types/stadium/stadium';
 import { colors } from '@/constants/Colors';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
-import { useNavigation } from '@react-navigation/native';
-import AddStadium from './(add-stadium)/add-stadium';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
-  const navigation = useNavigation<any>()
-  useEffect(() => {
-    stadiums.globalDataFunc();
-  }, []);
+  const navigation = useNavigation<any>();
+
+  useFocusEffect(
+    useCallback(() => {
+      stadiums.globalDataFunc();
+    }, [stadiums.globalDataFunc])
+  )
 
   return (
     <Layout scroll>
@@ -32,7 +33,7 @@ const Stadium = () => {
         {stadiums.response && stadiums.response.map((stadium: StadiumTypes) => (
           <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
             <Image
-              source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` }: require('../../../../assets/images/defaultImg.jpeg')}
+              source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
               style={styles.cardImage}
             />
             <View style={styles.cardContent}>
