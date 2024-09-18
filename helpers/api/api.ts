@@ -31,7 +31,7 @@ export const stadium_search: string = `${BASE_URL}stadium/search`;
 // ORDERS
 
 export const order_day_master: string = `${BASE_URL}order/today/orders`;
-export const statistics_for_year: string = `${BASE_URL}for/master/year?`;
+export const statistics_for_year: string = `${BASE_URL}statistic/for/master/year`;
 
 // order 
 

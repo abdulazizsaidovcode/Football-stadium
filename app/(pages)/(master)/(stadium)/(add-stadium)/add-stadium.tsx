@@ -168,6 +168,16 @@ const AddStadium = () => {
     price: formValues.price
   };
 
+  function formatTime(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+
+    // Soat va daqiqalarni ikki raqamli formatda ko'rsatish
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}`;
+  }
+
   const handleInputChange = (field: string, value: string) => {
     if (['count', 'price', 'initialPay', 'width', 'height'].includes(field)) {
       if (/^\d*\.?\d*$/.test(value)) {
@@ -354,7 +364,7 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Text style={[styles.label]}>Start Time</Text>
                 <Pressable onPress={showStartPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
-                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{startTime.getHours()}:{startTime.getMinutes()}</Text>
+                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${startTime.getHours()}:${startTime.getMinutes()}`)}</Text>
                 </Pressable>
                 <DateTimePickerModal
                   isVisible={isStartPickerVisible}
@@ -367,7 +377,7 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Text style={[styles.label]}>End Time</Text>
                 <Pressable onPress={showEndPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
-                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{endTime.getHours()}:{endTime.getMinutes()}</Text>
+                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${endTime.getHours()}:${endTime.getMinutes()}`)}</Text>
                 </Pressable>
                 <DateTimePickerModal
                   isVisible={isEndPickerVisible}
