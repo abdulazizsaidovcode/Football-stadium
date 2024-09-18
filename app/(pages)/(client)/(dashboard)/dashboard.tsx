@@ -8,7 +8,7 @@ import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation
 import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions'
 import { useUserStore } from '@/helpers/stores/user/user-store'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { stadium_get, stadium_search } from '@/helpers/api/api'
+import { favourite_add, stadium_get, stadium_search } from '@/helpers/api/api'
 import { RootStackParamList } from '@/types/root/root'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { Loading } from '@/components/loading/loading'
@@ -32,6 +32,8 @@ const ClientDashboard = () => {
     const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
 
+    const staduimsFavouteti = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
+
     useFocusEffect(
         useCallback(() => {
             getUserLocation(setUserLocation);
@@ -43,9 +45,7 @@ const ClientDashboard = () => {
             getConfig()
         }, [])
     );
-
-
-
+    const [getId, setGetId] = useState('')
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
@@ -54,8 +54,8 @@ const ClientDashboard = () => {
                     alert("Orqaga qaytish uchun yana bir marta bosing");
                     setTimeout(() => {
                         setBackPressCount(0);
-                    }, 2000); 
-                    return true; 
+                    }, 2000);
+                    return true;
                 } else {
                     BackHandler.exitApp();
                     return false;
@@ -78,7 +78,6 @@ const ClientDashboard = () => {
             }
         }, [staduims.error, staduims.response])
     );
-
     useFocusEffect(
         useCallback(() => {
             userLocation?.coords && staduims.globalDataFunc();
@@ -90,10 +89,14 @@ const ClientDashboard = () => {
             inputValue && staduims.globalDataFunc();
         }, [inputValue])
     );
+    const AddFav = useGlobalRequest(`${favourite_add.split('/api/v1').join('')}/${getId}`, "POST", {}, "DEFAULT");
 
-    console.log("Response ", staduims.response);
-    console.log("Respinput valueonse ", stadiumData);
+    useEffect(() => {
+        AddFav.globalDataFunc()
+    }, [getId]);
 
+    console.log(AddFav.response);
+    console.log(AddFav.error);
 
     if (staduims.loading) {
         return <Loading />
@@ -121,6 +124,10 @@ const ClientDashboard = () => {
                                 <StadiumCard
                                     key={index}
                                     data={item}
+                                    onFavPress={() => {
+                                        setGetId(item.id)
+                                    }}
+                                    iconColor={AddFav.response == 'Success' && 'white'}
                                     onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
                                     onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
                                 />

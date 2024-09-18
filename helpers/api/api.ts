@@ -40,3 +40,8 @@ export const order_create: string = `${BASE_URL}order/create-order`
 
 export const order_history: string = `${BASE_URL}order/history`;
 export const order_today: string = `${BASE_URL}order/today`;
+
+// favourite 
+
+export const favourite_add: string = `${BASE_URL}favourite/save`;
+
