@@ -29,10 +29,10 @@ const Stadium = () => {
           </View>
         </View>
         <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
-        {stadiums.response && stadiums.response.map((stadium: any) => (
-          <TouchableOpacity onPress={() => navigation.navigate('')} activeOpacity={.8} key={stadium.id} style={styles.card}>
+        {stadiums.response && stadiums.response.map((stadium: StadiumTypes) => (
+          <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
             <Image
-              source={{ uri: `${file_get}${stadium.isMainAttachmentId}` }}
+              source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` }: require('../../../../assets/images/defaultImg.jpeg')}
               style={styles.cardImage}
             />
             <View style={styles.cardContent}>

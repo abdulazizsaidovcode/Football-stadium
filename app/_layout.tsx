@@ -18,7 +18,7 @@ import CheckCode from './(pages)/(auth)/(check-code)/check-code';
 import AddStadium from './(pages)/(master)/(stadium)/(add-stadium)/add-stadium';
 import InternetNotice from '@/components/internet-notice/internet-notice';
 import StadiumLoacations from './(pages)/(maps)/(stadium-locations)/stadium-locations';
-import EditStadium from './(pages)/(master)/(stadium)/(edit-staidium)/edit-stadium';
+import EditStadium from './(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium';
 import ClientDashboard from './(pages)/(client)/(dashboard)/dashboard';
 import OrderSave from './(pages)/(order)/(order-save)/order-save';
 import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
