@@ -438,6 +438,7 @@ const EditStadium = () => {
                 />
               </View> */}
             </View>
+            <Text style={{ textAlign: 'center', color: colors.white, fontSize: 20, marginTop: 10 }}>Stadion images</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
               <View style={{ width: '47%' }}>
                 <Buttons title='Загрузить фото' onPress={pickImageFromGallery} />
