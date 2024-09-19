@@ -10,7 +10,7 @@ const Index = () => {
   useEffect(() => {
     const getToken = async () => {
       // await AsyncStorage.removeItem('role');
-      // await AsyncStorage.removeItem('token');  
+      // await AsyncStorage.removeItem('token');
       const role = await AsyncStorage.getItem('role');
       const token = await AsyncStorage.getItem('token');
       setRole(role);
