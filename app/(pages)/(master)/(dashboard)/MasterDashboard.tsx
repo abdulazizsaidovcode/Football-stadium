@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button, Image, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { order_day_master, statistics_for_year, user_me, user_update } from '@/helpers/api/api';
+import { statistics_for_year, user_me, user_update } from '@/helpers/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '@/components/input/input';
-import Stadion from '@/assets/images/Real.jpg';
+import CenteredModal from '@/components/modal/sentralmodal';
+import { LineChart } from 'react-native-chart-kit';
+import { colors } from '@/constants/Colors';
 
 export default function Dashboard() {
   const userMee = useGlobalRequest(user_me, 'GET');
-  const OrdersDay = useGlobalRequest(order_day_master, 'GET');
   const [year, setYear] = useState(2024)
-  const getStatistics = useGlobalRequest(`${statistics_for_year}year=${year}`, 'GET');
+  const getStatistics = useGlobalRequest(`${statistics_for_year}?year=${year}`, 'GET', {}, 'DEFAULT');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,7 +25,9 @@ export default function Dashboard() {
   useEffect(() => {
     userMee.globalDataFunc();
     getStatistics.globalDataFunc();
-    OrdersDay.globalDataFunc();
+  }, []);
+
+  useEffect(() => {
     if (userMee.response) {
       setFormData({
         firstName: userMee.response.firstName || '',
@@ -32,7 +35,15 @@ export default function Dashboard() {
         phoneNumber: userMee.response.phoneNumber || '',
       });
     }
-  }, []);
+  }, [userMee.response])
+
+  useEffect(() => {
+    const updateToken = async () => {
+      await AsyncStorage.setItem('token', userEdit.response)
+    }
+
+    updateToken()
+  }, [userEdit.response])
 
   const handleEditPress = () => {
     setIsModalVisible(true);
@@ -40,7 +51,7 @@ export default function Dashboard() {
 
   const handleSave = async () => {
     try {
-      await userEdit.globalDataFunc();
+      userEdit.globalDataFunc();
       setIsModalVisible(false);
       userMee.globalDataFunc();
     } catch (error) {
@@ -48,83 +59,112 @@ export default function Dashboard() {
     }
   };
 
+  console.log('getStatistics.response', getStatistics.response);
+  console.log('getStatistics.error', getStatistics.error);;
+
+
 
   return (
-    <Layout scroll>
-      <Image source={Stadion} style={styles.Image} />
-      <Text style={styles.ImageBox}></Text>
-      <View style={styles.header}>
-        <View style={styles.profile}>
-          <View style={styles.profileInfo}>
-            <Text style={styles.name}>
-              {userMee.response?.lastName || "Network error"} {userMee.response?.firstName || "Network error"}
-            </Text>
-            <Text style={styles.phone}>{userMee.response?.phoneNumber || "Network error"}</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Layout scroll>
+        <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
+        <Text style={styles.ImageBox}></Text>
+        <View style={styles.header}>
+          <View style={styles.profile}>
+            <View style={styles.profileInfo}>
+              <Text style={styles.name}>
+                {userMee.response?.lastName || "Guest"} {userMee.response?.firstName || ""}
+              </Text>
+              <Text style={styles.phone}>{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
+            </View>
+            <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
+              <AntDesign name="edit" size={24} color="white" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
-            <AntDesign name="edit" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-        <Text style={{ marginTop: 50, marginHorizontal: 20, width: 100 }}>
-          <Input
-            labalVisible
-            label='Year'
-            placeholder='Enter count'
-            type='numeric'
-            value={year.toString()}
-            onChangeText={(text) => setYear(Number(text))}
-          />
-        </Text>
-        <View style={styles.cardsContainer}>
-          {
-            getStatistics.response && getStatistics.response.length > 0 ? (
-              getStatistics.response.map((item: { orderCount: string, date: string | number, totalPrice: string | number }) => (
-                <TouchableOpacity style={styles.card} activeOpacity={1}>
-                  <Text style={styles.cardText}>Zakazlar soni{item.orderCount || "0"}</Text>
-                  <Text style={styles.cardDefText}>San'a: {item.date || '0'}</Text>
-                  <Text style={styles.cardDefText}>Foyda: {item.totalPrice || "0"}</Text>
-                </TouchableOpacity>
-              ))
-            ) : (
-              <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Zakaz qilinmagan</Text>
-            )
-          }
+          <Text style={{ marginTop: 50, marginHorizontal: 20, width: 100 }}>
+            <Input
+              labalVisible
+              label='Year'
+              placeholder='Enter count'
+              type='numeric'
+              value={year.toString()}
+              onChangeText={(text) => setYear(Number(text))}
+            />
+          </Text>
+          <View>
+            {
+              getStatistics.response && getStatistics.response.length > 0 ? (
+                <LineChart
+                  data={{
+                    labels: getStatistics.response.map((item: any) => item.month || "0"),
+                    datasets: [{
+                      data: getStatistics.response.map((item: any) => Number(item.totalPrice) || 0),
+                    }]
+                  }}
+                  width={Dimensions.get('window').width} 
+                  height={220}
+                  yAxisLabel={'$'}
+                  chartConfig={{
+                    backgroundColor: '#e26a00',
+                    backgroundGradientFrom: colors.inDarkGreen,
+                    backgroundGradientTo: colors.lightGreen,
+                    decimalPlaces: 2, // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    style: {
+                      borderRadius: 16
+                    }
+                  }}
+                  bezier
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16
+                  }}
+                />
+              ) : (
+                <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Zakaz qilinmagan</Text>
+              )
+            }
 
-        </View>
-      </View>
 
-      <Modal visible={isModalVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
+          </View>
+        </View>
+        <CenteredModal
+          isModal={isModalVisible}
+          isFullBtn
+          btnRedText='Save'
+          btnWhiteText='Cancel'
+          toggleModal={() => setIsModalVisible(false)}
+          onConfirm={handleSave}
+        >
           <View style={styles.modalContent}>
+
             <TextInput
               style={styles.input}
               placeholder="First Name"
+              placeholderTextColor={'white'}
               value={formData.firstName}
               onChangeText={(text) => setFormData({ ...formData, firstName: text })}
             />
             <TextInput
               style={styles.input}
               placeholder="Last Name"
+              placeholderTextColor={'white'}
               value={formData.lastName}
               onChangeText={(text) => setFormData({ ...formData, lastName: text })}
             />
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
+              placeholderTextColor={'white'}
               value={formData.phoneNumber}
               onChangeText={(text) => setFormData({ ...formData, phoneNumber: text })}
             />
-            <Text style={styles.Buttons}>
-              <Button title="Save" color='green' onPress={handleSave} />
-              <Button title="Cancel" color="red" onPress={() => setIsModalVisible(false)} />
-            </Text>
           </View>
-        </View>
-      </Modal>
-    </Layout>
+        </CenteredModal>
+      </Layout>
+    </TouchableWithoutFeedback>
   );
 }
-
 
 const styles = StyleSheet.create({
   header: {
@@ -141,6 +181,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
     overflow: 'hidden',
+    padding: 12
   },
   OrderText: {
     fontSize: 15,
@@ -163,14 +204,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     height: 130,
-  },
-  cardsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-    gap: 10,
-    paddingHorizontal: 20,
   },
   order: {
     backgroundColor: '#698474',
@@ -233,7 +266,6 @@ const styles = StyleSheet.create({
   modalContent: {
     width: 300,
     padding: 20,
-    backgroundColor: '#698474',
     color: '#fff',
     borderRadius: 10,
   },

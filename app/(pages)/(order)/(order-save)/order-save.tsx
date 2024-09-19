@@ -12,7 +12,7 @@ import { StadiumTypes } from '@/types/stadium/stadium'
 import { RootStackParamList } from '@/types/root/root'
 import { useNavigation } from 'expo-router'
 import Buttons from '@/components/button/button'
-import { Entypo, FontAwesome6, MaterialIcons } from '@expo/vector-icons'
+import { Entypo, FontAwesome, FontAwesome6, MaterialIcons } from '@expo/vector-icons'
 import { useOrderStory } from '@/helpers/stores/order/order-store'
 import CalendarGrafficEdit from '@/components/calendar/calendar'
 import TimesCard from '@/components/cards/timesCard'
@@ -49,7 +49,7 @@ const OrderSave = () => {
         "date": calendarDate,
         "paySum": +pay,
         "cardNumber": null,
-        "clientPhoneNumber": role == 'MASTER' ? userPhone : null
+        "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
 
 
@@ -57,7 +57,12 @@ const OrderSave = () => {
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
 
-    console.log(data);
+    if (freeTimeRes.error) {
+        alert(freeTimeRes.error)
+        setTimeout(() => {
+            console.log(id);
+        }, 2000)
+    }
 
     useFocusEffect(
         useCallback(() => {
@@ -112,7 +117,8 @@ const OrderSave = () => {
     if (stadium.loading) {
         return <Loading />
     }
-    console.log(stadium.response);
+
+    console.log(data);
 
     async function getRole() {
         let selRole = await AsyncStorage.getItem('role')
@@ -198,7 +204,7 @@ const OrderSave = () => {
                 <CalendarGrafficEdit />
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>
                 <View style={styles.timeListContainer}>
-                    {freeTimeRes.response && freeTimeRes.response.length > 0 && freeTimeRes.response.map((time: any, index: any) => (
+                    {freeTimeRes.response && Array.isArray(freeTimeRes.response) && freeTimeRes.response.length > 0 ? freeTimeRes.response.map((time: any, index: any) => (
                         <TimesCard
                             key={index}
                             title={time}
@@ -207,7 +213,23 @@ const OrderSave = () => {
                             isInRange={rangeIndices.includes(time)}
                             disabled={false}
                         />
-                    ))}
+                    )) :
+                        <View style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderStyle: 'solid',
+                            borderColor: '#fff',
+                            paddingVertical: 20,
+                            backgroundColor: '#e74d4d'
+                        }}>
+                            <FontAwesome name="calendar-times-o" size={44} color="white" />
+                            <Text style={{ fontSize: 20, color: '#fff', marginTop: 20 }}>Stadionning bugunga vaqti yo'q</Text>
+                        </View>
+                    }
                 </View>
                 {role == 'MASTER' &&
                     <View style={{ marginBottom: 15 }}>
@@ -304,9 +326,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.inDarkGreen,
         borderRadius: 10,
         marginBottom: 10,
-        borderBlockColor: '#333',
         borderWidth: 1,
-        borderStyle: 'solid'
+        borderStyle: 'solid',
+        borderColor: '#fff',
     },
     activeTimeButton: {
         backgroundColor: colors.inDarkGreen,

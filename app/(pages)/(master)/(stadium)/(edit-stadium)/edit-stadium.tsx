@@ -251,6 +251,16 @@ const EditStadium = () => {
     images.length !== 0 && addImage()
   }
 
+  function formatTime(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+
+    // Soat va daqiqalarni ikki raqamli formatda ko'rsatish
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}`;
+}
+
   if (stadium.loading || isLoading) {
     return <Loading />
   }
@@ -384,7 +394,7 @@ const EditStadium = () => {
               <View style={{ width: '47%' }}>
                 <Text style={[styles.label]}>Start Time</Text>
                 <Pressable onPress={showStartPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
-                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{startTime.getHours()}:{startTime.getMinutes()}</Text>
+                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${startTime.getHours()}:${startTime.getMinutes()}`)}</Text>
                 </Pressable>
                 <DateTimePickerModal
                   isVisible={isStartPickerVisible}
@@ -397,7 +407,7 @@ const EditStadium = () => {
               <View style={{ width: '47%' }}>
                 <Text style={[styles.label]}>End Time</Text>
                 <Pressable onPress={showEndPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
-                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{endTime.getHours()}:{endTime.getMinutes()}</Text>
+                  <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${endTime.getHours()}:${endTime.getMinutes()}`)}</Text>
                 </Pressable>
                 <DateTimePickerModal
                   isVisible={isEndPickerVisible}
@@ -407,6 +417,17 @@ const EditStadium = () => {
                   date={endTime}
                 />
               </View>
+              {/* <View style={{ width: '47%' }}>
+                <Text style={[styles.label]}>End Time</Text>
+                <Buttons title="Set End Time" onPress={showEndPicker} />
+                <DateTimePickerModal
+                  isVisible={isEndPickerVisible}
+                  mode="time"
+                  onConfirm={handleEndConfirm}
+                  onCancel={hideEndPicker}
+                  date={endTime}
+                />
+              </View> */}
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
               <View style={{ width: '47%' }}>
