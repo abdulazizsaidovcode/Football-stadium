@@ -30,7 +30,7 @@ const Stadium = () => {
         <Text style={styles.ImageBox}></Text>
         <ScrollView contentContainerStyle={styles.stadiumList}>
           <View style={styles.header}>
-            <Text style={styles.title}>Стадионы</Text>
+            <Text style={styles.title}>Stadionlar</Text>
             <View style={styles.headerIcon}>
               {/* <Entypo name="share" size={27} color="white" /> */}
             </View>

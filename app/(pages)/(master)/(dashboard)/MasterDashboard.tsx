@@ -140,7 +140,7 @@ export default function Dashboard() {
                   }}
                 />
               ) : (
-                <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Zakaz qilinmagan</Text>
+                <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Buyurtmalar mavjud emas</Text>
               )
             }
 
@@ -195,11 +195,11 @@ export default function Dashboard() {
               marginBottom: 10,
             }}
           >
-            <MaterialCommunityIcons name="cancel" size={100} color="#9C0A35" />
+            <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
             <Text
               style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
             >
-              Are you sure you want to logout?
+              Siz aniq tizimdan chiqmoqchimisz ?
             </Text>
           </View>
         </CenteredModal>

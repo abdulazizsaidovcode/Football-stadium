@@ -230,36 +230,36 @@ const AddStadium = () => {
           <View>
             <Input
               labalVisible
-              label='Name'
-              placeholder='Enter name'
+              label='Stadion nomi'
+              placeholder='Stadion nomini kiriting'
               value={formValues.name}
               onChangeText={(value) => handleInputChange('name', value)}
             />
             <Input
               labalVisible
-              label='Count'
-              placeholder='Enter count'
+              label='Stadion soni'
+              placeholder='Stadion sonini kiriting'
               type='numeric'
               value={formValues.count}
               onChangeText={(value) => handleInputChange('count', value)}
             />
             <Input
               labalVisible
-              label='Price'
-              placeholder='Enter price'
+              label='Narxi'
+              placeholder='Stadion narxini kiriting'
               type='numeric'
               value={formValues.price}
               onChangeText={(value) => handleInputChange('price', value)}
             />
             <Input
               labalVisible
-              label='Initial pay'
-              placeholder='Enter initial pay'
+              label="Boshlang'ich to'lov"
+              placeholder="Boshlang'ich to'lovni kiriting"
               type='numeric'
               value={formValues.initialPay}
               onChangeText={(value) => handleInputChange('initialPay', value)}
             />
-            <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
+            <Text style={[styles.label, { marginBottom: 8 }]}>Stadion manzili</Text>
             <View style={{ borderRadius: 20, overflow: 'hidden', height: screenHeight / 3, marginBottom: 12 }}>
               <MapView
                 provider={PROVIDER_DEFAULT}
@@ -283,8 +283,8 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Width'
-                  placeholder='Enter width'
+                  label='Stadion eni'
+                  placeholder='Stadion enini kiriting'
                   type='numeric'
                   value={formValues.width}
                   onChangeText={(value) => handleInputChange('width', value)}
@@ -293,8 +293,8 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Height'
-                  placeholder='Enter height'
+                  label='Stadion uzunligi'
+                  placeholder='Stadion uzunligi kiriting'
                   type='numeric'
                   value={formValues.height}
                   onChangeText={(value) => handleInputChange('height', value)}
@@ -302,10 +302,10 @@ const AddStadium = () => {
               </View>
             </View>
             <View style={{ marginBottom: 12 }}>
-              <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
+              <Text style={[styles.label, { marginBottom: 8 }]}>Stadion ta'riff</Text>
               <Textarea
                 onChangeText={(value) => handleInputChange('description', value)}
-                placeholder='Enter description'
+                placeholder="Stadion ta'riffini kiriting"
                 value={formValues.description}
               />
             </View>
@@ -313,7 +313,7 @@ const AddStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <FontAwesome5 name="toilet" size={24} color="white" />
-                  <Text style={[styles.label]}>Toilet</Text>
+                  <Text style={[styles.label]}>Hozathone</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, toilet: !details.toilet })}
@@ -325,7 +325,7 @@ const AddStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10, marginVertical: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <Entypo name="shop" size={24} color="white" />
-                  <Text style={[styles.label]}>Shop</Text>
+                  <Text style={[styles.label]}>Do'kon</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, shop: !details.shop })}
@@ -337,7 +337,7 @@ const AddStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10, marginBottom: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <MaterialIcons name="shower" size={24} color="white" />
-                  <Text style={[styles.label]}>Shower</Text>
+                  <Text style={[styles.label]}>Yuvinish honasi</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, shower: !details.shower })}
@@ -362,7 +362,7 @@ const AddStadium = () => {
             </View> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>Start Time</Text>
+                <Text style={[styles.label]}>Stadion ochilish vaqti</Text>
                 <Pressable onPress={showStartPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${startTime.getHours()}:${startTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -375,7 +375,7 @@ const AddStadium = () => {
                 />
               </View>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>End Time</Text>
+                <Text style={[styles.label]}>Stadion yopilishi vaqti</Text>
                 <Pressable onPress={showEndPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${endTime.getHours()}:${endTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -400,7 +400,7 @@ const AddStadium = () => {
               </View> */}
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='Сохранить' loading={isLoading} onPress={submitStadiumPost} />
+              <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={submitStadiumPost} />
             </View>
           </View>
         </ScrollView>
