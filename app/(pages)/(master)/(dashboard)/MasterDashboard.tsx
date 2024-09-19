@@ -77,7 +77,7 @@ export default function Dashboard() {
     AsyncStorage.removeItem('token')
     AsyncStorage.removeItem('role')
     setIsLogoutModalVisible(false);
-    navigation.navigate('(tabs)/(client)')
+    navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
   }
 
   console.log('getStatistics.response', getStatistics.response);

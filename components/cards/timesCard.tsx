@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { colors } from '@/constants/Colors';
 
@@ -9,6 +9,7 @@ interface TimesCardProps {
     isInRange: boolean;
     disabled: boolean;
 }
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const TimesCard: React.FC<TimesCardProps> = ({ title, onSelect, isSelected, isInRange, disabled }) => {
     return (
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 5,
+        margin: screenWidth / 90,
         borderWidth: 1,
         borderColor: 'transparent',
     },
