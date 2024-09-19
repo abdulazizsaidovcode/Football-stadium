@@ -141,7 +141,6 @@ const ClientDashboard = () => {
 
                         </View>
                     </View>
-                    <Buttons onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} title='Login' />
                 </View>
             </ScrollView>
         </SafeAreaView>

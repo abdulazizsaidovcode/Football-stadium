@@ -25,6 +25,7 @@ import OrderDatails from './(pages)/(order)/(order-datails)/order-datails';
 import UserInfo from './(pages)/(auth)/(register)/getInfo';
 import Payment from './(pages)/(order)/(payment)/payment';
 import OrdersDay from './(tabs)/(client)/ordersDay';
+import Favourite from './(pages)/(favourity)/favourite';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -80,6 +81,11 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(history)/(client)/history"
             component={ClientHistory}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(favourity)/favourite"
+            component={Favourite}
             options={{ headerShown: false }}
           />
           <Stack.Screen

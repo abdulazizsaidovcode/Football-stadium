@@ -47,4 +47,5 @@ export const order_today: string = `${BASE_URL}order/today`;
 
 export const favourite_add: string = `${BASE_URL}favourite/save`;
 export const favourite_get: string = `${BASE_URL}favourite/list`;
+export const favourite_delate: string = `${BASE_URL}favourite/delate`;
 

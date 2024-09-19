@@ -1,22 +1,43 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from 'expo-router'
 
 const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onFavPress?: () => void, onMapPress: () => void, onPress: () => void, iconColor?: string | any }> = ({ disabled, data, onMapPress, onPress, onFavPress, iconColor }) => {
+
+    const [role, setRole] = useState<string | null>(null);
+    const [token, setToken] = useState<string | null>(null);
+    const navigation = useNavigation();
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const storedRole = await AsyncStorage.getItem('role');
+            const storedToken = await AsyncStorage.getItem('token');
+            setRole(storedRole);
+            setToken(storedToken);
+        };
+
+        fetchUserData();
+    }, []);
+
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text style={styles.title}>{data.name}</Text>
                 <Text style={styles.priceTitle}>{data.price} sum</Text>
             </View>
-            <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data.isMainAttachmentId
-                ? { uri: file_get + data.isMainAttachmentId } 
-                : require('../../assets/images/defaultImg.jpeg') 
-            } />
+            <Image
+                height={200}
+                style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }}
+                source={data.isMainAttachmentId
+                    ? { uri: file_get + data.isMainAttachmentId }
+                    : require('../../assets/images/defaultImg.jpeg')
+                }
+            />
             <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
                 <View style={{ width: '70%' }}>
@@ -25,9 +46,15 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onFavPress
                 <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
                     <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity disabled={disabled} onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
-                    {iconColor || <FontAwesome6 name="bookmark" size={24} color="white" />}
-                </TouchableOpacity>
+                {role && token ?
+                    <TouchableOpacity disabled={disabled} onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
+                        {iconColor || <FontAwesome6 name="bookmark" size={24} color="white" />}
+                    </TouchableOpacity>
+                    : (
+                        <TouchableOpacity disabled={disabled} onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} activeOpacity={.8} style={styles.locationBtn}>
+                            {iconColor || <FontAwesome6 name="bookmark" size={24} color="white" />}
+                        </TouchableOpacity>
+                    )}
             </View>
         </View>
     )
@@ -70,4 +97,4 @@ const styles = StyleSheet.create({
         gap: 3,
         justifyContent: 'space-between'
     }
-})  
+})
