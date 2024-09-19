@@ -9,14 +9,14 @@ import Layout from '@/layout/layout';
 import { Loading } from '@/components/loading/loading';
 
 const ClientHistory = () => {
-  const [loading, setLoading] = useState<boolean>(true); // Set loading to true initially
+  const [loading, setLoading] = useState<boolean>(true);
   const GetHistory = useGlobalRequest(order_history, "GET");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await GetHistory.globalDataFunc();
-      setLoading(false); // Set loading to false after fetching data
+      setLoading(false);
     };
 
     fetchData();
@@ -30,14 +30,14 @@ const ClientHistory = () => {
       ) : GetHistory.response && GetHistory.response.length > 0 ? (
         GetHistory.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
           <View key={item.id} style={styles.itemContainer}>
+            <Text style={styles.orderDate}>Date: {item.date}</Text>
             <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
             <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
-            <Text style={styles.orderDate}>Date: {item.date}</Text>
             <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
           </View>
         ))
       ) : (
-        <Text style={styles.noDataText}>No data found</Text> // Message when no data is found
+        <Text style={styles.noDataText}>Заказы не найдены</Text>
       )}
     </Layout>
   );
@@ -59,10 +59,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   orderNumber: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
     color: "white",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   orderTime: {
     color: "white",
@@ -70,12 +69,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   orderDate: {
-    fontSize: 14,
+    fontWeight: 'bold',
+    fontSize: 20,
     color: "white",
-    marginBottom: 4,
+    marginBottom: 8,
   },
   orderStatus: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: "white",
   },
