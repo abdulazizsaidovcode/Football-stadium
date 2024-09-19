@@ -7,6 +7,7 @@ import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 import { useNavigation } from 'expo-router'
 import CenteredModal from '../modal/sentralmodal'
+import OrderStore from '@/helpers/stores/order/orderStore'
 
 interface OrderTofay {
     "clientFirstName": string,
@@ -15,21 +16,24 @@ interface OrderTofay {
     "date": string,
     "startTime": string,
     "endTime": string,
-    "startPrice": number
+    "startPrice": number,
+    orderStatus: string | null,
+    isMainAttachmentId: any
 }
 const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, iconColor?: string | any }> = ({ data, onPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
 
+    const {OrderData} = OrderStore()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const openModal = () => setIsModalVisible(!isModalVisible);
+    const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
 
     return (
         <>
             <Pressable
-                onPress={() => navigation.navigate('')}
+                onPress={() => navigation.navigate('(pages)/(master)/(order)/orderDetail')}
                 style={styles.container}>
-                <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
+                <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data?.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={styles.title}>{data.clientFirstName} {data.clientFirstName}</Text>
                     <Text style={styles.priceTitle}>{data.startPrice} sum</Text>
@@ -39,7 +43,7 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, iconColor?: s
 
                 <View style={styles.btnContainer}>
                     <View style={{ width: '100%' }}>
-                        <Buttons onPress={onPress} title='Rad etish' />
+                        <Buttons isDisebled={data?.orderStatus !== "CANCELED"} onPress={data?.orderStatus === "CANCELED" ? () => {} : onPress} title={data?.orderStatus === "CANCELED" ? 'Rad etilgan' : "Rad etish"} />
                     </View>
                 </View>
             </Pressable>

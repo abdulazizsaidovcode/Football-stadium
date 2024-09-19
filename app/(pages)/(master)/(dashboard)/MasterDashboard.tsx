@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button, Image, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { statistics_for_year, user_me, user_update } from '@/helpers/api/api';
@@ -9,19 +9,30 @@ import Input from '@/components/input/input';
 import CenteredModal from '@/components/modal/sentralmodal';
 import { LineChart } from 'react-native-chart-kit';
 import { colors } from '@/constants/Colors';
+import { useNavigation } from 'expo-router';
+import { RootStackParamList } from '@/types/root/root';
+import { NavigationProp } from '@react-navigation/native';
+
+type SettingsScreenNavigationProp = NavigationProp<
+  RootStackParamList,
+  "(pages)/(client)/(dashboard)/dashboard"
+>;
 
 export default function Dashboard() {
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
+
   const userMee = useGlobalRequest(user_me, 'GET');
   const [year, setYear] = useState(2024)
   const getStatistics = useGlobalRequest(`${statistics_for_year}?year=${year}`, 'GET', {}, 'DEFAULT');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     phoneNumber: '',
   });
   const userEdit = useGlobalRequest(user_update, 'PUT', formData);
-  // console.log(userMee.response);
+
   useEffect(() => {
     userMee.globalDataFunc();
     getStatistics.globalDataFunc();
@@ -48,6 +59,9 @@ export default function Dashboard() {
   const handleEditPress = () => {
     setIsModalVisible(true);
   };
+  const handleLogoutPress = () => {
+    setIsLogoutModalVisible(true);
+  };
 
   const handleSave = async () => {
     try {
@@ -58,6 +72,13 @@ export default function Dashboard() {
       console.error("Failed to update user:", error);
     }
   };
+
+  const logOut = async () => {
+    AsyncStorage.removeItem('token')
+    AsyncStorage.removeItem('role')
+    setIsLogoutModalVisible(false);
+    navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
+  }
 
   console.log('getStatistics.response', getStatistics.response);
   console.log('getStatistics.error', getStatistics.error);;
@@ -80,6 +101,9 @@ export default function Dashboard() {
             <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
               <AntDesign name="edit" size={24} color="white" />
             </TouchableOpacity>
+            <TouchableOpacity style={styles.editButton} onPress={handleLogoutPress}>
+              <FontAwesome name="sign-out" size={24} color="white" />
+            </TouchableOpacity>
           </View>
           <Text style={{ marginTop: 50, marginHorizontal: 20, width: 100 }}>
             <Input
@@ -101,7 +125,7 @@ export default function Dashboard() {
                       data: getStatistics.response.map((item: any) => Number(item.totalPrice) || 0),
                     }]
                   }}
-                  width={Dimensions.get('window').width} 
+                  width={Dimensions.get('window').width}
                   height={220}
                   yAxisLabel={'$'}
                   chartConfig={{
@@ -159,6 +183,18 @@ export default function Dashboard() {
               value={formData.phoneNumber}
               onChangeText={(text) => setFormData({ ...formData, phoneNumber: text })}
             />
+          </View>
+        </CenteredModal>
+        <CenteredModal
+          isModal={isLogoutModalVisible}
+          isFullBtn
+          btnRedText='Logout'
+          btnWhiteText='Cancel'
+          toggleModal={() => setIsLogoutModalVisible(false)}
+          onConfirm={logOut}
+        >
+          <View style={styles.modalContent}>
+            <Text style={{ textAlign: 'center', color: "white" }}>Are you sure you want to logout?</Text>
           </View>
         </CenteredModal>
       </Layout>

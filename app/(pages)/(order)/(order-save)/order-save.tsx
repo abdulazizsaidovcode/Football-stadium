@@ -274,12 +274,13 @@ const OrderSave = () => {
                     <LoadingButtons title='Bron qilish' />
                     :
                     <Buttons
-                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== '' && userPhone !== ''}
+                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== '' && (role !== 'MASTER' ? true : (userPhone !== '' ? true : false))}
                         title='Bron qilish' onPress={async () => {
                             let isLogining = await isLogin().then((res) => res)
                             if (isLogining) {
                                 CreateOreder.globalDataFunc()
                             } else {
+                                alert("Avval Ro'yhatdan o'ting")
                                 navigation.navigate('(pages)/(auth)/(login)/login')
                             }
                         }} />
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     timeText: {
-        color: colors.inDarkGreen,
+        color: colors.green,
     },
     activeTimeText: {
         color: '#fff',

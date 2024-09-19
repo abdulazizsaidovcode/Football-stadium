@@ -15,4 +15,6 @@ export interface RootStackParamList {
     "(pages)/(auth)/(check-code)/check-code": undefined;
     "(pages)/(auth)/(register)/register": undefined;
     "(pages)/(order)/(payment)/payment": undefined;
+    "(pages)/(master)/(order)/order": undefined
+    "(pages)/(master)/(order)/orderDetail": undefined
 }

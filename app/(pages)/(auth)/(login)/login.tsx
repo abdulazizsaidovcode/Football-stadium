@@ -78,13 +78,13 @@ const Login = () => {
           <View style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
             {userFound.response === true ? (
               <Buttons
-                title="Voyti"
+                title="Kirish"
                 onPress={() => sendCode.globalDataFunc()}
                 loading={sendCode.loading || userFound.loading}
               />
             ) : (
               <Buttons
-                title="Registratsiya"
+                title="Ro'yhatdan o'tish"
                 onPress={() => sendCode.globalDataFunc()}
                 loading={sendCode.loading || userFound.loading}
               />
