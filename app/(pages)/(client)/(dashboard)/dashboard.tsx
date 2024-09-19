@@ -23,6 +23,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 
 const ClientDashboard = () => {
+    const [loading, setLoading] = useState<boolean>(false);
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>('')
     const [stadiumData, setstadiumData] = useState<any>(null)
@@ -124,22 +125,26 @@ const ClientDashboard = () => {
                         }} label='Поиск по имени' />
                         <Text style={styles.subTitle}>{role && token ? "Мои записи" : "Stadionlar"}</Text>
                         <View style={{ marginTop: 15, gap: 10 }}>
-                            {stadiumData && stadiumData.map((item: StadiumTypes, index: number) => (
-                                <StadiumCard
-                                    key={index}
-                                    data={item}
-                                    onFavPress={() => {
-                                        setGetId(item.id);
-                                        console.log(getId);
-                                        console.log(AddFav.response);
-                                    }}
-                                    // iconColor={getFavId == item.id && <FontAwesome6 name="hello" size={24} color="white" />}
-                                    onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
-                                    onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
-                                />
-                            ))}
-
-                        </View>
+                            {loading ? (
+                                <Loading />
+                            ) : stadiumData && stadiumData.length > 0 ? (
+                                stadiumData.map((item: StadiumTypes, index: number) => (
+                                    <StadiumCard
+                                        key={index}
+                                        data={item}
+                                        onFavPress={() => {
+                                            setGetId(item.id);
+                                            console.log(getId);
+                                            console.log(AddFav.response);
+                                        }}
+                                        // iconColor={getFavId == item.id && <FontAwesome6 name="hello" size={24} color="white" />}
+                                        onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
+                                        onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
+                                    />
+                                ))) : (
+                                <Text style={styles.noDataText}>Стадион не найден</Text>
+                            )}
+                        </View>  
                     </View>
                 </View>
             </ScrollView>
@@ -154,6 +159,11 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         backgroundColor: colors.darkGreen,
+    },
+    noDataText: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: 'gray',
     },
     header: {
         flexDirection: 'row',

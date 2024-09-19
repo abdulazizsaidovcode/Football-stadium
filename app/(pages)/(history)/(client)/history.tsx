@@ -1,44 +1,55 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '@/constants/Colors'
-import NavigationMenu from '@/components/navigation/NavigationMenu'
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { order_history } from '@/helpers/api/api'
-import Layout from '@/layout/layout'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '@/constants/Colors';
+import NavigationMenu from '@/components/navigation/NavigationMenu';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { order_history } from '@/helpers/api/api';
+import Layout from '@/layout/layout';
+import { Loading } from '@/components/loading/loading';
 
 const ClientHistory = () => {
-  const GetHistory = useGlobalRequest(order_history, "GET")
+  const [loading, setLoading] = useState<boolean>(true); // Set loading to true initially
+  const GetHistory = useGlobalRequest(order_history, "GET");
+
   useEffect(() => {
-    GetHistory.globalDataFunc()
-  }, [])
+    const fetchData = async () => {
+      setLoading(true);
+      await GetHistory.globalDataFunc();
+      setLoading(false); // Set loading to false after fetching data
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Layout scroll style={styles.container}>
       <NavigationMenu name='History' />
-      {GetHistory.response && GetHistory.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
-        <View key={item.id} style={styles.itemContainer}>
-          <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
-          <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
-          <Text style={styles.orderDate}>Date: {item.date}</Text>
-          <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
-        </View>
-      ))}
+      {loading ? (
+        <Loading />
+      ) : GetHistory.response && GetHistory.response.length > 0 ? (
+        GetHistory.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
+          <View key={item.id} style={styles.itemContainer}>
+            <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
+            <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
+            <Text style={styles.orderDate}>Date: {item.date}</Text>
+            <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
+          </View>
+        ))
+      ) : (
+        <Text style={styles.noDataText}>No data found</Text> // Message when no data is found
+      )}
     </Layout>
-  )
-}
+  );
+};
 
-export default ClientHistory
+export default ClientHistory;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.darkGreen,
-    // color: "white",
     paddingHorizontal: 16,
-  },
-  listContainer: {
-    paddingTop: 16,
   },
   itemContainer: {
     backgroundColor: '#698474',
@@ -67,5 +78,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: "white",
+  },
+  noDataText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    marginTop: 20,
   },
 });
