@@ -20,7 +20,7 @@ const Stadium = () => {
   )
 
   return (
-    <Layout scroll>
+    <Layout scroll style={{ position: 'absolute', marginBottom: -60 }}>
       <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
       <Text style={styles.ImageBox}></Text>
       <ScrollView contentContainerStyle={styles.stadiumList}>
@@ -30,12 +30,12 @@ const Stadium = () => {
             {/* <Entypo name="share" size={27} color="white" /> */}
           </View>
         </View>
-        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
-        {stadiums.loading ? <View style={{ height: 300 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
+        {stadiums.loading ? <View style={{ height: 500 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
           <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
             <Image
               source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
               style={styles.cardImage}
+
             />
             <View style={styles.cardContent}>
               <Text style={styles.titleCard}>{stadium.name}</Text>
@@ -44,6 +44,9 @@ const Stadium = () => {
           </TouchableOpacity>
         )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>}
       </ScrollView>
+      <View style={{ position: 'absolute', bottom: 0, padding: 20, width: '100%', backgroundColor: colors.darkGreen }}>
+        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
+      </View>
     </Layout>
   );
 };
