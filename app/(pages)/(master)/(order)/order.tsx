@@ -68,7 +68,7 @@ export default function MasterOrder() {
     }, [])
   );
 
-  console.log(OrdersDay.response);
+  console.log("orderData", OrderData);
 
 
   return (
@@ -86,6 +86,10 @@ export default function MasterOrder() {
           {OrdersDay.response && OrdersDay.response.length > 0 ? (
             OrdersDay.response.map((item: any) => (
               <OrderCard
+                boxOnPress={async () => {
+                   await setOrderData(item)
+                   await navigation.navigate('(pages)/(master)/(order)/orderDetail')
+                }}
                 data={item}
                 onPress={() => {
                   openRejectModal();
