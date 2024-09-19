@@ -11,53 +11,36 @@ import Buttons from '@/components/button/button';
 
 const ClientHistory = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);  // Page state for pagination
-  const [historyData, setHistoryData] = useState<any[]>([]);  // Store all data
-  const [hasMore, setHasMore] = useState<boolean>(true);  // Control load more
   const GetHistory = useGlobalRequest(order_history, "GET");
 
-  const fetchData = async (page: number) => {
-    setLoading(true);
-    const response = await GetHistory.globalDataFunc({ page });  // Send page in request
-    if (response && response.length > 0) {
-      setHistoryData((prevData) => [...prevData, ...response]);  // Append new data
-      if (response.length < 10) setHasMore(false);  // Assuming 10 items per page
-    } else {
-      setHasMore(false);  // No more data to load
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    fetchData(page);  // Fetch initial data on mount
-  }, [page]);
+    const fetchData = async () => {
+      setLoading(true);
+      await GetHistory.globalDataFunc();
+      setLoading(false);
+    };
 
-  const loadMoreData = () => {
-    if (hasMore) setPage((prevPage) => prevPage + 1);  // Load next page
-  };
+    fetchData();
+  }, []);
 
   return (
     <Layout scroll style={styles.container}>
-      <NavigationMenu name="История заказов" />
-      {loading && page === 1 ? (
+      <NavigationMenu name='History' />
+      {loading ? (
         <Loading />
-      ) : historyData.length > 0 ? (
-        <>
-          {historyData.map((item) => (
-            <View key={item.id} style={styles.itemContainer}>
-              <Text style={styles.orderDate}>Date: {item.date}</Text>
-              <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
-              <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
-              <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
-            </View>
-          ))}
-          {hasMore && (
-            <Buttons title="Показать больше" onPress={loadMoreData} />
-          )}
-        </>
+      ) : GetHistory.response && GetHistory.response.length > 0 ? (
+        GetHistory.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
+          <View key={item.id} style={styles.itemContainer}>
+            <Text style={styles.orderDate}>Date: {item.date}</Text>
+            <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
+            <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
+            <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
+          </View>
+        ))
       ) : (
         <Text style={styles.noDataText}>Заказы не найдены</Text>
       )}
+      {/* <Buttons title='Показать больше' /> */}
     </Layout>
   );
 };
@@ -67,7 +50,6 @@ export default ClientHistory;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 3,
     backgroundColor: colors.darkGreen,
     paddingHorizontal: 16,
   },

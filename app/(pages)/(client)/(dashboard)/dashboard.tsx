@@ -1,4 +1,4 @@
-import { BackHandler, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Colors, colors } from '@/constants/Colors'
 import { Entypo, FontAwesome, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons'
@@ -31,6 +31,8 @@ const ClientDashboard = () => {
     const [role, setRole] = useState<string | null>('')
     const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
+    const [isModalVisible, setModalVisible] = useState(false); 
+
 
     useFocusEffect(
         useCallback(() => {
@@ -87,9 +89,30 @@ const ClientDashboard = () => {
         }, [inputValue])
     );
 
-    const logOut = () => {
-
+    const logOut = async () => {
+        // Clear AsyncStorage token and role
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('role');
+        // Navigate to the Login page
+        navigation.reset({
+            index: 0,
+            routes: [{ name: '(pages)/(login)/login' }], // Replace with your login route
+        });
     }
+
+    const showModal = () => {
+        setModalVisible(true);
+    }
+
+    const hideModal = () => {
+        setModalVisible(false);
+    }
+
+    const confirmLogOut = () => {
+        logOut();
+        hideModal();
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -105,7 +128,7 @@ const ClientDashboard = () => {
                             onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
                         />
                         <MaterialIcons name="history" onPress={() => navigation.navigate('(pages)/(history)/(client)/history')} size={30} color="white" />
-                        <FontAwesome onPress={logOut} name="sign-out" size={30} color="white" />
+                        <FontAwesome onPress={showModal} name="sign-out" size={30} color="white" />
                     </View>
                 </View>}
                 <View style={{ marginTop: 15 }}>
@@ -133,6 +156,26 @@ const ClientDashboard = () => {
                     </View>
                 </View>
             </ScrollView>
+            <Modal
+                visible={isModalVisible}
+                transparent={true}
+                animationType="slide"
+                onRequestClose={hideModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity onPress={confirmLogOut} style={styles.confirmButton}>
+                                <Text style={styles.buttonText}>да</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={hideModal} style={styles.cancelButton}>
+                                <Text style={styles.buttonText}>нет</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }
@@ -145,10 +188,44 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: colors.darkGreen,
     },
-    noDataText: {
-        textAlign: 'center',
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalContent: {
+        width: 300,
+        padding: 20,
+        backgroundColor: colors.darkGreen,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalText: {
+        fontSize: 18,
+        color: "white",
+        marginBottom: 20,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+    },
+    confirmButton: {
+        backgroundColor: 'red',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderRadius: 5,
+    },
+    cancelButton: {
+        backgroundColor: 'gray',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: 'white',
         fontSize: 16,
-        color: 'gray',
     },
     header: {
         flexDirection: 'row',
@@ -165,6 +242,26 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: colors.white
     },
+    noDataText: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: 'gray',
+    },
+    // header: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     alignItems: 'center',
+    //     marginTop: 20
+    // },
+    // headerIcon: {
+    //     flexDirection: 'row',
+    //     gap: 15,
+    //     alignItems: 'center'
+    // },
+    // title: {
+    //     fontSize: 25,
+    //     color: colors.white
+    // },
     subTitle: {
         fontSize: 18,
         color: colors.white
