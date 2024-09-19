@@ -276,7 +276,7 @@ const OrderSave = () => {
                         </View>
                         :
                         <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
-                    }  
+                    }
                 </View>
                 {!pay && <Buttons
                     title="To'lovni so'mmani kiritish" onPress={() => {
