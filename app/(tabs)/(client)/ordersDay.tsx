@@ -3,14 +3,18 @@ import { colors } from '@/constants/Colors';
 import { order_today } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout'
-import React, { useEffect } from 'react'
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 export default function OrdersDay() {
     const getOrdersTodey = useGlobalRequest(order_today, 'GET',);
-    useEffect(() => {
-        getOrdersTodey.globalDataFunc()
-    }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            getOrdersTodey.globalDataFunc()
+        }, [])
+    )
     return (
         <Layout scroll style={styles.container}>
             {/* <NavigationMenu name='History' /> */}

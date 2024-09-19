@@ -18,13 +18,16 @@ interface OrderTofay {
     "endTime": string,
     "startPrice": number,
     orderStatus: string | null,
-    isMainAttachmentId: any
+    isMainAttachmentId: any,
+    fileId: string | null
 }
 const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: () => void, iconColor?: string | any }> = ({ data, onPress, boxOnPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
 
     const {OrderData, setOrderData} = OrderStore()
     const [isModalVisible, setIsModalVisible] = useState(false);
+    console.log(data);
+    
 
     const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
 
@@ -33,7 +36,14 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: 
             <Pressable
                 onPress={boxOnPress ? boxOnPress : () => {}}
                 style={styles.container}>
-                <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data?.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
+                    <Image
+                height={200}
+                style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }}
+                source={data?.fileId
+                    ? { uri: file_get + data?.fileId }
+                    : require('../../assets/images/defaultImg.jpeg')
+                }
+            />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={styles.title}>{data.clientFirstName} {data.clientFirstName}</Text>
                     <Text style={styles.priceTitle}>{data.startPrice} sum</Text>
