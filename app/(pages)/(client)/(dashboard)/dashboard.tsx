@@ -34,7 +34,7 @@ const ClientDashboard = () => {
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>('')
     const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
-    const navigation = useNavigation<SettingsScreenNavigationProp>();
+    const navigation = useNavigation<SettingsScreenNavigationProp | any>();
 
     const staduimsFavouteti = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
 
@@ -67,7 +67,6 @@ const ClientDashboard = () => {
             };
 
             BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
             return () =>
                 BackHandler.removeEventListener("hardwareBackPress", onBackPress);
         }, [backPressCount])
@@ -95,14 +94,14 @@ const ClientDashboard = () => {
     );
 
     const AddFav = useGlobalRequest(`${favourite_add}/${getId}`, "POST", {}, 'DEFAULT');
-
+    const logOut = () => {
+        
+    }
     useEffect(() => {
         AddFav.globalDataFunc()
+        console.clear
     }, [getId])
 
-    if (staduims.loading) {
-        return <Loading />
-    }
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style='light' />
@@ -117,7 +116,7 @@ const ClientDashboard = () => {
                             onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
                         />
                         <MaterialIcons name="history" onPress={() => navigation.navigate('(pages)/(history)/(client)/history')} size={30} color="white" />
-                        <FontAwesome name="sign-out" size={30} color="white" />
+                        <FontAwesome onPress={logOut} name="sign-out" size={30} color="white" />
                     </View>
                 </View>}
                 <View style={{ marginTop: 15 }}>
@@ -126,8 +125,8 @@ const ClientDashboard = () => {
                             setinputValue(text);
                         }} label='Поиск по имени' />
                         <Text style={styles.subTitle}>{role && token ? "Мои записи" : "Stadionlar"}</Text>
-                        <View style={{ marginTop: 15, gap: 10 }}>
-                            {loading ? (
+                        <View style={{ marginTop: 16, gap: 10 }}>
+                            {staduims.loading ? (
                                 <Loading />
                             ) : stadiumData && stadiumData.length > 0 ? (
                                 stadiumData.map((item: StadiumTypes, index: number) => (

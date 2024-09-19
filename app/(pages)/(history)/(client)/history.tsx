@@ -38,8 +38,8 @@ const ClientHistory = () => {
 
   return (
     <Layout scroll style={styles.container}>
-      <NavigationMenu name="History" />
-      {loading && page === 1 ? (  // Show loading only on initial fetch
+      <NavigationMenu name="История заказов" />
+      {loading && page === 1 ? (
         <Loading />
       ) : historyData.length > 0 ? (
         <>
@@ -67,6 +67,7 @@ export default ClientHistory;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: 3,
     backgroundColor: colors.darkGreen,
     paddingHorizontal: 16,
   },
