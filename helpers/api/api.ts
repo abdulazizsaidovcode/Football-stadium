@@ -26,7 +26,7 @@ export const stadium_add_attachment :string = `${BASE_URL}stadium/attachment`;
 export const stadium_get_one: string = `${BASE_URL}stadium/one`;
 export const stadium_get_freetime: string = `${BASE_URL}stadium/free/time`;
 export const stadium_search: string = `${BASE_URL}stadium/search`;
-
+export const stadium_delete: string = `${BASE_URL}stadium`;
 
 // ORDERS
 

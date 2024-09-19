@@ -1,7 +1,7 @@
 import { BackHandler, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Colors, colors } from '@/constants/Colors'
-import { Entypo, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Entypo, FontAwesome, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -16,6 +16,8 @@ import StadiumCard from '@/components/cards/StadiumCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Buttons from '@/components/button/button'
 import Input from '@/components/input/input'
+import { fetchFavouriteOrders } from '@/helpers/global_functions/favourite/favourite'
+import useFavoutiteOrders from '@/helpers/stores/favourite/favourite'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -26,6 +28,7 @@ const ClientDashboard = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>('')
+    const { setFavouriteOrders, setIsLoading, favouriteOrders } = useFavoutiteOrders()
     const [stadiumData, setstadiumData] = useState<any>(null)
     const [inputValue, setinputValue] = useState<string | null>('')
     const [backPressCount, setBackPressCount] = useState(0);
@@ -81,8 +84,8 @@ const ClientDashboard = () => {
     );
     useFocusEffect(
         useCallback(() => {
-            userLocation?.coords && staduims.globalDataFunc();
-        }, [userLocation?.coords])
+            staduims.globalDataFunc();
+        }, [userLocation])
     );
 
     useFocusEffect(
@@ -92,7 +95,6 @@ const ClientDashboard = () => {
     );
 
     const AddFav = useGlobalRequest(`${favourite_add}/${getId}`, "POST", {}, 'DEFAULT');
-
 
     useEffect(() => {
         AddFav.globalDataFunc()
@@ -115,7 +117,7 @@ const ClientDashboard = () => {
                             onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
                         />
                         <MaterialIcons name="history" onPress={() => navigation.navigate('(pages)/(history)/(client)/history')} size={30} color="white" />
-                        <Entypo name="share" size={27} color="white" />
+                        <FontAwesome name="sign-out" size={30} color="white" />
                     </View>
                 </View>}
                 <View style={{ marginTop: 15 }}>
@@ -132,19 +134,15 @@ const ClientDashboard = () => {
                                     <StadiumCard
                                         key={index}
                                         data={item}
-                                        onFavPress={() => {
-                                            setGetId(item.id);
-                                            console.log(getId);
-                                            console.log(AddFav.response);
-                                        }}
-                                        // iconColor={getFavId == item.id && <FontAwesome6 name="hello" size={24} color="white" />}
+                                        setFavouriteOrders={setFavouriteOrders}
+                                        setIsLoading={setIsLoading}
                                         onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
                                         onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
                                     />
                                 ))) : (
                                 <Text style={styles.noDataText}>Стадион не найден</Text>
                             )}
-                        </View>  
+                        </View>
                     </View>
                 </View>
             </ScrollView>

@@ -7,9 +7,9 @@ import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from 'expo-router'
+import { haveOrNot } from '@/helpers/global_functions/favourite/favourite'
 
-const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onFavPress?: () => void, onMapPress: () => void, onPress: () => void, iconColor?: string | any }> = ({ disabled, data, onMapPress, onPress, onFavPress, iconColor }) => {
-
+const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress: () => void, onPress: () => void, iconColor?: string | any, setFavouriteOrders: (val: StadiumTypes[]) => void, setIsLoading: (val: boolean) => void }> = ({ data, onMapPress, onPress, favouriteOrders, setFavouriteOrders, setIsLoading }) => {
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const navigation = useNavigation();
@@ -46,15 +46,7 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onFavPress
                 <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
                     <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
-                {role && token ?
-                    <TouchableOpacity disabled={disabled} onPress={onFavPress} activeOpacity={.8} style={styles.locationBtn}>
-                        {iconColor || <FontAwesome6 name="bookmark" size={24} color="white" />}
-                    </TouchableOpacity>
-                    : (
-                        <TouchableOpacity disabled={disabled} onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')} activeOpacity={.8} style={styles.locationBtn}>
-                            {iconColor || <FontAwesome6 name="bookmark" size={24} color="white" />}
-                        </TouchableOpacity>
-                    )}
+                {data.id && haveOrNot(data.favourite, data.id, setFavouriteOrders, setIsLoading)}
             </View>
         </View>
     )

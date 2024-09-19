@@ -17,5 +17,6 @@ export interface StadiumTypes {
     startHour: number
     startMinute: number
     toilet: boolean
+    favourite: boolean
     width: number
-}
+}   

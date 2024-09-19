@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button, Image, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { statistics_for_year, user_me, user_update } from '@/helpers/api/api';
@@ -80,11 +80,6 @@ export default function Dashboard() {
     navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
   }
 
-  console.log('getStatistics.response', getStatistics.response);
-  console.log('getStatistics.error', getStatistics.error);;
-
-
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Layout scroll>
@@ -115,7 +110,7 @@ export default function Dashboard() {
               onChangeText={(text) => setYear(Number(text))}
             />
           </Text>
-          <View>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {
               getStatistics.response && getStatistics.response.length > 0 ? (
                 <LineChart
@@ -125,7 +120,7 @@ export default function Dashboard() {
                       data: getStatistics.response.map((item: any) => Number(item.totalPrice) || 0),
                     }]
                   }}
-                  width={Dimensions.get('window').width}
+                  width={Dimensions.get('window').width / 1.03}
                   height={220}
                   yAxisLabel={'$'}
                   chartConfig={{
@@ -193,8 +188,19 @@ export default function Dashboard() {
           toggleModal={() => setIsLogoutModalVisible(false)}
           onConfirm={logOut}
         >
-          <View style={styles.modalContent}>
-            <Text style={{ textAlign: 'center', color: "white" }}>Are you sure you want to logout?</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name="cancel" size={100} color="#9C0A35" />
+            <Text
+              style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
+            >
+              Are you sure you want to logout?
+            </Text>
           </View>
         </CenteredModal>
       </Layout>

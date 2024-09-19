@@ -7,24 +7,25 @@ import Input from '@/components/input/input';
 import Textarea from '@/components/textarea/textarea';
 import MapView, { MapPressEvent, Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
 import { mapCustomStyle } from '@/types/map/map';
-import { Entypo, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import axios from 'axios'; // Import axios
-import { stadium_add_attachment, stadium_get, stadium_get_one } from '@/helpers/api/api';
+import { stadium_add_attachment, stadium_delete, stadium_get, stadium_get_one } from '@/helpers/api/api';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { getConfig, getConfigImg } from '@/helpers/api/token';
 import { Loading } from '@/components/loading/loading';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import * as ImagePicker from 'expo-image-picker';
+import CenteredModal from '@/components/modal/sentralmodal';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const EditStadium = () => {
   const route = useRoute();
   const { id } = route.params as { id: string | number };
-
   const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
+  const delStadium = useGlobalRequest(`${stadium_delete}?id=${id}`, 'DELETE',)
   const [markerPosition, setMarkerPosition] = useState<Region | null>(null);
   const [images, setImages] = useState<any[]>([]);
   // const [attachmentId, setAttachmentId] = useState<string[]>([]);
@@ -45,12 +46,14 @@ const EditStadium = () => {
   });
   const [isStartPickerVisible, setStartPickerVisibility] = useState(false);
   const [isEndPickerVisible, setEndPickerVisibility] = useState(false);
+  const [isDelModal, setIsDelModal] = useState(false);
 
   const showStartPicker = () => setStartPickerVisibility(true);
   const hideStartPicker = () => setStartPickerVisibility(false);
-
   const showEndPicker = () => setEndPickerVisibility(true);
   const hideEndPicker = () => setEndPickerVisibility(false);
+
+  const toggleDelModal = () => setIsDelModal(!isDelModal)
 
   const handleStartConfirm = (date: Date) => {
     setStartTime(date);
@@ -67,6 +70,12 @@ const EditStadium = () => {
       stadium.globalDataFunc();
     }, [id])
   );
+
+  useEffect(() => {
+    if (delStadium.response) {
+      navigation.goBack();
+    }
+  }, [delStadium.response])
 
   useEffect(() => {
     if (stadium.response) {
@@ -259,16 +268,18 @@ const EditStadium = () => {
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
     return `${formattedHours}:${formattedMinutes}`;
-}
+  }
 
-  if (stadium.loading || isLoading) {
+  if (stadium.loading || isLoading || delStadium.loading) {
     return <Loading />
   }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <NavigationMenu name={stadium.response && stadium.response.name} />
+        <View style={{ paddingHorizontal: 10 }}>
+          <NavigationMenu name={stadium.response && stadium.response.name} deleteIcon={true} toggleModal={() => toggleDelModal()} />
+        </View>
         <ScrollView style={{ paddingHorizontal: 16 }}>
           <View>
             <Input
@@ -310,12 +321,6 @@ const EditStadium = () => {
                 customMapStyle={mapCustomStyle}
                 onPress={handleMapPress}
                 showsUserLocation
-                initialRegion={{
-                  latitude: markerPosition?.latitude ? markerPosition.latitude : 0,
-                  longitude: markerPosition?.longitude ? markerPosition.longitude : 0,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
               >
                 {markerPosition && (
                   <Marker coordinate={markerPosition} />
@@ -449,6 +454,29 @@ const EditStadium = () => {
             </View>
           </View>
         </ScrollView>
+        <CenteredModal
+          btnRedText="O'chirish"
+          btnWhiteText='Cancel'
+          isFullBtn
+          isModal={isDelModal}
+          toggleModal={toggleDelModal}
+          onConfirm={delStadium.globalDataFunc}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+            <Text
+              style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
+            >
+              Вы уверены, что хотите Udalit этот stadion?
+            </Text>
+          </View>
+        </CenteredModal>
       </SafeAreaView>
     </TouchableWithoutFeedback >
   );

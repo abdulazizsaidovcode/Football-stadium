@@ -8,6 +8,7 @@ import { stadium_get_one } from '@/helpers/api/api'
 import { useFocusEffect, useRoute } from '@react-navigation/native'
 import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps'
 import { mapCustomStyle } from '@/types/map/map'
+import { Loading } from '@/components/loading/loading'
 
 //EXAMPLE FOR NAVIGATE
 // () => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })
@@ -25,6 +26,10 @@ const StadiumLocations = () => {
       stadium.globalDataFunc();
     }, [id])
   );
+
+  if (!stadium.response) {
+    return <Loading />
+  }
 
   return (
     <SafeAreaView style={styles.container}>
