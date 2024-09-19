@@ -61,27 +61,13 @@ const Welcome: React.FC = () => {
             </View>
             <Text style={styles.title}>Socker Bookers</Text>
             <Text style={styles.welcome}> </Text>
-            <Text style={styles.selectLanguage}>Выберите язык</Text>
+            <Text style={styles.selectLanguage}>Buu app orqali o'zngizga yoqan stadion...</Text>
             <View style={styles.button}>
                 <Buttons
-                    title="Русский"
+                    title="Kirish"
                     onPress={() => {
                         navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
                         changeLanguage("ru");
-                    }}
-                />
-                <Buttons
-                    title="O‘zbek"
-                    onPress={() => {
-                        navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
-                        changeLanguage("uz");
-                    }}
-                />
-                <Buttons
-                    title="English"
-                    onPress={() => {
-                        navigation.navigate("(pages)/(auth)/(register)/register");
-                        changeLanguage("en");
                     }}
                 />
             </View>
