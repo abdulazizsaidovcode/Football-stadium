@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } fr
 import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
-import { FontAwesome6 } from '@expo/vector-icons'
+import { Feather, FontAwesome6 } from '@expo/vector-icons'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -63,7 +63,16 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                 <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
                     <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
-                {data.id && haveOrNot(data.favourite, data.id, fetchFunction)}
+                {role && token ? data.id && haveOrNot(data.favourite, data.id, fetchFunction) : <TouchableOpacity onPress={() => alert("Birinchi logindan o'ting")} activeOpacity={0.8} style={{
+                    padding: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.green,
+                    borderRadius: 50,
+                    width: 46,
+                }}>
+                    <Feather name="bookmark" size={24} color="white" />
+                </TouchableOpacity>}
             </View>
         </View>
     )
