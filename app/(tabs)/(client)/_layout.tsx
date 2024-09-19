@@ -5,6 +5,7 @@ import React from 'react';
 import ClientDashboard from './dashboard';
 import ClientProfile from './profile';
 import OrdersDay from './ordersDay';
+import MasterOrder from '@/app/(pages)/(master)/(order)/order';
 
 export default function ClientTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -36,7 +37,7 @@ export default function ClientTabLayout() {
         />
         <Tab.Screen
           name="orders"
-          component={OrdersDay}
+          component={MasterOrder}
           options={{
             title: "Orders Day",
             tabBarIcon: ({ color }) => (
