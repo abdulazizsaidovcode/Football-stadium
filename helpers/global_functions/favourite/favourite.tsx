@@ -7,33 +7,13 @@ import axios from "axios"
 import { TouchableOpacity } from "react-native";
 import { toastMessage } from "../toast-message/toast-message";
 
-export const fetchFavouriteOrders = async (setFavouriteOrders: (val: StadiumTypes[]) => void, setIsloading: (val: boolean) => void) => {
-    setIsloading(true)
-    const config = await getConfig();
-    try {
-        const { data } = await axios.get(favourite_get, config ? config : {})
-        if (data.data) {
-            setFavouriteOrders(data.body)
-            setIsloading(false)
-        } else {
-            setFavouriteOrders([])
-            setIsloading(false)
-            toastMessage(data.error.code, data.error.message)
-        }
-    } catch (error) {
-        console.error(error);
-        setFavouriteOrders([])
-        setIsloading(false)
-    }
-}
-
-export const addFavouriteOrder = async (masterId: string, setFavouriteOrders: (val: StadiumTypes[]) => void, setIsloading: (val: boolean) => void) => {
+export const addFavouriteOrder = async (masterId: string, fetchFunction: () => void) => {
     const config = await getConfig();
     try {
         const { data } = await axios.post(`${favourite_add}/${masterId}`, {}, config ? config : {})
         if (data.data) {
             alert('Мастер успешно добавлен в список любимый мастеров.',)
-            fetchFavouriteOrders(setFavouriteOrders, setIsloading)
+            fetchFunction()
         } else {
             toastMessage(data.error.code, data.error.message)
         }
@@ -42,15 +22,16 @@ export const addFavouriteOrder = async (masterId: string, setFavouriteOrders: (v
     }
 }
 
-export const deleteFavouriteOrder = async (masterId: string, setFavouriteOrders: (val: StadiumTypes[]) => void, setIsloading: (val: boolean) => void, toggleModal?: () => void) => {
+export const deleteFavouriteOrder = async (masterId: string, fetchFunction: () => void) => {
     const config = await getConfig();
 
     try {
-        const { data } = await axios.delete(`${favourite_delate}/${masterId}`, config ? config : {})
+        const { data } = await axios.delete(`${favourite_delate}/${masterId}`, config ? config : {});
+        console.log(data);
+
         if (data.data) {
-            await fetchFavouriteOrders(setFavouriteOrders, setIsloading)
-            toggleModal && toggleModal()
             alert('Мастер успешно удален из списка любимый мастеров.',)
+            fetchFunction()
         } else {
             toastMessage(data.error.code, data.error.message)
         }
@@ -59,12 +40,10 @@ export const deleteFavouriteOrder = async (masterId: string, setFavouriteOrders:
     }
 }
 
-export const haveOrNot = (favourite: boolean, masterId: any, setFavouriteOrders: (val: StadiumTypes[]) => void, setIsloading: (val: boolean) => void) => {
-    console.log('masterId', masterId);
-
+export const haveOrNot = (favourite: boolean, masterId: any, fetchFunction: () => void) => {
     if (favourite) {
         return (
-            <TouchableOpacity onPress={() => deleteFavouriteOrder(masterId, setFavouriteOrders, setIsloading)} activeOpacity={0.8} style={{
+            <TouchableOpacity onPress={() => deleteFavouriteOrder(masterId, fetchFunction)} activeOpacity={0.8} style={{
                 padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -77,7 +56,7 @@ export const haveOrNot = (favourite: boolean, masterId: any, setFavouriteOrders:
         )
     } else {
         return (
-            <TouchableOpacity onPress={() => addFavouriteOrder(masterId, setFavouriteOrders, setIsloading)} activeOpacity={0.8} style={{
+            <TouchableOpacity onPress={() => addFavouriteOrder(masterId, fetchFunction)} activeOpacity={0.8} style={{
                 padding: 10,
                 justifyContent: 'center',
                 alignItems: 'center',

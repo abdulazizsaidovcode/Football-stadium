@@ -8,15 +8,13 @@ import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation
 import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions'
 import { useUserStore } from '@/helpers/stores/user/user-store'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { favourite_add, favourite_get, stadium_get, stadium_search } from '@/helpers/api/api'
+import { favourite_add, stadium_get, stadium_search } from '@/helpers/api/api'
 import { RootStackParamList } from '@/types/root/root'
 import { StadiumTypes } from '@/types/stadium/stadium'
 import { Loading } from '@/components/loading/loading'
 import StadiumCard from '@/components/cards/StadiumCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Buttons from '@/components/button/button'
 import Input from '@/components/input/input'
-import { fetchFavouriteOrders } from '@/helpers/global_functions/favourite/favourite'
 import useFavoutiteOrders from '@/helpers/stores/favourite/favourite'
 
 type SettingsScreenNavigationProp = NavigationProp<
@@ -25,18 +23,14 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 
 const ClientDashboard = () => {
-    const [loading, setLoading] = useState<boolean>(false);
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>('')
-    const { setFavouriteOrders, setIsLoading, favouriteOrders } = useFavoutiteOrders()
     const [stadiumData, setstadiumData] = useState<any>(null)
     const [inputValue, setinputValue] = useState<string | null>('')
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>('')
     const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
-
-    const staduimsFavouteti = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
 
     useFocusEffect(
         useCallback(() => {
@@ -49,7 +43,7 @@ const ClientDashboard = () => {
             getConfig()
         }, [])
     );
-    const [getId, setGetId] = useState<String>('')
+
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
@@ -93,14 +87,9 @@ const ClientDashboard = () => {
         }, [inputValue])
     );
 
-    const AddFav = useGlobalRequest(`${favourite_add}/${getId}`, "POST", {}, 'DEFAULT');
     const logOut = () => {
-        
+
     }
-    useEffect(() => {
-        AddFav.globalDataFunc()
-        console.clear
-    }, [getId])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -132,9 +121,8 @@ const ClientDashboard = () => {
                                 stadiumData.map((item: StadiumTypes, index: number) => (
                                     <StadiumCard
                                         key={index}
+                                        fetchFunction={staduims.globalDataFunc}
                                         data={item}
-                                        setFavouriteOrders={setFavouriteOrders}
-                                        setIsLoading={setIsLoading}
                                         onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
                                         onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
                                     />

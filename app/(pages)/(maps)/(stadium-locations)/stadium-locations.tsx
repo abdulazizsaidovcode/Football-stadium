@@ -39,17 +39,18 @@ const StadiumLocations = () => {
           provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
           style={styles.map}
           customMapStyle={mapCustomStyle}
+          showsUserLocation
           initialRegion={{
             latitude: stadium.response ? stadium.response.lat : 0,
-            longitude: stadium.response ? stadium.response.lng : 0,
+            longitude: stadium.response ? stadium.response.lang : 0,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
         >
           <Marker
             coordinate={{
-              latitude: stadium.response ? stadium.response.lat : 0,
-              longitude: stadium.response ? stadium.response.lng : 0,
+              latitude: stadium.response ? stadium.response.lat : 10,
+              longitude: stadium.response ? stadium.response.lang : 10,
             }}
             title={stadium.response ? stadium.response.name : 'Не найдено'}
           />

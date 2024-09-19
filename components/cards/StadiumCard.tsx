@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from 'expo-router'
 import { haveOrNot } from '@/helpers/global_functions/favourite/favourite'
 
-const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress: () => void, onPress: () => void, iconColor?: string | any, setFavouriteOrders: (val: StadiumTypes[]) => void, setIsLoading: (val: boolean) => void }> = ({ data, onMapPress, onPress, favouriteOrders, setFavouriteOrders, setIsLoading }) => {
+const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress: () => void, onPress: () => void, iconColor?: string | any, fetchFunction: () => void }> = ({ data, onMapPress, onPress, fetchFunction }) => {
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const navigation = useNavigation();
@@ -46,7 +46,7 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                 <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
                     <FontAwesome6 name="location-dot" size={24} color="white" />
                 </TouchableOpacity>
-                {data.id && haveOrNot(data.favourite, data.id, setFavouriteOrders, setIsLoading)}
+                {data.id && haveOrNot(data.favourite, data.id, fetchFunction)}
             </View>
         </View>
     )
