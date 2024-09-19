@@ -7,6 +7,7 @@ import { StadiumTypes } from '@/types/stadium/stadium'
 import { file_get } from '@/helpers/api/api'
 import { useNavigation } from 'expo-router'
 import CenteredModal from '../modal/sentralmodal'
+import OrderStore from '@/helpers/stores/order/orderStore'
 
 interface OrderTofay {
     "clientFirstName": string,
@@ -22,12 +23,10 @@ interface OrderTofay {
 const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, iconColor?: string | any }> = ({ data, onPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
 
+    const {OrderData} = OrderStore()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const openModal = () => setIsModalVisible(!isModalVisible);
-
-
-    
+    const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
 
     return (
         <>

@@ -24,6 +24,7 @@ import { Picker } from "@react-native-picker/picker";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import OrderCard from "@/components/cards/orderCard";
+import OrderStore from "@/helpers/stores/order/orderStore";
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
@@ -33,11 +34,11 @@ export default function MasterOrder() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
-  const [rejectOrderData, setrejectOrderData] = useState<any>(null);
+  const {OrderData, setOrderData} = OrderStore()
 
   const userMee = useGlobalRequest(user_me, "GET");
   const orderReject = useGlobalRequest(
-    order_reject + rejectOrderData?.id,
+    order_reject + OrderData?.id,
     "PUT",
     {}
   );
@@ -88,7 +89,7 @@ export default function MasterOrder() {
                 data={item}
                 onPress={() => {
                   openRejectModal();
-                  setrejectOrderData(item);
+                  setOrderData(item);
                 }}
               />
             ))
@@ -175,16 +176,16 @@ export default function MasterOrder() {
         btnRedText="Reject"
         isFullBtn={true}
         onConfirm={async () => {
-          if (rejectOrderData && rejectOrderData?.id) {
+          if (OrderData && OrderData?.id) {
             await orderReject.globalDataFunc();
             if (orderReject.response) {
               openRejectModal();
               OrdersDay.globalDataFunc()
               alert("Order bekor qilindi!")
             }
-            await setrejectOrderData(null);
+            await setOrderData(null);
           } else {
-            await setrejectOrderData(null);
+            await setOrderData(null);
           }
         }}
       >
