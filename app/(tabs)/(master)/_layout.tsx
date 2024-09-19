@@ -50,7 +50,7 @@ function MasterTabLayout() {
           options={{
             title: "order",
             tabBarIcon: ({ color }) => (
-              <Entypo name="ticket" size={30} color="#fff" />
+              <Entypo name="ticket" size={30} color={color} />
             )
           }}
         />

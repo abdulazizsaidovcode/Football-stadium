@@ -120,7 +120,7 @@ export default function Dashboard() {
                       data: getStatistics.response.map((item: any) => Number(item.totalPrice) || 0),
                     }]
                   }}
-                  width={Dimensions.get('window').width / 1.03}
+                  width={Dimensions.get('window').width / 1.05}
                   height={220}
                   yAxisLabel={'$'}
                   chartConfig={{
