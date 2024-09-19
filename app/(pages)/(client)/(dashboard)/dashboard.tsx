@@ -1,21 +1,39 @@
-import { BackHandler, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Colors, colors } from '@/constants/Colors'
-import { Entypo, FontAwesome, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
-import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native'
-import { getUserLocation } from '@/helpers/global_functions/user_functions/user-functions'
-import { useUserStore } from '@/helpers/stores/user/user-store'
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { favourite_add, stadium_get, stadium_search } from '@/helpers/api/api'
-import { RootStackParamList } from '@/types/root/root'
-import { StadiumTypes } from '@/types/stadium/stadium'
-import { Loading } from '@/components/loading/loading'
-import StadiumCard from '@/components/cards/StadiumCard'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Input from '@/components/input/input'
-import useFavoutiteOrders from '@/helpers/stores/favourite/favourite'
+import {
+    BackHandler,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Colors, colors } from "@/constants/Colors";
+import {
+    Entypo,
+    FontAwesome,
+    FontAwesome6,
+    Ionicons,
+    MaterialIcons,
+} from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import {
+    NavigationProp,
+    useFocusEffect,
+    useNavigation,
+} from "@react-navigation/native";
+import { getUserLocation } from "@/helpers/global_functions/user_functions/user-functions";
+import { useUserStore } from "@/helpers/stores/user/user-store";
+import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
+import { favourite_add, stadium_get, stadium_search } from "@/helpers/api/api";
+import { RootStackParamList } from "@/types/root/root";
+import { StadiumTypes } from "@/types/stadium/stadium";
+import { Loading } from "@/components/loading/loading";
+import StadiumCard from "@/components/cards/StadiumCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Input from "@/components/input/input";
+import useFavoutiteOrders from "@/helpers/stores/favourite/favourite";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -24,25 +42,29 @@ type SettingsScreenNavigationProp = NavigationProp<
 
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
-    const [token, setToken] = useState<string | null>('')
-    const [stadiumData, setstadiumData] = useState<any>(null)
-    const [inputValue, setinputValue] = useState<string | null>('')
+    const [token, setToken] = useState<string | null>("");
+    const [stadiumData, setstadiumData] = useState<any>(null);
+    const [inputValue, setinputValue] = useState<string | null>("");
     const [backPressCount, setBackPressCount] = useState(0);
-    const [role, setRole] = useState<string | null>('')
-    const staduims = useGlobalRequest(inputValue ? `${stadium_search}?name=${inputValue}` : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`, 'GET');
+    const [role, setRole] = useState<string | null>("");
+    const staduims = useGlobalRequest(
+        inputValue && inputValue.trim() !== ""
+            ? `${stadium_search}?name=${inputValue}`
+            : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
+        "GET"
+    );
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
-    const [isModalVisible, setModalVisible] = useState(false); 
-
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
             getUserLocation(setUserLocation);
             const getConfig = async () => {
-                setToken(await AsyncStorage.getItem('token'))
-                setRole(await AsyncStorage.getItem('role'))
-            }
+                setToken(await AsyncStorage.getItem("token"));
+                setRole(await AsyncStorage.getItem("role"));
+            };
 
-            getConfig()
+            getConfig();
         }, [])
     );
 
@@ -71,72 +93,95 @@ const ClientDashboard = () => {
     useFocusEffect(
         useCallback(() => {
             if (staduims.response) {
-                setstadiumData(staduims.response)
+                setstadiumData(staduims.response);
             } else if (staduims.error) {
-                setstadiumData(null)
+                setstadiumData(null);
             }
         }, [staduims.error, staduims.response])
-    );
-    useFocusEffect(
-        useCallback(() => {
-            staduims.globalDataFunc();
-        }, [userLocation])
     );
 
     useFocusEffect(
         useCallback(() => {
-            inputValue && staduims.globalDataFunc();
-        }, [inputValue])
+            if (inputValue && inputValue.trim() !== "") {
+                // If search input is not empty, fetch filtered stadiums
+                staduims.globalDataFunc(`${stadium_search}?name=${inputValue}`);
+            } else {
+                // If search input is empty, fetch all stadiums
+                staduims.globalDataFunc(
+                    `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`
+                );
+            }
+        }, [inputValue, userLocation])
     );
 
     const logOut = async () => {
         // Clear AsyncStorage token and role
-        await AsyncStorage.removeItem('token');
-        await AsyncStorage.removeItem('role');
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("role");
         // Navigate to the Login page
         navigation.reset({
             index: 0,
-            routes: [{ name: '(pages)/(login)/login' }], // Replace with your login route
+            routes: [{ name: "(pages)/(login)/login" }], // Replace with your login route
         });
-    }
+    };
 
     const showModal = () => {
         setModalVisible(true);
-    }
+    };
 
     const hideModal = () => {
         setModalVisible(false);
-    }
+    };
 
     const confirmLogOut = () => {
         logOut();
         hideModal();
-    }
-
+    };
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style='light' />
+            <StatusBar style="light" />
             <ScrollView>
-                {role && token && <View style={styles.header}>
-                    <Text style={styles.title}>Главная</Text>
-                    <View style={styles.headerIcon}>
-                        <Ionicons
-                            name="bookmarks-sharp"
-                            size={24}
-                            color="white"
-                            onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
-                        />
-                        <MaterialIcons name="history" onPress={() => navigation.navigate('(pages)/(history)/(client)/history')} size={30} color="white" />
-                        <FontAwesome onPress={showModal} name="sign-out" size={30} color="white" />
+                {role && token && (
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Главная</Text>
+                        <View style={styles.headerIcon}>
+                            <Ionicons
+                                name="bookmarks-sharp"
+                                size={24}
+                                color="white"
+                                onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
+                            />
+                            <MaterialIcons
+                                name="history"
+                                onPress={() =>
+                                    navigation.navigate("(pages)/(history)/(client)/history")
+                                }
+                                size={30}
+                                color="white"
+                            />
+                            <FontAwesome
+                                onPress={showModal}
+                                name="sign-out"
+                                size={30}
+                                color="white"
+                            />
+                        </View>
                     </View>
-                </View>}
+                )}
                 <View style={{ marginTop: 15 }}>
                     <View>
-                        <Input value={inputValue ? inputValue : ""} placeholder='Поиск' onChangeText={(text) => {
-                            setinputValue(text);
-                        }} label='Поиск по имени' />
-                        <Text style={styles.subTitle}>{role && token ? "Мои записи" : "Stadionlar"}</Text>
+                        <Input
+                            value={inputValue ? inputValue : ""}
+                            placeholder="Поиск"
+                            onChangeText={(text) => {
+                                setinputValue(text);
+                            }}
+                            label="Поиск по имени"
+                        />
+                        <Text style={styles.subTitle}>
+                            {role && token ? "Мои записи" : "Stadionlar"}
+                        </Text>
                         <View style={{ marginTop: 16, gap: 10 }}>
                             {staduims.loading ? (
                                 <Loading />
@@ -146,10 +191,21 @@ const ClientDashboard = () => {
                                         key={index}
                                         fetchFunction={staduims.globalDataFunc}
                                         data={item}
-                                        onMapPress={() => navigation.navigate('(pages)/(maps)/(stadium-locations)/stadium-locations', { id: item.id })}
-                                        onPress={() => navigation.navigate('(pages)/(order)/(order-save)/order-save', { id: item.id })}
+                                        onMapPress={() =>
+                                            navigation.navigate(
+                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                                                { id: item.id }
+                                            )
+                                        }
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "(pages)/(order)/(order-save)/order-save",
+                                                { id: item.id }
+                                            )
+                                        }
                                     />
-                                ))) : (
+                                ))
+                            ) : (
                                 <Text style={styles.noDataText}>Стадион не найден</Text>
                             )}
                         </View>
@@ -166,10 +222,16 @@ const ClientDashboard = () => {
                     <View style={styles.modalContent}>
                         <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
                         <View style={styles.modalButtons}>
-                            <TouchableOpacity onPress={confirmLogOut} style={styles.confirmButton}>
+                            <TouchableOpacity
+                                onPress={confirmLogOut}
+                                style={styles.confirmButton}
+                            >
                                 <Text style={styles.buttonText}>да</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={hideModal} style={styles.cancelButton}>
+                            <TouchableOpacity
+                                onPress={hideModal}
+                                style={styles.cancelButton}
+                            >
                                 <Text style={styles.buttonText}>нет</Text>
                             </TouchableOpacity>
                         </View>
@@ -177,9 +239,8 @@ const ClientDashboard = () => {
                 </View>
             </Modal>
         </SafeAreaView>
-    )
-}
-
+    );
+};
 export default ClientDashboard;
 
 const styles = StyleSheet.create({
@@ -247,21 +308,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: 'gray',
     },
-    // header: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',
-    //     marginTop: 20
-    // },
-    // headerIcon: {
-    //     flexDirection: 'row',
-    //     gap: 15,
-    //     alignItems: 'center'
-    // },
-    // title: {
-    //     fontSize: 25,
-    //     color: colors.white
-    // },
     subTitle: {
         fontSize: 18,
         color: colors.white

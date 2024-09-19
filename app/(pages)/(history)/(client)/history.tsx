@@ -25,7 +25,7 @@ const ClientHistory = () => {
 
   return (
     <Layout scroll style={styles.container}>
-      <NavigationMenu name='History' />
+      <NavigationMenu name='История заказов' />
       {loading ? (
         <Loading />
       ) : GetHistory.response && GetHistory.response.length > 0 ? (

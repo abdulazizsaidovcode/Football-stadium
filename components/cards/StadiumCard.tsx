@@ -33,7 +33,7 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                 <Text style={styles.title}>{data.name}</Text>
                 <Text style={styles.priceTitle}>{data.price} sum</Text>
             </View>
-            
+
             {/* Image loading indicator */}
             <View style={{ position: 'relative', height: 200 }}>
                 {isLoading && (
