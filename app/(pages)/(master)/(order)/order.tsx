@@ -34,7 +34,7 @@ export default function MasterOrder() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
-  const {OrderData, setOrderData} = OrderStore()
+  const { OrderData, setOrderData } = OrderStore()
 
   const userMee = useGlobalRequest(user_me, "GET");
   const orderReject = useGlobalRequest(
@@ -56,7 +56,6 @@ export default function MasterOrder() {
       });
     } else {
       alert("Bron qilinga stadiumni tanlang!");
-      //   console.log(selectedValue, 87);
     }
     openModal();
   };
@@ -87,8 +86,8 @@ export default function MasterOrder() {
             OrdersDay.response.map((item: any) => (
               <OrderCard
                 boxOnPress={async () => {
-                   await setOrderData(item)
-                   await navigation.navigate('(pages)/(master)/(order)/orderDetail')
+                  await setOrderData(item)
+                  await navigation.navigate('(pages)/(master)/(order)/orderDetail')
                 }}
                 data={item}
                 onPress={() => {
@@ -103,7 +102,7 @@ export default function MasterOrder() {
             >
               Order Mavjud emas
             </Text>
-          )}
+          )} 
         </View>
       </Layout>
       <Buttons
