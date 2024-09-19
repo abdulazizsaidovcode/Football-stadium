@@ -126,6 +126,18 @@ function OrderDetail() {
                 </Text>
               </View>
               <View style={styles.detailTitle}>
+                <Text style={styles.title}>Stadium lenth: </Text>
+                <Text style={styles.titleDesc}>
+                  {stadiumDetail?.response?.length || "-"}
+                </Text>
+              </View>
+              <View style={styles.detailTitle}>
+                <Text style={styles.title}>Stadium width: </Text>
+                <Text style={styles.titleDesc}>
+                  {stadiumDetail?.response?.width || "-"}
+                </Text>
+              </View>
+              <View style={styles.detailTitle}>
                 <Text style={styles.title}>Status: </Text>
                 <Text
                   style={[
