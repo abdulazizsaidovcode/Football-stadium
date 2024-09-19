@@ -27,7 +27,7 @@ export function useGlobalRequest<T>(
                 case 'POST':
                     res = await axios.post(url, data || {}, config || {});
                     break;
-                case 'PUT':
+                case 'PUT': 
                     res = await axios.put(url, data || {}, config || {});
                     break;
                 case 'DELETE':
