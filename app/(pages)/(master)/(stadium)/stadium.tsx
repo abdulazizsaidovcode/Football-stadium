@@ -7,6 +7,7 @@ import { StadiumTypes } from '@/types/stadium/stadium';
 import { colors } from '@/constants/Colors';
 import Buttons from '@/components/button/button';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Loading } from '@/components/loading/loading';
 
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
@@ -30,7 +31,7 @@ const Stadium = () => {
           </View>
         </View>
         <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
-        {stadiums.response && stadiums.response.map((stadium: StadiumTypes) => (
+        {stadiums.loading ? <View style={{ height: 300 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
           <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
             <Image
               source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
@@ -41,7 +42,7 @@ const Stadium = () => {
               <Text style={styles.description}>{stadium.description}</Text>
             </View>
           </TouchableOpacity>
-        ))}
+        )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>}
       </ScrollView>
     </Layout>
   );

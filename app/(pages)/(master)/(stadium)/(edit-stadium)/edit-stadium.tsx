@@ -10,7 +10,7 @@ import { mapCustomStyle } from '@/types/map/map';
 import { Entypo, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Buttons from '@/components/button/button';
 import axios from 'axios'; // Import axios
-import { stadium_add_attachment, stadium_delete, stadium_get, stadium_get_one } from '@/helpers/api/api';
+import { file_get, stadium_add_attachment, stadium_delete, stadium_get, stadium_get_one } from '@/helpers/api/api';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { getConfig, getConfigImg } from '@/helpers/api/token';
 import { Loading } from '@/components/loading/loading';
@@ -244,8 +244,6 @@ const EditStadium = () => {
       const config = await getConfigImg()
       const { data } = await axios.post(`${stadium_add_attachment}/${id}`, formData, config || {});
       if (data.data) {
-        console.log('aaaaaaaaaaaaaaaa');
-
         navigation.goBack();
       }
     } catch (error) {
@@ -321,6 +319,12 @@ const EditStadium = () => {
                 customMapStyle={mapCustomStyle}
                 onPress={handleMapPress}
                 showsUserLocation
+                initialRegion={{
+                  latitude: stadium.response ? stadium.response.lat : 0,
+                  longitude: stadium.response ? stadium.response.lang : 0,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
               >
                 {markerPosition && (
                   <Marker coordinate={markerPosition} />
@@ -446,6 +450,9 @@ const EditStadium = () => {
               <View style={[styles.imageRow, { marginVertical: 10 }]}>
                 {images.map((image, index) => (
                   <Image source={{ uri: image }} key={index} style={styles.image} />
+                ))}
+                {stadium.response && stadium.response.attechmentIds.map((image: string, index: number) => (
+                  <Image source={{ uri: file_get + image }} key={index} style={styles.image} />
                 ))}
               </View>
             </View>
