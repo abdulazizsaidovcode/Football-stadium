@@ -30,9 +30,9 @@ export const stadium_search: string = `${BASE_URL}stadium/search`;
 
 // ORDERS
 
-export const order_reject: string = `${BASE_URL}order/cancel-order?orderId=`;
+export const order_reject: string = `${BASE_URL}order/cancel-order/`;
 export const order_detail: string = `${BASE_URL}order?orderId=`;
-export const order_day_master: string = `${BASE_URL}order/today/orders`;
+export const order_day_master: string = `${BASE_URL}order/today`;
 export const statistics_for_year: string = `${BASE_URL}statistic/for/master/year`;
 
 // order 

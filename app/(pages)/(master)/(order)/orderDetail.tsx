@@ -3,7 +3,7 @@ import { useGlobalRequest } from '@/helpers/global_functions/global-response/glo
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react'
 
-function orderDetail() {
+function OrderDetail() {
     const route = useRoute();
     const { id } = route.params as { id: string | number };
     // fetch order data from server by id and render it
@@ -20,4 +20,4 @@ function orderDetail() {
     )
 }
 
-export default orderDetail
+export default OrderDetail
