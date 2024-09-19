@@ -11,29 +11,13 @@ import Buttons from '@/components/button/button';
  
 const ClientHistory = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);  // Page state for pagination
-  const [historyData, setHistoryData] = useState<any[]>([]);  // Store all data
-  const [hasMore, setHasMore] = useState<boolean>(true);  // Control load more
+  const [page, setPage] = useState<number>(1);  
+  const [historyData, setHistoryData] = useState<any[]>([]);  
+  const [hasMore, setHasMore] = useState<boolean>(true);  
   const GetHistory = useGlobalRequest(order_history, "GET");
 
-  // const fetchData = async (page: number) => {
-  //   setLoading(true);
-  //   const response = await GetHistory.globalDataFunc({ page });  // Send page in request
-  //   if (response && response.length > 0) {
-  //     setHistoryData((prevData) => [...prevData, ...response]);  // Append new data
-  //     if (response.length < 10) setHasMore(false);  // Assuming 10 items per page
-  //   } else {
-  //     setHasMore(false);  // No more data to load
-  //   }
-  //   setLoading(false);
-  // };
-
-  useEffect(() => {
-    // fetchData(page);  // Fetch initial data on mount
-  }, [page]);
-
   const loadMoreData = () => {
-    if (hasMore) setPage((prevPage) => prevPage + 1);  // Load next page
+    if (hasMore) setPage((prevPage) => prevPage + 1); 
   };
 
   return (

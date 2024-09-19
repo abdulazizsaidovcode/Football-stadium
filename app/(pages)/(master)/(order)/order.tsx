@@ -67,7 +67,7 @@ export default function MasterOrder() {
     }, [])
   );
 
-  console.log("orderData", OrderData);
+  // console.log("orderData", OrderData);
 
 
   return (
@@ -75,7 +75,7 @@ export default function MasterOrder() {
       style={{
         flex: 1,
         backgroundColor: colors.darkGreen,
-        paddingHorizontal: 16,
+        paddingVertical: 0,
       }}
     >
       <Layout scroll>
@@ -102,18 +102,15 @@ export default function MasterOrder() {
             >
               Order Mavjud emas
             </Text>
-          )} 
+          )}
         </View>
       </Layout>
       <Buttons
         onPress={() => {
-          // userMee.globalDataFunc();
           if (stadiums.response && stadiums.response.length == 0) {
             alert("avval ozingizga staduin qoshishingiz kerak");
           }
           if (stadiums.response && stadiums.response.length == 1) {
-            // console.log(stadiums.response, "ooooo");
-            // console.log(stadiums.response[0].id, "ooooo");
             navigation.navigate("(pages)/(order)/(order-save)/order-save", {
               id: stadiums.response[0].id,
             });
@@ -202,10 +199,11 @@ export default function MasterOrder() {
 
 const styles = StyleSheet.create({
   Container: {
-    marginTop: 30,
-    marginBottom: 40,
+    // marginTop: 30,
+    // marginBottom: 40,
+    marginBottom: -60,
     borderBottomColor: "#000",
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
   },
   Buttons: {
     display: "flex",

@@ -18,7 +18,7 @@ export function useGlobalRequest<T>(
 ): UseGlobalResponse<T> {
     const mutation = useMutation({
         mutationFn: async () => {
-            let res;
+            let res;            
             const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
             switch (method) {
                 case 'GET':
