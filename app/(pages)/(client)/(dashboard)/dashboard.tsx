@@ -100,20 +100,20 @@ const ClientDashboard = () => {
         }, [staduims.error, staduims.response])
     );
 
-    useFocusEffect(
-        useCallback(() => {
-            if (inputValue && inputValue.trim() !== "") {
-                // If search input is not empty, fetch filtered stadiums
-                staduims.globalDataFunc(`${stadium_search}?name=${inputValue}`);
-            } else {
-                // If search input is empty, fetch all stadiums
-                staduims.globalDataFunc(
-                    `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`
-                );
-            }
-        }, [inputValue, userLocation])
-    );
-
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         if (inputValue && inputValue.trim() !== "") {
+    //             // If search input is not empty, fetch filtered stadiums
+    //             staduims.globalDataFunc(`${stadium_search}?name=${inputValue}`);
+    //         } else {
+    //             // If search input is empty, fetch all stadiums
+    //             staduims.globalDataFunc(
+    //                 `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`
+    //             );
+    //         }
+    //     }, [inputValue, userLocation])
+    // );
+ 
     const logOut = async () => {
         // Clear AsyncStorage token and role
         await AsyncStorage.removeItem("token");
@@ -160,6 +160,9 @@ const ClientDashboard = () => {
                                 size={30}
                                 color="white"
                             />
+                            <View>
+                        <MaterialIcons name="notifications" onPress={() => navigation.navigate('(pages)/(notification)/notification')} size={30} color="white" />
+                        </View>
                             <FontAwesome
                                 onPress={showModal}
                                 name="sign-out"
