@@ -13,6 +13,18 @@ const ClientHistory = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const GetHistory = useGlobalRequest(order_history, "GET");
 
+  const fetchData = async (page: number) => {
+    setLoading(true);
+    const response = await GetHistory.globalDataFunc({ page });  // Send page in request
+    if (response && response?.length > 0) {
+      setHistoryData((prevData) => [...prevData, ...response]);  // Append new data
+      if (response.length < 10) setHasMore(false);  // Assuming 10 items per page
+    } else {
+      setHasMore(false);  // No more data to load
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
