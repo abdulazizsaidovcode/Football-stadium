@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import React, { useCallback, useEffect } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
@@ -20,34 +20,40 @@ const Stadium = () => {
   )
 
   return (
-    <Layout scroll style={{ position: 'absolute', marginBottom: -60 }}>
-      <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
-      <Text style={styles.ImageBox}></Text>
-      <ScrollView contentContainerStyle={styles.stadiumList}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Стадионы</Text>
-          <View style={styles.headerIcon}>
-            {/* <Entypo name="share" size={27} color="white" /> */}
-          </View>
-        </View>
-        {stadiums.loading ? <View style={{ height: 500 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
-          <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
-            <Image
-              source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
-              style={styles.cardImage}
+    <SafeAreaView style={{
+      flex: 1,
+      backgroundColor: '#2C3639', position: 'relative',
+    }}>
+      <ScrollView>
 
-            />
-            <View style={styles.cardContent}>
-              <Text style={styles.titleCard}>{stadium.name}</Text>
-              <Text style={styles.description}>{stadium.description}</Text>
+        <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
+        <Text style={styles.ImageBox}></Text>
+        <ScrollView contentContainerStyle={styles.stadiumList}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Стадионы</Text>
+            <View style={styles.headerIcon}>
+              {/* <Entypo name="share" size={27} color="white" /> */}
             </View>
-          </TouchableOpacity>
-        )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>}
+          </View>
+          {stadiums.loading ? <View style={{ height: 500 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
+            <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
+              <Image
+                source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
+                style={styles.cardImage}
+
+              />
+              <View style={styles.cardContent}>
+                <Text style={styles.titleCard}>{stadium.name}</Text>
+                <Text style={styles.description}>{stadium.description}</Text>
+              </View>
+            </TouchableOpacity>
+          )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>}
+        </ScrollView>
       </ScrollView>
-      <View style={{ position: 'absolute', bottom: 0, padding: 20, width: '100%', backgroundColor: colors.darkGreen }}>
+      <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
         <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
       </View>
-    </Layout>
+    </SafeAreaView>
   );
 };
 
@@ -56,6 +62,7 @@ export default Stadium;
 const styles = StyleSheet.create({
   stadiumList: {
     padding: 20,
+    marginBottom: 50
   },
   header: {
     flexDirection: 'row',
