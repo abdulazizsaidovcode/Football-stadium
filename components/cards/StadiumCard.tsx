@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
@@ -12,7 +12,10 @@ import { haveOrNot } from '@/helpers/global_functions/favourite/favourite'
 const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress: () => void, onPress: () => void, iconColor?: string | any, fetchFunction: () => void }> = ({ data, onMapPress, onPress, fetchFunction }) => {
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true); // Loading state for the image
+
     const navigation = useNavigation();
+
     useEffect(() => {
         const fetchUserData = async () => {
             const storedRole = await AsyncStorage.getItem('role');
@@ -30,14 +33,28 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                 <Text style={styles.title}>{data.name}</Text>
                 <Text style={styles.priceTitle}>{data.price} sum</Text>
             </View>
-            <Image
-                height={200}
-                style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }}
-                source={data.isMainAttachmentId
-                    ? { uri: file_get + data.isMainAttachmentId }
-                    : require('../../assets/images/defaultImg.jpeg')
-                }
-            />
+            
+            {/* Image loading indicator */}
+            <View style={{ position: 'relative', height: 200 }}>
+                {isLoading && (
+                    <ActivityIndicator
+                        size="large"
+                        color={colors.green}
+                        style={styles.loadingIndicator}
+                    />
+                )}
+                <Image
+                    height={200}
+                    style={[styles.image, isLoading && { opacity: 0.5 }]} // Dim the image when loading
+                    source={data.isMainAttachmentId
+                        ? { uri: file_get + data.isMainAttachmentId }
+                        : require('../../assets/images/defaultImg.jpeg')
+                    }
+                    onLoadStart={() => setIsLoading(true)} // Show spinner when image starts loading
+                    onLoadEnd={() => setIsLoading(false)}   // Hide spinner when image finishes loading
+                />
+            </View>
+
             <Text style={styles.description}>{data.description}</Text>
             <View style={styles.btnContainer}>
                 <View style={{ width: '70%' }}>
@@ -88,5 +105,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 3,
         justifyContent: 'space-between'
-    }
-})
+    },
+    image: {
+        borderRadius: 10,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -20 }, { translateY: -20 }],
+    },
+});
