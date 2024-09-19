@@ -18,7 +18,7 @@ import { useGlobalRequest } from "@/helpers/global_functions/global-response/glo
 import OrderStore from "@/helpers/stores/order/orderStore";
 import { useFocusEffect } from "expo-router";
 
-const { width: viewportWidth } = Dimensions.get("window");
+// const { width: viewportWidth } = Dimensions.get("window");
 
 function OrderDetail() {
   const { OrderData } = OrderStore();
@@ -65,13 +65,13 @@ function OrderDetail() {
             {stadiumDetail?.response?.attechmentIds?.length > 0 && (
               <Carousel
                 loop
-                width={viewportWidth}
+                width={350}
                 height={200}
                 autoPlay={true}
-                autoPlayInterval={3000} // 3 sekundda avtomatik almashinadi
+                autoPlayInterval={500}
                 data={stadiumDetail?.response?.attechmentIds}
-                renderItem={({ item }: {item: any}) => renderItem({ item })}
-                scrollAnimationDuration={1000} // Animatsiya tezligi
+                renderItem={({ item }: { item: any }) => renderItem({ item })}
+                scrollAnimationDuration={1000}
                 pagingEnabled={true}
                 mode="parallax"
                 modeConfig={{
@@ -81,7 +81,7 @@ function OrderDetail() {
                 }}
               />
             )}
-            <View style={{ display: "flex", gap: 20, paddingVertical: 20 }}>
+            <View style={{ display: "flex", gap: 15, paddingVertical: 20 }}>
               {/* Detail fields */}
               <View style={styles.detailTitle}>
                 <Text style={styles.title}>Name: </Text>

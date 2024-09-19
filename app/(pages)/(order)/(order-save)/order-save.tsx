@@ -1,4 +1,4 @@
-import { Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
@@ -57,29 +57,29 @@ const OrderSave = () => {
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
 
-    if (freeTimeRes.error) {
-        alert(freeTimeRes.error)
-        setTimeout(() => {
-            console.log(id);
-        }, 2000)
-    }
+    // if (freeTimeRes.error) {
+    //     alert(freeTimeRes.error)
+    //     setTimeout(() => {
+    //         // console.log(id);
+    //     }, 2000)
+    // }
 
     useFocusEffect(
         useCallback(() => {
             if (selectedTimeSlots.length < 2) {
                 setCreasePay(1);
-                console.log("Less than 2 time slots selected");
+                // console.log("Less than 2 time slots selected");
             } else if (selectedTimeSlots.length === 2) {
                 let a = selectedTimeSlots[0].slice(0, 2);
                 let b = selectedTimeSlots[1].slice(0, 2);
-                console.log(`Time slots: ${a}, ${b}`);
+                // console.log(`Time slots: ${a}, ${b}`);
                 let c = Number(b) - Number(a);
                 if (!isNaN(c)) {
                     setCreasePay(c);
-                    console.log(`Calculated crease pay: ${c}`);
+                    // console.log(`Calculated crease pay: ${c}`);
                 } else {
                     setCreasePay(1);
-                    console.log("Calculation resulted in NaN");
+                    // console.log("Calculation resulted in NaN");
                 }
             }
         }, [selectedTimeSlots, freeTime])
@@ -118,7 +118,7 @@ const OrderSave = () => {
         return <Loading />
     }
 
-    console.log(data);
+    // console.log(data);
 
     async function getRole() {
         let selRole = await AsyncStorage.getItem('role')
@@ -175,7 +175,7 @@ const OrderSave = () => {
 
 
     const rangeIndices = getRangeIndices();
-    console.log(role, '12345');
+    // console.log(role, '12345');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -204,16 +204,29 @@ const OrderSave = () => {
                 <CalendarGrafficEdit />
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>
                 <View style={styles.timeListContainer}>
-                    {freeTimeRes.response && Array.isArray(freeTimeRes.response) && freeTimeRes.response.length > 0 ? freeTimeRes.response.map((time: any, index: any) => (
-                        <TimesCard
-                            key={index}
-                            title={time}
-                            onSelect={() => toggleTimeSlotSelection(time)}
-                            isSelected={selectedTimeSlots.includes(time)}
-                            isInRange={rangeIndices.includes(time)}
-                            disabled={false}
-                        />
-                    )) :
+                    {freeTimeRes.loading ? (
+                        <View style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                            paddingVertical: 20,
+                        }}>
+                            <ActivityIndicator size="large" color="#ffffff" />
+                            <Text style={{ color: '#fff', marginTop: 10 }}>Loading available times...</Text>
+                        </View>
+                    ) : freeTimeRes.response && Array.isArray(freeTimeRes.response) && freeTimeRes.response.length > 1 ? (
+                        freeTimeRes.response.map((time: any, index: any) => (
+                            <TimesCard
+                                key={index}
+                                title={time}
+                                onSelect={() => toggleTimeSlotSelection(time)}
+                                isSelected={selectedTimeSlots.includes(time)}
+                                isInRange={rangeIndices.includes(time)}
+                                disabled={false}
+                            />
+                        ))
+                    ) : (
                         <View style={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -229,9 +242,9 @@ const OrderSave = () => {
                             <FontAwesome name="calendar-times-o" size={44} color="white" />
                             <Text style={{ fontSize: 20, color: '#fff', marginTop: 20 }}>Stadionning bugunga vaqti yo'q</Text>
                         </View>
-                    }
+                    )}
                 </View>
-                {role == 'MASTER' &&
+                {freeTimeRes.response && freeTimeRes.response.length > 1 && role == 'MASTER' &&
                     <View style={{ marginBottom: 15 }}>
                         <Text style={styles.label}>{"Telifon raqam kiritish"}</Text>
                         <TextInput

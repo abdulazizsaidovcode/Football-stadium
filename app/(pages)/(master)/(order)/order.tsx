@@ -105,7 +105,8 @@ export default function MasterOrder() {
           )}
         </View>
       </Layout>
-      <Buttons
+      {/* Nima vazifa bajarishini tushunmadm shunchun kament qibquydm!!!!!!!!!!! */}
+      {/* <Buttons
         onPress={() => {
           if (stadiums.response && stadiums.response.length == 0) {
             alert("avval ozingizga staduin qoshishingiz kerak");
@@ -121,8 +122,8 @@ export default function MasterOrder() {
         }}
         title="Bron qo'shish"
         icon={<Entypo name="plus" size={24} color="white" />}
-      />
-      <View style={{ marginBottom: 10 }}></View>
+      /> */}
+      {/* <View style={{ marginBottom: 10 }}></View> */}
 
       <CenteredModal
         isModal={isModalVisible}
@@ -159,7 +160,7 @@ export default function MasterOrder() {
                   label={`${index + 1}: ${res.name}`}
                   value={res.id}
                 />
-              ))}
+              ))}  
           </Picker>
           <Text style={{ color: "#fff", fontSize: 16 }}>
             Tanlangan stadion:
@@ -199,9 +200,8 @@ export default function MasterOrder() {
 
 const styles = StyleSheet.create({
   Container: {
-    // marginTop: 30,
-    // marginBottom: 40,
-    marginBottom: -60,
+    marginVertical: 20,
+    // marginBottom: -60,
     borderBottomColor: "#000",
     paddingHorizontal: 16,
   },
@@ -211,7 +211,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: "white",
-    marginBottom: 10,
+    marginVertical: 20,
+    // marginBottom: 10,
   },
   OrderText: {
     fontSize: 15,

@@ -137,7 +137,7 @@ const ClientDashboard = () => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
-            <ScrollView>
+            <ScrollView style={{ paddingHorizontal: 16 }}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
@@ -245,7 +245,6 @@ export default ClientDashboard;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16,
         backgroundColor: colors.darkGreen,
     },
     modalContainer: {
