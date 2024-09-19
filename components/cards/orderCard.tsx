@@ -20,10 +20,10 @@ interface OrderTofay {
     orderStatus: string | null,
     isMainAttachmentId: any
 }
-const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, iconColor?: string | any }> = ({ data, onPress, iconColor = 'white' }) => {
+const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: () => void, iconColor?: string | any }> = ({ data, onPress, boxOnPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
 
-    const {OrderData} = OrderStore()
+    const {OrderData, setOrderData} = OrderStore()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
@@ -31,7 +31,7 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, iconColor?: s
     return (
         <>
             <Pressable
-                onPress={() => navigation.navigate('(pages)/(master)/(order)/orderDetail')}
+                onPress={boxOnPress ? boxOnPress : () => {}}
                 style={styles.container}>
                 <Image height={200} style={{ objectFit: 'cover', borderRadius: 10, width: '100%' }} source={data?.isMainAttachmentId ? file_get + data.isMainAttachmentId : require('../../assets/images/defaultImg.jpeg')} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
