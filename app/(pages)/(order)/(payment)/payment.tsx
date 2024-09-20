@@ -33,7 +33,7 @@ const Payment = () => {
             </ScrollView>
             <View style={styles.bottomSection}>
                 {!loading ?
-                    <Buttons title={("Continue")}
+                    <Buttons title={("Saqlash")}
                         isDisebled={(pay !== '')}
                         onPress={() => {
                             setLoading(true)
@@ -44,7 +44,7 @@ const Payment = () => {
                         }}
                     /> :
                     <LoadingButtons
-                        title={("Continue")}
+                        title={("Saqlash")}
                     />
                 }
             </View>
@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
     bottomSection: {
         justifyContent: 'flex-end',
         backgroundColor: colors.darkGreen,
-        paddingTop: 15
+        paddingVertical: 10,
+        paddingHorizontal: 16
     },
     button: {
         borderRadius: 10,
