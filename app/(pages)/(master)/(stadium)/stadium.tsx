@@ -31,28 +31,32 @@ const Stadium = () => {
         <Text style={styles.ImageBox}></Text>
         <ScrollView contentContainerStyle={styles.stadiumList}>
           <View style={styles.header}>
-            <Text style={styles.title}>Stadionlar</Text>
+            <Text style={styles.title}>Maydonlar</Text>
             <View style={styles.headerIcon}>
               {/* <Entypo name="share" size={27} color="white" /> */}
             </View>
           </View>
-          {stadiums.loading ? <View style={{ height: 500 }}><Loading /></View> : stadiums.response ? stadiums.response.map((stadium: StadiumTypes) => (
-            <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
-              <Image
-                source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
-                style={styles.cardImage}
+          {!stadiums.loading ?
+            stadiums.response ?
+              stadiums.response.map((stadium: StadiumTypes) => (
+                <TouchableOpacity onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })} activeOpacity={.8} key={stadium.id} style={styles.card}>
+                  <Image
+                    source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
+                    style={styles.cardImage}
 
-              />
-              <View style={styles.cardContent}>
-                <Text style={styles.titleCard}>{stadium.name}</Text>
-                <Text style={styles.description}>{stadium.description}</Text>
-              </View>
-            </TouchableOpacity>
-          )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>}
+                  />
+                  <View style={styles.cardContent}>
+                    <Text style={styles.titleCard}>{stadium.name}</Text>
+                    <Text style={styles.description}>{stadium.description}</Text>
+                  </View>
+                </TouchableOpacity>
+              )) : <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud emas</Text>
+            : <View style={{ height: 500 }}><Loading /></View>
+          }
         </ScrollView>
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
-        <Buttons icon={<Entypo name="plus" size={24} color="white" />} title='Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
+        <Buttons icon={<Entypo name="plus" size={24} color="white" />} title="Maydon qo'shish" onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
       </View>
     </SafeAreaView>
   );
