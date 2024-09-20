@@ -24,7 +24,7 @@ const TimesCard: React.FC<TimesCardProps> = ({ title, onSelect, isSelected, isIn
             ]}
             disabled={disabled}
         >
-            <Text style={[styles.title, { color: isSelected ? 'white' : colors.inDarkGreen }]}>{title.slice(0, 5)}</Text>
+            <Text style={[styles.title, { color: isSelected ? 'white' : colors.inDarkGreen }]}>{title && title.slice(0, 5)}</Text>
         </TouchableOpacity>
     );
 };

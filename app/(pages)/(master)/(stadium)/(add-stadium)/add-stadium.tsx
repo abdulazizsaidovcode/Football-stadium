@@ -223,22 +223,22 @@ const AddStadium = () => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <NavigationMenu name='Add stadium' />
-        <ScrollView style={{ paddingHorizontal: 16 }}>
+    <SafeAreaView style={styles.container}>
+      <NavigationMenu name="Maydon qo'shish" />
+      <ScrollView style={{ paddingHorizontal: 16 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <Input
               labalVisible
-              label='Stadion nomi'
-              placeholder='Stadion nomini kiriting'
+              label='Maydon nomi'
+              placeholder='Maydon nomini kiriting'
               value={formValues.name}
               onChangeText={(value) => handleInputChange('name', value)}
             />
             <Input
               labalVisible
-              label='Stadion soni'
-              placeholder='Stadion sonini kiriting'
+              label='Maydon soni'
+              placeholder='Maydon sonini kiriting'
               type='numeric'
               value={formValues.count}
               onChangeText={(value) => handleInputChange('count', value)}
@@ -246,7 +246,7 @@ const AddStadium = () => {
             <Input
               labalVisible
               label='Narxi'
-              placeholder='Stadion narxini kiriting'
+              placeholder='Maydon narxini kiriting'
               type='numeric'
               value={formValues.price}
               onChangeText={(value) => handleInputChange('price', value)}
@@ -259,7 +259,7 @@ const AddStadium = () => {
               value={formValues.initialPay}
               onChangeText={(value) => handleInputChange('initialPay', value)}
             />
-            <Text style={[styles.label, { marginBottom: 8 }]}>Stadion manzili</Text>
+            <Text style={[styles.label, { marginBottom: 8 }]}>Maydon manzili</Text>
             <View style={{ borderRadius: 20, overflow: 'hidden', height: screenHeight / 3, marginBottom: 12 }}>
               <MapView
                 provider={PROVIDER_DEFAULT}
@@ -283,8 +283,8 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Stadion eni'
-                  placeholder='Stadion enini kiriting'
+                  label='Maydon eni'
+                  placeholder='Maydon enini kiriting'
                   type='numeric'
                   value={formValues.width}
                   onChangeText={(value) => handleInputChange('width', value)}
@@ -293,8 +293,8 @@ const AddStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Stadion uzunligi'
-                  placeholder='Stadion uzunligi kiriting'
+                  label='Maydon uzunligi'
+                  placeholder='Maydon uzunligi kiriting'
                   type='numeric'
                   value={formValues.height}
                   onChangeText={(value) => handleInputChange('height', value)}
@@ -302,10 +302,10 @@ const AddStadium = () => {
               </View>
             </View>
             <View style={{ marginBottom: 12 }}>
-              <Text style={[styles.label, { marginBottom: 8 }]}>Stadion ta'riff</Text>
+              <Text style={[styles.label, { marginBottom: 8 }]}>Maydon ta'riff</Text>
               <Textarea
                 onChangeText={(value) => handleInputChange('description', value)}
-                placeholder="Stadion ta'riffini kiriting"
+                placeholder="Maydon ta'riffini kiriting"
                 value={formValues.description}
               />
             </View>
@@ -362,7 +362,7 @@ const AddStadium = () => {
             </View> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>Stadion ochilish vaqti</Text>
+                <Text style={[styles.label]}>Maydon ochilish vaqti</Text>
                 <Pressable onPress={showStartPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${startTime.getHours()}:${startTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -375,7 +375,7 @@ const AddStadium = () => {
                 />
               </View>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>Stadion yopilishi vaqti</Text>
+                <Text style={[styles.label]}>Maydon yopilishi vaqti</Text>
                 <Pressable onPress={showEndPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${endTime.getHours()}:${endTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -403,9 +403,9 @@ const AddStadium = () => {
               <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={submitStadiumPost} />
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </TouchableWithoutFeedback >
+        </TouchableWithoutFeedback >
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

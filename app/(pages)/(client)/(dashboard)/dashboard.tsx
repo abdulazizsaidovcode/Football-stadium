@@ -10,10 +10,12 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { Colors, colors } from "@/constants/Colors";
 import {
+    AntDesign,
     Entypo,
     FontAwesome,
     FontAwesome6,
     Ionicons,
+    MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -34,6 +36,8 @@ import StadiumCard from "@/components/cards/StadiumCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
 import useFavoutiteOrders from "@/helpers/stores/favourite/favourite";
+import { useAuthStore } from "@/helpers/stores/auth/auth-store";
+import CenteredModal from "@/components/modal/sentralmodal";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -42,6 +46,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
+    const { isLoginModal, setIsLoginModal } = useAuthStore();
     const [token, setToken] = useState<string | null>("");
     const [stadiumData, setstadiumData] = useState<any>(null);
     const [inputValue, setinputValue] = useState<string | null>("");
@@ -58,8 +63,8 @@ const ClientDashboard = () => {
 
     useFocusEffect(
         useCallback(() => {
-            getUserLocation(setUserLocation);
             const getConfig = async () => {
+                await getUserLocation(setUserLocation);
                 setToken(await AsyncStorage.getItem("token"));
                 setRole(await AsyncStorage.getItem("role"));
             };
@@ -83,10 +88,10 @@ const ClientDashboard = () => {
                     return false;
                 }
             };
-
-            BackHandler.addEventListener("hardwareBackPress", onBackPress);
-            return () =>
-                BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+            if (role && token) {
+                BackHandler.addEventListener("hardwareBackPress", onBackPress);
+                return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+            }
         }, [backPressCount])
     );
 
@@ -142,7 +147,6 @@ const ClientDashboard = () => {
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
                         <View style={styles.headerIcon}>
-
                             <MaterialIcons
                                 name="history"
                                 onPress={() =>
@@ -172,11 +176,11 @@ const ClientDashboard = () => {
                                 setinputValue(text);
                             }}
                             label="Поиск по имени"
-                        /> 
+                        />
                         <Text style={styles.subTitle}>
-                            {role && token ? "Мои записи" : "Stadionlar"}
+                            Stadionlar
                         </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}> 
+                        <View style={{ marginTop: 16, gap: 10 }}>
                             {staduims.loading ? (
                                 <Loading />
                             ) : stadiumData && stadiumData.length > 0 ? (
@@ -232,6 +236,29 @@ const ClientDashboard = () => {
                     </View>
                 </View>
             </Modal>
+            <CenteredModal
+                btnRedText="Ro'yhatda o'tish"
+                btnWhiteText="Keyinroq"
+                isFullBtn
+                isModal={isLoginModal}
+                toggleModal={() => setIsLoginModal(false)}
+                onConfirm={() => navigation.navigate('(pages)/(auth)/(login)/login')}
+            >
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                    }}
+                >
+                    <AntDesign name="login" size={80} color={colors.lightGreen} />
+                    <Text
+                        style={{ fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10 }}
+                    >
+                        Tizmdan foydalanish uchun ro'yhatsan o'ting
+                    </Text>
+                </View>
+            </CenteredModal>
         </SafeAreaView>
     );
 };

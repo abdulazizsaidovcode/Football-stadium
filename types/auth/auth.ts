@@ -9,4 +9,6 @@ export interface AuthStoreTypes {
     setPhoneNumber: (val: string) => void;
     status: boolean | null;
     setStatus: (val: boolean | null) => void;
+    isLoginModal: boolean;
+    setIsLoginModal: (val: boolean) => void;
 }

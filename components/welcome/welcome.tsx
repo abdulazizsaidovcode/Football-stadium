@@ -12,6 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import { colors } from "@/constants/Colors";
 import { StatusBar } from "expo-status-bar";
+import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -22,6 +23,7 @@ const Welcome: React.FC = () => {
     // const {t, i18n} = useTranslation();
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     // const {language, setLanguage} = langstore();
+    const { setIsLoginModal } = useAuthStore()
     const [backPressCount, setBackPressCount] = useState(0);
 
 
@@ -68,6 +70,7 @@ const Welcome: React.FC = () => {
                     onPress={() => {
                         navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
                         changeLanguage("ru");
+                        setIsLoginModal(true)
                     }}
                 />
             </View>

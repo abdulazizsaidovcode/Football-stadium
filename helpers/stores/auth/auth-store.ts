@@ -12,4 +12,6 @@ export const useAuthStore = create<AuthStoreTypes>((set) => ({
     setPhoneNumber: (val: string) => set({ phoneNumber: val }),
     status: null,
     setStatus: (val: boolean | null) => set({ status: val }),
+    isLoginModal: false,
+    setIsLoginModal: (val: boolean) => set({ isLoginModal: val }),
 }));

@@ -273,12 +273,12 @@ const EditStadium = () => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <View style={{ paddingHorizontal: 10 }}>
-          <NavigationMenu name={stadium.response && stadium.response.name} deleteIcon={true} toggleModal={() => toggleDelModal()} />
-        </View>
-        <ScrollView style={{ paddingHorizontal: 16 }}>
+    <SafeAreaView style={styles.container}>
+      <View style={{ paddingHorizontal: 10 }}>
+        <NavigationMenu name={stadium.response && stadium.response.name} deleteIcon={true} toggleModal={() => toggleDelModal()} />
+      </View>
+      <ScrollView style={{ paddingHorizontal: 16 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <Input
               labalVisible
@@ -461,32 +461,32 @@ const EditStadium = () => {
               <Buttons isDisebled={isFormValid} title='Сохранить' loading={isLoading} onPress={handleSubmit} />
             </View>
           </View>
-        </ScrollView>
-        <CenteredModal
-          btnRedText="O'chirish"
-          btnWhiteText='Cancel'
-          isFullBtn
-          isModal={isDelModal}
-          toggleModal={toggleDelModal}
-          onConfirm={delStadium.globalDataFunc}
+        </TouchableWithoutFeedback >
+      </ScrollView>
+      <CenteredModal
+        btnRedText="O'chirish"
+        btnWhiteText='Cancel'
+        isFullBtn
+        isModal={isDelModal}
+        toggleModal={toggleDelModal}
+        onConfirm={delStadium.globalDataFunc}
+      >
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 10,
+          }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
+          <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+          <Text
+            style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
           >
-            <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
-            <Text
-              style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
-            >
-              Вы уверены, что хотите Udalit этот stadion?
-            </Text>
-          </View>
-        </CenteredModal>
-      </SafeAreaView>
-    </TouchableWithoutFeedback >
+            Вы уверены, что хотите Udalit этот stadion?
+          </Text>
+        </View>
+      </CenteredModal>
+    </SafeAreaView>
   );
 }
 
