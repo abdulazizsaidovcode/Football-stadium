@@ -118,7 +118,11 @@ const OrderSave = () => {
         return <Loading />
     }
 
-    // console.log(data);
+    console.log(freeTimeRes.response, 1);
+    console.log(freeTimeRes.error, 2);
+    console.log(id, 3);
+    console.log(calendarDate);
+
 
     async function getRole() {
         let selRole = await AsyncStorage.getItem('role')
