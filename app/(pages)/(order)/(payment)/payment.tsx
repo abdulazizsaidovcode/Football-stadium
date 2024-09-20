@@ -105,7 +105,7 @@ const Payment = () => {
                     <LoadingButtons title={("Continue")} />
                 )}
             </View>
-        </SafeAreaView>
+        </SafeAreaView> 
     );
 }; const styles = StyleSheet.create({
     container: {
