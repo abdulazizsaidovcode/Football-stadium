@@ -438,13 +438,13 @@ const EditStadium = () => {
                 />
               </View> */}
             </View>
-            <Text style={{ textAlign: 'center', color: colors.white, fontSize: 20, marginTop: 10 }}>Stadion images</Text>
+            <Text style={{ textAlign: 'center', color: colors.white, fontSize: 20, marginTop: 10 }}>Maydon rasmlari</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
               <View style={{ width: '47%' }}>
-                <Buttons title='Загрузить фото' onPress={pickImageFromGallery} />
+                <Buttons title='Rasm yuklash' onPress={pickImageFromGallery} />
               </View>
               <View style={{ width: '47%' }}>
-                <Buttons title='Сделать фото' onPress={pickImageFromCamera} />
+                <Buttons title='Rasm tushurish' onPress={pickImageFromCamera} />
               </View>
             </View>
             <View style={{ justifyContent: 'center' }}>
@@ -458,14 +458,14 @@ const EditStadium = () => {
               </View>
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='v' loading={isLoading} onPress={handleSubmit} />
+              <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={handleSubmit} />
             </View>
           </View>
         </TouchableWithoutFeedback >
       </ScrollView>
       <CenteredModal
         btnRedText="O'chirish"
-        btnWhiteText='Cancel'
+        btnWhiteText='Orqaga'
         isFullBtn
         isModal={isDelModal}
         toggleModal={toggleDelModal}
@@ -482,7 +482,7 @@ const EditStadium = () => {
           <Text
             style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
           >
-            Вы уверены, что хотите Udalit этот stadion?
+            Siz aniq bu maydoni o'chirmoqchimisiz?
           </Text>
         </View>
       </CenteredModal>
