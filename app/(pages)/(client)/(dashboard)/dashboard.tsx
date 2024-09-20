@@ -1,34 +1,39 @@
 import {
-    BackHandler,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  BackHandler,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { Colors, colors } from "@/constants/Colors";
 import {
-    AntDesign,
-    Entypo,
-    FontAwesome,
-    FontAwesome6,
-    Ionicons,
-    MaterialCommunityIcons,
-    MaterialIcons,
+  AntDesign,
+  Entypo,
+  FontAwesome,
+  FontAwesome6,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import {
-    NavigationProp,
-    useFocusEffect,
-    useNavigation,
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
 } from "@react-navigation/native";
 import { getUserLocation } from "@/helpers/global_functions/user_functions/user-functions";
 import { useUserStore } from "@/helpers/stores/user/user-store";
 import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
-import { favourite_add, stadium_get, stadium_search } from "@/helpers/api/api";
+import {
+  favourite_add,
+  get_notification_cout,
+  stadium_get,
+  stadium_search,
+} from "@/helpers/api/api";
 import { RootStackParamList } from "@/types/root/root";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import { Loading } from "@/components/loading/loading";
@@ -40,299 +45,322 @@ import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 import CenteredModal from "@/components/modal/sentralmodal";
 
 type SettingsScreenNavigationProp = NavigationProp<
-    RootStackParamList,
-    "(pages)/(client)/(dashboard)/dashboard"
+  RootStackParamList,
+  "(pages)/(client)/(dashboard)/dashboard"
 >;
 
 const ClientDashboard = () => {
-    const { userLocation, setUserLocation } = useUserStore();
-    const { isLoginModal, setIsLoginModal } = useAuthStore();
-    const [token, setToken] = useState<string | null>("");
-    const [stadiumData, setstadiumData] = useState<any>(null);
-    const [inputValue, setinputValue] = useState<string | null>("");
-    const [backPressCount, setBackPressCount] = useState(0);
-    const [role, setRole] = useState<string | null>("");
-    const staduims = useGlobalRequest(
-        inputValue && inputValue.trim() !== ""
-            ? `${stadium_search}?name=${inputValue}`
-            : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
-        "GET"
-    );
-    const navigation = useNavigation<SettingsScreenNavigationProp | any>();
-    const [isModalVisible, setModalVisible] = useState(false);
+  const { userLocation, setUserLocation } = useUserStore();
+  const { isLoginModal, setIsLoginModal } = useAuthStore();
+  const [token, setToken] = useState<string | null>("");
+  const [stadiumData, setstadiumData] = useState<any>(null);
+  const [inputValue, setinputValue] = useState<string | null>("");
+  const [backPressCount, setBackPressCount] = useState(0);
+  const [role, setRole] = useState<string | null>("");
+  const staduims = useGlobalRequest(
+    inputValue && inputValue.trim() !== ""
+      ? `${stadium_search}?name=${inputValue}`
+      : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
+    "GET"
+  );
+  const GetNotificationCount = useGlobalRequest(get_notification_cout, "GET");
+  const navigation = useNavigation<SettingsScreenNavigationProp | any>();
+  const [isModalVisible, setModalVisible] = useState(false);
 
-    useFocusEffect(
-        useCallback(() => {
-            const getConfig = async () => {
-                await getUserLocation(setUserLocation);
-                setToken(await AsyncStorage.getItem("token"));
-                setRole(await AsyncStorage.getItem("role"));
-            };
+  useFocusEffect(
+    useCallback(() => {
+      const getConfig = async () => {
+        await getUserLocation(setUserLocation);
+        setToken(await AsyncStorage.getItem("token"));
+        setRole(await AsyncStorage.getItem("role"));
+      };
 
-            getConfig();
-        }, [])
-    );
+      GetNotificationCount.globalDataFunc();
+      getConfig();
+    }, [])
+  );
 
-    useFocusEffect(
-        useCallback(() => {
-            const onBackPress = () => {
-                if (backPressCount === 0) {
-                    setBackPressCount(backPressCount + 1);
-                    alert("Orqaga qaytish uchun yana bir marta bosing");
-                    setTimeout(() => {
-                        setBackPressCount(0);
-                    }, 2000);
-                    return true;
-                } else {
-                    BackHandler.exitApp();
-                    return false;
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (backPressCount === 0) {
+          setBackPressCount(backPressCount + 1);
+          alert("Orqaga qaytish uchun yana bir marta bosing");
+          setTimeout(() => {
+            setBackPressCount(0);
+          }, 2000);
+          return true;
+        } else {
+          BackHandler.exitApp();
+          return false;
+        }
+      };
+      if (role && token) {
+        BackHandler.addEventListener("hardwareBackPress", onBackPress);
+        return () =>
+          BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      }
+    }, [backPressCount])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (staduims.response) {
+        setstadiumData(staduims.response);
+      } else if (staduims.error) {
+        setstadiumData(null);
+      }
+    }, [staduims.error, staduims.response])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (inputValue && inputValue.trim() !== "") {
+        staduims.globalDataFunc();
+      } else {
+        staduims.globalDataFunc();
+      }
+    }, [inputValue, userLocation])
+  );
+
+  const logOut = async () => {
+    // Clear AsyncStorage token and role
+    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("role");
+    // Navigate to the Login page
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "(pages)/(login)/login" }], // Replace with your login route
+    });
+  };
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
+
+  const confirmLogOut = () => {
+    logOut();
+    hideModal();
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
+      <ScrollView style={{ paddingHorizontal: 16 }}>
+        {role && token && (
+          <View style={styles.header}>
+            <Text style={styles.title}>Главная</Text>
+            <View style={styles.headerIcon}>
+              <MaterialIcons
+                name="history"
+                onPress={() =>
+                  navigation.navigate("(pages)/(history)/(client)/history")
                 }
-            };
-            if (role && token) {
-                BackHandler.addEventListener("hardwareBackPress", onBackPress);
-                return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-            }
-        }, [backPressCount])
-    );
-
-    useFocusEffect(
-        useCallback(() => {
-            if (staduims.response) {
-                setstadiumData(staduims.response);
-            } else if (staduims.error) {
-                setstadiumData(null);
-            }
-        }, [staduims.error, staduims.response])
-    );
-
-    useFocusEffect(
-        useCallback(() => {
-            if (inputValue && inputValue.trim() !== "") {
-                staduims.globalDataFunc();
-            } else {
-                staduims.globalDataFunc();
-            }
-        }, [inputValue, userLocation])
-    );
-
-    const logOut = async () => {
-        // Clear AsyncStorage token and role
-        await AsyncStorage.removeItem("token");
-        await AsyncStorage.removeItem("role");
-        // Navigate to the Login page
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "(pages)/(login)/login" }], // Replace with your login route
-        });
-    };
-
-    const showModal = () => {
-        setModalVisible(true);
-    };
-
-    const hideModal = () => {
-        setModalVisible(false);
-    };
-
-    const confirmLogOut = () => {
-        logOut();
-        hideModal();
-    };
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar style="light" />
-            <ScrollView style={{ paddingHorizontal: 16 }}>
-                {role && token && (
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Главная</Text>
-                        <View style={styles.headerIcon}>
-                            <MaterialIcons
-                                name="history"
-                                onPress={() =>
-                                    navigation.navigate("(pages)/(history)/(client)/history")
-                                }
-                                size={30}
-                                color="white"
-                            />
-                            <View>
-                                <MaterialIcons name="notifications" onPress={() => navigation.navigate('(pages)/(notification)/notification')} size={30} color="white" />
-                            </View>
-                            <FontAwesome
-                                onPress={showModal}
-                                name="sign-out"
-                                size={30}
-                                color="white"
-                            />
-                        </View>
-                    </View>
-                )}
-                <View style={{ marginTop: 15 }}>
-                    <View>
-                        <Input
-                            value={inputValue ? inputValue : ""}
-                            placeholder="Поиск"
-                            onChangeText={(text) => {
-                                setinputValue(text);
-                            }}
-                            label="Поиск по имени"
-                        />
-                        <Text style={styles.subTitle}>
-                            Maydonlar
-                        </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}>
-                            {staduims.loading ? (
-                                <Loading />
-                            ) : stadiumData && stadiumData.length > 0 ? (
-                                stadiumData.map((item: StadiumTypes, index: number) => (
-                                    <StadiumCard
-                                        key={index}
-                                        fetchFunction={staduims.globalDataFunc}
-                                        data={item}
-                                        onMapPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
-                                                { id: item.id }
-                                            )
-                                        }
-                                        onPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(order)/(order-save)/order-save",
-                                                { id: item.id }
-                                            )
-                                        }
-                                    />
-                                ))
-                            ) : (
-                                <Text style={styles.noDataText}>Стадион не найден</Text>
-                            )}
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
-            <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={hideModal}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                onPress={confirmLogOut}
-                                style={styles.confirmButton}
-                            >
-                                <Text style={styles.buttonText}>да</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={hideModal}
-                                style={styles.cancelButton}
-                            >
-                                <Text style={styles.buttonText}>нет</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-            <CenteredModal
-                btnRedText="Ro'yhatda o'tish"
-                btnWhiteText="Keyinroq"
-                isFullBtn
-                isModal={isLoginModal}
-                toggleModal={() => setIsLoginModal(false)}
-                onConfirm={() => {
-                    navigation.navigate('(pages)/(auth)/(login)/login')
-                    setIsLoginModal(false)
-                }}
-            >
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginBottom: 10,
-                    }}
-                >
-                    <AntDesign name="login" size={80} color={colors.lightGreen} />
-                    <Text
-                        style={{ fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10 }}
-                    >
-                        Tizmdan foydalanish uchun ro'yhatsan o'ting
-                    </Text>
-                </View>
-            </CenteredModal>
-        </SafeAreaView>
-    );
+                size={30}
+                color="white"
+              />
+              <View style={{ position: "relative" }}>
+                {(GetNotificationCount.response !== 0) && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "red",
+                        width: 10,
+                        height: 10,
+                        borderRadius: 100,
+                        right: 5,
+                        zIndex: 20,
+                      }}
+                    ></View>
+                  )}
+                <MaterialIcons
+                  name="notifications"
+                  onPress={() =>
+                    navigation.navigate("(pages)/(notification)/notification")
+                  }
+                  size={30}
+                  color="white"
+                />
+              </View>
+              <FontAwesome
+                onPress={showModal}
+                name="sign-out"
+                size={30}
+                color="white"
+              />
+            </View>
+          </View>
+        )}
+        <View style={{ marginTop: 15 }}>
+          <View>
+            <Input
+              value={inputValue ? inputValue : ""}
+              placeholder="Поиск"
+              onChangeText={(text) => {
+                setinputValue(text);
+              }}
+              label="Поиск по имени"
+            />
+            <Text style={styles.subTitle}>Maydonlar</Text>
+            <View style={{ marginTop: 16, gap: 10 }}>
+              {staduims.loading ? (
+                <Loading />
+              ) : stadiumData && stadiumData.length > 0 ? (
+                stadiumData.map((item: StadiumTypes, index: number) => (
+                  <StadiumCard
+                    key={index}
+                    fetchFunction={staduims.globalDataFunc}
+                    data={item}
+                    onMapPress={() =>
+                      navigation.navigate(
+                        "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                        { id: item.id }
+                      )
+                    }
+                    onPress={() =>
+                      navigation.navigate(
+                        "(pages)/(order)/(order-save)/order-save",
+                        { id: item.id }
+                      )
+                    }
+                  />
+                ))
+              ) : (
+                <Text style={styles.noDataText}>Стадион не найден</Text>
+              )}
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={hideModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                onPress={confirmLogOut}
+                style={styles.confirmButton}
+              >
+                <Text style={styles.buttonText}>да</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={hideModal} style={styles.cancelButton}>
+                <Text style={styles.buttonText}>нет</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <CenteredModal
+        btnRedText="Ro'yhatda o'tish"
+        btnWhiteText="Keyinroq"
+        isFullBtn
+        isModal={isLoginModal}
+        toggleModal={() => setIsLoginModal(false)}
+        onConfirm={() => {
+          navigation.navigate("(pages)/(auth)/(login)/login");
+          setIsLoginModal(false);
+        }}
+      >
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+        >
+          <AntDesign name="login" size={80} color={colors.lightGreen} />
+          <Text
+            style={{
+              fontSize: 17,
+              color: "#fff",
+              textAlign: "center",
+              marginTop: 10,
+            }}
+          >
+            Tizmdan foydalanish uchun ro'yhatsan o'ting
+          </Text>
+        </View>
+      </CenteredModal>
+    </SafeAreaView>
+  );
 };
 export default ClientDashboard;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.darkGreen,
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalContent: {
-        width: 300,
-        padding: 20,
-        backgroundColor: colors.darkGreen,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    modalText: {
-        fontSize: 18,
-        color: "white",
-        marginBottom: 20,
-    },
-    modalButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-    },
-    confirmButton: {
-        backgroundColor: 'red',
-        padding: 10,
-        paddingHorizontal: 30,
-        borderRadius: 5,
-    },
-    cancelButton: {
-        backgroundColor: 'gray',
-        padding: 10,
-        paddingHorizontal: 30,
-        borderRadius: 5,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 16,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 20
-    },
-    headerIcon: {
-        flexDirection: 'row',
-        gap: 15,
-        alignItems: 'center'
-    },
-    title: {
-        fontSize: 25,
-        color: colors.white
-    },
-    noDataText: {
-        textAlign: 'center',
-        fontSize: 16,
-        color: 'gray',
-    },
-    subTitle: {
-        fontSize: 18,
-        color: colors.white
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: colors.darkGreen,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: colors.darkGreen,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    color: "white",
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  confirmButton: {
+    backgroundColor: "red",
+    padding: 10,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+  },
+  cancelButton: {
+    backgroundColor: "gray",
+    padding: 10,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  headerIcon: {
+    flexDirection: "row",
+    gap: 15,
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 25,
+    color: colors.white,
+  },
+  noDataText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
+  },
+  subTitle: {
+    fontSize: 18,
+    color: colors.white,
+  },
+});
