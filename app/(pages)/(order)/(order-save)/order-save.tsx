@@ -73,7 +73,7 @@ const OrderSave = () => {
                 let a = selectedTimeSlots[0].slice(0, 2);
                 let b = selectedTimeSlots[1].slice(0, 2);
                 // console.log(`Time slots: ${a}, ${b}`);
-                let c = Number(b) - Number(a);
+                let c = Math.abs(Number(b) - Number(a));  // Use Math.abs to ensure the result is always positive
                 if (!isNaN(c)) {
                     setCreasePay(c);
                     // console.log(`Calculated crease pay: ${c}`);
@@ -82,6 +82,7 @@ const OrderSave = () => {
                     // console.log("Calculation resulted in NaN");
                 }
             }
+            
         }, [selectedTimeSlots, freeTime])
     )
     async function isLogin() {
@@ -221,11 +222,12 @@ const OrderSave = () => {
                         freeTimeRes.response.map((time: any, index: any) => (
                             <TimesCard
                                 key={index}
-                                title={time}
-                                onSelect={() => toggleTimeSlotSelection(time)}
-                                isSelected={selectedTimeSlots.includes(time)}
-                                isInRange={rangeIndices.includes(time)}
-                                disabled={false}
+                                title={time.time}
+                                isBrone={time.ordered}
+                                onSelect={() => toggleTimeSlotSelection(time.time)}
+                                isSelected={selectedTimeSlots.includes(time.time)}
+                                isInRange={rangeIndices.includes(time.time)}
+                                disabled={time.ordered}
                             />
                         ))
                     ) : (

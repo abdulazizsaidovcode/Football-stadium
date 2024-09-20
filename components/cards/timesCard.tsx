@@ -8,10 +8,11 @@ interface TimesCardProps {
     isSelected: boolean;
     isInRange: boolean;
     disabled: boolean;
+    isBrone: boolean
 }
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
-const TimesCard: React.FC<TimesCardProps> = ({ title, onSelect, isSelected, isInRange, disabled }) => {
+const TimesCard: React.FC<TimesCardProps> = ({ title, isBrone, onSelect, isSelected, isInRange, disabled }) => {
     return (
         <TouchableOpacity
             activeOpacity={.8}
