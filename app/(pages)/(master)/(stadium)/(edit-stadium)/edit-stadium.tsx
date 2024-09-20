@@ -282,36 +282,36 @@ const EditStadium = () => {
           <View>
             <Input
               labalVisible
-              label='Name'
-              placeholder='Enter name'
+              label='Maydon nomi'
+              placeholder='Maydon nomini kiriting'
               value={formValues.name}
               onChangeText={(value) => handleInputChange('name', value)}
             />
             <Input
               labalVisible
-              label='Count'
-              placeholder='Enter count'
+              label='Maydon soni'
+              placeholder='Maydon sonini kiriting'
               type='numeric'
               value={formValues.count}
               onChangeText={(value) => handleInputChange('count', value)}
             />
             <Input
               labalVisible
-              label='Price'
-              placeholder='Enter price'
+              label='Maydon narxi'
+              placeholder='Maydon narxini kiriting'
               type='numeric'
               value={formValues.price}
               onChangeText={(value) => handleInputChange('price', value)}
             />
             <Input
               labalVisible
-              label='Initial pay'
-              placeholder='Enter initial pay'
+              label="Boshlang'ich to'lov"
+              placeholder="Boshlang'ich to'lovni kiriting"
               type='numeric'
               value={formValues.initialPay}
               onChangeText={(value) => handleInputChange('initialPay', value)}
             />
-            <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
+            <Text style={[styles.label, { marginBottom: 8 }]}>Maydon manzili</Text>
             <View style={{ borderRadius: 20, overflow: 'hidden', height: screenHeight / 3, marginBottom: 12 }}>
               <MapView
                 provider={PROVIDER_DEFAULT}
@@ -335,8 +335,8 @@ const EditStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Width'
-                  placeholder='Enter width'
+                  label='Maydon eni'
+                  placeholder='Maydon enini kiriting'
                   type='numeric'
                   value={formValues.width}
                   onChangeText={(value) => handleInputChange('width', value)}
@@ -345,8 +345,8 @@ const EditStadium = () => {
               <View style={{ width: '47%' }}>
                 <Input
                   labalVisible
-                  label='Height'
-                  placeholder='Enter height'
+                  label='Maydon uzunligi'
+                  placeholder='Maydon uzunligini kiriting'
                   type='numeric'
                   value={formValues.height}
                   onChangeText={(value) => handleInputChange('height', value)}
@@ -354,10 +354,10 @@ const EditStadium = () => {
               </View>
             </View>
             <View style={{ marginBottom: 12 }}>
-              <Text style={[styles.label, { marginBottom: 8 }]}>Description</Text>
+              <Text style={[styles.label, { marginBottom: 8 }]}>Maydon ta'riffi</Text>
               <Textarea
                 onChangeText={(value) => handleInputChange('description', value)}
-                placeholder='Enter description'
+                placeholder="Maydon ta'riffini kiriting"
                 value={formValues.description}
               />
             </View>
@@ -365,7 +365,7 @@ const EditStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <FontAwesome5 name="toilet" size={24} color="white" />
-                  <Text style={[styles.label]}>Toilet</Text>
+                  <Text style={[styles.label]}>Hojathona</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, toilet: !details.toilet })}
@@ -377,7 +377,7 @@ const EditStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10, marginVertical: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <Entypo name="shop" size={24} color="white" />
-                  <Text style={[styles.label]}>Shop</Text>
+                  <Text style={[styles.label]}>Do'kon</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, shop: !details.shop })}
@@ -389,7 +389,7 @@ const EditStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10, marginBottom: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <MaterialIcons name="shower" size={24} color="white" />
-                  <Text style={[styles.label]}>Shower</Text>
+                  <Text style={[styles.label]}>Yuvinish honasi</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, shower: !details.shower })}
@@ -401,7 +401,7 @@ const EditStadium = () => {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>Start Time</Text>
+                <Text style={[styles.label]}>Maydon ochilish vaqti</Text>
                 <Pressable onPress={showStartPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${startTime.getHours()}:${startTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -414,7 +414,7 @@ const EditStadium = () => {
                 />
               </View>
               <View style={{ width: '47%' }}>
-                <Text style={[styles.label]}>End Time</Text>
+                <Text style={[styles.label]}>Maydon yopilishi vaqti</Text>
                 <Pressable onPress={showEndPicker} style={{ padding: 12, backgroundColor: colors.inDarkGreen, borderRadius: 10, marginTop: 10 }}>
                   <Text style={{ textAlign: 'center', color: colors.white, fontSize: 16 }}>{formatTime(`${endTime.getHours()}:${endTime.getMinutes()}`)}</Text>
                 </Pressable>
@@ -438,13 +438,13 @@ const EditStadium = () => {
                 />
               </View> */}
             </View>
-            <Text style={{ textAlign: 'center', color: colors.white, fontSize: 20, marginTop: 10 }}>Stadion images</Text>
+            <Text style={{ textAlign: 'center', color: colors.white, fontSize: 20, marginTop: 10 }}>Maydon rasmlari</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
               <View style={{ width: '47%' }}>
-                <Buttons title='Загрузить фото' onPress={pickImageFromGallery} />
+                <Buttons title='Rasm yuklash' onPress={pickImageFromGallery} />
               </View>
               <View style={{ width: '47%' }}>
-                <Buttons title='Сделать фото' onPress={pickImageFromCamera} />
+                <Buttons title='Rasm tushurish' onPress={pickImageFromCamera} />
               </View>
             </View>
             <View style={{ justifyContent: 'center' }}>
@@ -458,14 +458,14 @@ const EditStadium = () => {
               </View>
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='Сохранить' loading={isLoading} onPress={handleSubmit} />
+              <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={handleSubmit} />
             </View>
           </View>
         </TouchableWithoutFeedback >
       </ScrollView>
       <CenteredModal
         btnRedText="O'chirish"
-        btnWhiteText='Cancel'
+        btnWhiteText='Orqaga'
         isFullBtn
         isModal={isDelModal}
         toggleModal={toggleDelModal}
@@ -482,7 +482,7 @@ const EditStadium = () => {
           <Text
             style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
           >
-            Вы уверены, что хотите Udalit этот stadion?
+            Siz aniq bu maydoni o'chirmoqchimisiz?
           </Text>
         </View>
       </CenteredModal>
