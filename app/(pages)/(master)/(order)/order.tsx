@@ -25,6 +25,7 @@ import CenteredModal from "@/components/modal/sentralmodal";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import OrderCard from "@/components/cards/orderCard";
 import OrderStore from "@/helpers/stores/order/orderStore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
@@ -32,6 +33,8 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 export default function MasterOrder() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [role, setRole] = useState<any>('')
+
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const { OrderData, setOrderData } = OrderStore()
@@ -64,11 +67,14 @@ export default function MasterOrder() {
     useCallback(() => {
       OrdersDay.globalDataFunc();
       stadiums.globalDataFunc();
+      getRole()
     }, [])
   );
 
-  // console.log("orderData", OrderData);
-
+  async function getRole() {
+    let getrole = await AsyncStorage.getItem('role')
+    setRole(getrole)
+  }
 
   return (
     <SafeAreaView
@@ -105,24 +111,26 @@ export default function MasterOrder() {
           )}
         </View>
       </Layout>
+      <View style={{ padding: 16 ,backgroundColor: colors.darkGreen}}>
+        {role == 'MASTER' && <Buttons
+          onPress={() => {
+            if (stadiums.response && stadiums.response.length == 0) {
+              alert("avval ozingizga staduin qoshishingiz kerak");
+            }
+            if (stadiums.response && stadiums.response.length == 1) {
+              navigation.navigate("(pages)/(order)/(order-save)/order-save", {
+                id: stadiums.response[0].id,
+              });
+            }
+            if (stadiums.response && stadiums.response.length > 1) {
+              openModal();
+            }
+          }}
+          title="Bron qo'shish"
+          icon={<Entypo name="plus" size={24} color="white" />}
+        />}
+      </View>
       {/* Nima vazifa bajarishini tushunmadm shunchun kament qibquydm!!!!!!!!!!! */}
-      {/* <Buttons
-        onPress={() => {
-          if (stadiums.response && stadiums.response.length == 0) {
-            alert("avval ozingizga staduin qoshishingiz kerak");
-          }
-          if (stadiums.response && stadiums.response.length == 1) {
-            navigation.navigate("(pages)/(order)/(order-save)/order-save", {
-              id: stadiums.response[0].id,
-            });
-          }
-          if (stadiums.response && stadiums.response.length > 1) {
-            openModal();
-          }
-        }}
-        title="Bron qo'shish"
-        icon={<Entypo name="plus" size={24} color="white" />}
-      /> */}
       {/* <View style={{ marginBottom: 10 }}></View> */}
 
       <CenteredModal
@@ -160,7 +168,7 @@ export default function MasterOrder() {
                   label={`${index + 1}: ${res.name}`}
                   value={res.id}
                 />
-              ))}  
+              ))}
           </Picker>
           <Text style={{ color: "#fff", fontSize: 16 }}>
             Tanlangan stadion:
