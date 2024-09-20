@@ -245,7 +245,7 @@ const AddStadium = () => {
             />
             <Input
               labalVisible
-              label='Narxi'
+              label='Maydon narxi'
               placeholder='Maydon narxini kiriting'
               type='numeric'
               value={formValues.price}
@@ -294,7 +294,7 @@ const AddStadium = () => {
                 <Input
                   labalVisible
                   label='Maydon uzunligi'
-                  placeholder='Maydon uzunligi kiriting'
+                  placeholder='Maydon uzunligini kiriting'
                   type='numeric'
                   value={formValues.height}
                   onChangeText={(value) => handleInputChange('height', value)}
@@ -302,7 +302,7 @@ const AddStadium = () => {
               </View>
             </View>
             <View style={{ marginBottom: 12 }}>
-              <Text style={[styles.label, { marginBottom: 8 }]}>Maydon ta'riff</Text>
+              <Text style={[styles.label, { marginBottom: 8 }]}>Maydon ta'riffi</Text>
               <Textarea
                 onChangeText={(value) => handleInputChange('description', value)}
                 placeholder="Maydon ta'riffini kiriting"
@@ -313,7 +313,7 @@ const AddStadium = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                   <FontAwesome5 name="toilet" size={24} color="white" />
-                  <Text style={[styles.label]}>Hozathone</Text>
+                  <Text style={[styles.label]}>Hojathona</Text>
                 </View>
                 <Switch
                   onValueChange={() => setDetails({ ...details, toilet: !details.toilet })}
