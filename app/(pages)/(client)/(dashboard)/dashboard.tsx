@@ -75,8 +75,8 @@ const ClientDashboard = () => {
         setRole(await AsyncStorage.getItem("role"));
       };
 
-      GetNotificationCount.globalDataFunc();
       getConfig();
+      GetNotificationCount.globalDataFunc();
     }, [])
   );
 

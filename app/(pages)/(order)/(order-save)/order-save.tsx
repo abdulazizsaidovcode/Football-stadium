@@ -195,15 +195,15 @@ const OrderSave = () => {
             <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
 
             <ScrollView
-                refreshControl={
-                        <LottieRefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            lottieSource={require('../../../../assets/animation/Animation - ball-green.json')}
-                            lottieStyle={{ width: 100, height: 100 }}
-                        />
+                // refreshControl={
+                //         <LottieRefreshControl
+                //             refreshing={refreshing}
+                //             onRefresh={onRefresh}
+                //             lottieSource={require('../../../../assets/animation/Animation - ball-green.json')}
+                //             lottieStyle={{ width: 100, height: 100 }}
+                //         />
                  
-                }
+                // }
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: 30 }}>
                 <View>

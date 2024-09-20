@@ -36,7 +36,6 @@ export default function MasterOrder() {
   const [role, setRole] = useState<any>('')
 
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
   const { OrderData, setOrderData } = OrderStore()
 
   const userMee = useGlobalRequest(user_me, "GET");
@@ -48,6 +47,7 @@ export default function MasterOrder() {
   const OrdersDay = useGlobalRequest(order_day_master, "GET");
   const navigation = useNavigation<SettingsScreenNavigationProp>();
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, "GET");
+  const [selectedValue, setSelectedValue] = useState<any>('');
 
   const openModal = () => setIsModalVisible(!isModalVisible);
   const openRejectModal = () => setIsRejectModalVisible(!isRejectModalVisible);
@@ -147,6 +147,7 @@ export default function MasterOrder() {
           </Text>
           <Picker
             selectedValue={selectedValue}
+
             style={styles.picker}
             mode="dropdown"
             prompt="Stadionni tanlang"

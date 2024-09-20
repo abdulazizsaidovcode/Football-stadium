@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TextInput, StyleSheet, RefreshControl, Animated, SafeAreaView } from 'react-native';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 import Buttons from '@/components/button/button';
 import { colors } from '@/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
@@ -13,67 +13,67 @@ const Payment = () => {
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const { pay, setPay } = useOrderStory();
-    const lottieRef = useRef<LottieView>(null);
-    const paddingValue = useRef(new Animated.Value(0)).current; // Padding animation value
+    // const lottieRef = useRef<LottieView>(null);
+    // const paddingValue = useRef(new Animated.Value(0)).current; // Padding animation value
 
     const handleFirstNameChange = (name: string): void => {
         setPay(name);
     };
 
-    useEffect(() => {
-        // Dastlab Lottie animatsiyani to'xtating
-        lottieRef.current?.pause();
-    }, []);
+    // useEffect(() => {
+    //     // Dastlab Lottie animatsiyani to'xtating
+    //     lottieRef.current?.pause();
+    // }, []);
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
+    // const onRefresh = useCallback(() => {
+    //     setRefreshing(true);
 
-        // Refresh animation boshlanganda Lottie'ni o'ynatish
-        lottieRef.current?.play();
+    //     // Refresh animation boshlanganda Lottie'ni o'ynatish
+    //     lottieRef.current?.play();
 
-        Animated.timing(paddingValue, {
-            toValue: 50,
-            duration: 100,
-            useNativeDriver: false,
-        }).start(() => {
-            setTimeout(() => {
-                setRefreshing(false);
+    //     Animated.timing(paddingValue, {
+    //         toValue: 50,
+    //         duration: 100,
+    //         useNativeDriver: false,
+    //     }).start(() => {
+    //         setTimeout(() => {
+    //             setRefreshing(false);
 
-                // Refresh tugaganda Lottie'ni to'xtatish
-                lottieRef.current?.pause();
+    //             // Refresh tugaganda Lottie'ni to'xtatish
+    //             lottieRef.current?.pause();
 
-                Animated.timing(paddingValue, {
-                    toValue: 0,
-                    duration: 100,
-                    useNativeDriver: false,
-                }).start();
-            }, 1500); // Duration of the pull-to-refresh animation
-        });
-    }, [paddingValue]);
+    //             Animated.timing(paddingValue, {
+    //                 toValue: 0,
+    //                 duration: 100,
+    //                 useNativeDriver: false,
+    //             }).start();
+    //         }, 1500); // Duration of the pull-to-refresh animation
+    //     });
+    // }, [paddingValue]);
 
     return (
         <SafeAreaView style={styles.container}>
-            <LottieView
+            {/* <LottieView
                 source={require('../../../../assets/animation/Animation - ball-green.json')} // Path to your Lottie file
                 ref={lottieRef}
                 autoPlay={false}  // AutoPlay false qilib qo'yamiz
                 loop
                 style={styles.lottieAnimationTest}
-            />
+            /> */}
             <NavigationMenu name='qedir' />
             <ScrollView
                 style={{ flex: 1 }}
                 showsHorizontalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        tintColor="transparent" // Hides the default spinner
-                        colors={['transparent']} // Hides the default spinner on Android
-                    >
-                        <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>
-                    </RefreshControl>
-                }
+                // refreshControl={
+                //     <RefreshControl
+                //         refreshing={refreshing}
+                //         onRefresh={onRefresh}
+                //         tintColor="transparent" // Hides the default spinner
+                //         colors={['transparent']} // Hides the default spinner on Android
+                //     >
+                //         <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>
+                //     </RefreshControl>
+                // }
             >
                 <View style={styles.topSection}>
                     <Text style={styles.label}>{"so'mmani kiriting"}</Text>

@@ -5,18 +5,17 @@ import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 
 const UserInfo: React.FC = () => {
     const [isFild, setIsFild] = useState(false)
-    const [pending, setPending] = React.useState(false);
     const { role, firstName, setFirstName, lastName, setLastName, phoneNumber, setPhoneNumber } = useAuthStore();
     const navigate = useNavigation<any>();
 
     let info = {
         firstName: firstName,
         lastName: lastName,
-        phoneNumber: phoneNumber,
+        phoneNumber: "+998" + phoneNumber.split(' ').join(''),
     }
 
     const register = useGlobalRequest(`${auth_register}?ROLE_NAME=${role}`, 'POST', info)
@@ -29,9 +28,6 @@ const UserInfo: React.FC = () => {
         setLastName(name);
 
     };
-    const handlePhoneNumberChange = (number: string): void => {
-        setPhoneNumber(number);
-    };
 
     useEffect(() => {
         let check = lastName.trim() !== '' && firstName.trim() !== '' && phoneNumber.trim() !== ''
@@ -42,7 +38,9 @@ const UserInfo: React.FC = () => {
         if (register.response) {
             if (register.response.role === 'ROLE_MASTER') navigate.navigate('(tabs)/(master)');
             if (register.response.role === 'ROLE_CLIENT') navigate.navigate('(tabs)/(client)');
-
+            setFirstName('')
+            setPhoneNumber('')
+            setLastName('')
             async function setToken() {
                 await AsyncStorage.setItem('token', register.response.token)
                 await AsyncStorage.setItem('role', role)
@@ -50,10 +48,6 @@ const UserInfo: React.FC = () => {
             setToken()
         }
     }, [register.response])
-
-    console.log(register.response);
-    console.log(register.error);
-
 
     return (
         <View style={styles.container}>
@@ -77,26 +71,21 @@ const UserInfo: React.FC = () => {
                     onChangeText={handleLastNameChange}
                 />
                 {/* {lastNameError ? <Text style={styles.errorText}>{lastNameError}</Text> : null} */}
-                <TextInput
+                {/* <TextInput
                     style={styles.input}
                     placeholder={("phoneNuber")}
                     placeholderTextColor="#8A8A8A"
                     value={phoneNumber}
                     onChangeText={handlePhoneNumberChange}
-                />
+                /> */}
             </ScrollView>
             <View style={styles.bottomSection}>
-                {!pending ?
-                    <Buttons title={("Continue")}
-                        isDisebled={isFild}
-                        onPress={() => {
-                            register.globalDataFunc()
-                        }}
-                    /> :
-                    <Buttons
-                        title={("Continue")}
-                    />
-                }
+                <Buttons title={("Continue")}
+                    isDisebled={isFild}
+                    onPress={() => {
+                        register.globalDataFunc()
+                    }}
+                />
             </View>
         </View>
     );

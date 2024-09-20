@@ -1,6 +1,6 @@
 import React from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 
 interface LottieRefreshControlProps {
     refreshing: boolean;
@@ -24,12 +24,12 @@ const LottieRefreshControl: React.FC<LottieRefreshControlProps> = ({
         >
             {refreshing && (
                 <View style={styles.lottieContainer}>
-                    <LottieView
+                    {/* <LottieView
                         source={lottieSource}
                         autoPlay
                         loop
                         style={[styles.defaultLottieStyle, lottieStyle]}
-                    />
+                    /> */}
                 </View>
             )}
         </RefreshControl>
