@@ -111,7 +111,7 @@ export default function MasterOrder() {
           )}
         </View>
       </Layout>
-      <View style={{ padding: 16 ,backgroundColor: colors.darkGreen}}>
+      <View style={{ paddingHorizontal: 16, paddingVertical: 10, backgroundColor: colors.darkGreen }}>
         {role == 'MASTER' && <Buttons
           onPress={() => {
             if (stadiums.response && stadiums.response.length == 0) {
