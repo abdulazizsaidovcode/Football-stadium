@@ -8,6 +8,7 @@ import { colors } from '@/constants/Colors';
 import Buttons from '@/components/button/button';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Loading } from '@/components/loading/loading';
+import { Entypo } from '@expo/vector-icons';
 
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
@@ -51,7 +52,7 @@ const Stadium = () => {
         </ScrollView>
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
-        <Buttons title='+ Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
+        <Buttons icon={<Entypo name="plus" size={24} color="white" />} title='Add' onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
       </View>
     </SafeAreaView>
   );

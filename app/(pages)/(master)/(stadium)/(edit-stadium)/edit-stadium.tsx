@@ -203,7 +203,7 @@ const EditStadium = () => {
     setIsLoading(true)
     try {
       const config = await getConfig()
-      const { data } = await axios.post(`${stadium_get}?id=${id}`, payload, config || {});
+      const { data } = await axios.put(`${stadium_get}?id=${id}`, payload, config || {});
       if (data.data) {
         images.length === 0 && navigation.goBack();
         setFormValues({
