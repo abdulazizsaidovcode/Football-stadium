@@ -1,7 +1,7 @@
 
 
 import React, { useState, useCallback } from "react";
-import { SafeAreaView, StyleSheet, Platform } from "react-native";
+import { SafeAreaView, StyleSheet, Platform, View, Dimensions } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { MarkedDates } from "react-native-calendars/src/types";
 import moment from "moment";
@@ -16,6 +16,8 @@ export interface DateObject {
     year: number;
     timestamp: number;
 }
+
+const { width: screenWidth } = Dimensions.get('window')
 
 const CalendarGrafficEdit: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<MarkedDates>({});
@@ -57,19 +59,8 @@ const CalendarGrafficEdit: React.FC = () => {
         };
 
         setSelectedDate(newSelectedDate);
-        setCalendarDate(day.dateString); 
+        setCalendarDate(day.dateString);
     };
-
-    useFocusEffect(
-        useCallback(() => {
-            if (Platform.OS === 'ios') {
-                console.log('Running on iOS');
-            } else {
-                console.log('Running on Android');
-            }
-            return () => { }
-        }, [])
-    );
 
     const getMarkedDates = () => {
         const today = moment().format("YYYY-MM-DD");
@@ -91,7 +82,7 @@ const CalendarGrafficEdit: React.FC = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Calendar
                 style={styles.containerCall}
                 onDayPress={onDayPress}
@@ -120,7 +111,7 @@ const CalendarGrafficEdit: React.FC = () => {
                     textDayHeaderFontSize: 16
                 }}
             />
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -131,11 +122,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 30,
-        // paddingVertical: 10,
+        paddingVertical: 10,
 
     },
     containerCall: {
-        width: "120%",
+        width: screenWidth / 1.20,
         paddingHorizontal: 0
     }
 });
