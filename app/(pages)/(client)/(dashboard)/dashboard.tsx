@@ -178,7 +178,7 @@ const ClientDashboard = () => {
                             label="Поиск по имени"
                         />
                         <Text style={styles.subTitle}>
-                            Stadionlar
+                            Maydonlar
                         </Text>
                         <View style={{ marginTop: 16, gap: 10 }}>
                             {staduims.loading ? (
@@ -242,7 +242,10 @@ const ClientDashboard = () => {
                 isFullBtn
                 isModal={isLoginModal}
                 toggleModal={() => setIsLoginModal(false)}
-                onConfirm={() => navigation.navigate('(pages)/(auth)/(login)/login')}
+                onConfirm={() => {
+                    navigation.navigate('(pages)/(auth)/(login)/login')
+                    setIsLoginModal(false)
+                }}
             >
                 <View
                     style={{
