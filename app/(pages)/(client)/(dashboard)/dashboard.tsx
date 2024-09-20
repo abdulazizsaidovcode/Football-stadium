@@ -142,12 +142,7 @@ const ClientDashboard = () => {
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
                         <View style={styles.headerIcon}>
-                            <Ionicons
-                                name="bookmarks-sharp"
-                                size={24}
-                                color="white"
-                                onPress={() => navigation.navigate("(pages)/(favourity)/favourite")}
-                            />
+
                             <MaterialIcons
                                 name="history"
                                 onPress={() =>
@@ -177,11 +172,11 @@ const ClientDashboard = () => {
                                 setinputValue(text);
                             }}
                             label="Поиск по имени"
-                        />
+                        /> 
                         <Text style={styles.subTitle}>
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}>
+                        <View style={{ marginTop: 16, gap: 10 }}> 
                             {staduims.loading ? (
                                 <Loading />
                             ) : stadiumData && stadiumData.length > 0 ? (

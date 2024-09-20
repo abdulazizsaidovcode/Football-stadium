@@ -173,9 +173,7 @@ const OrderSave = () => {
         setUserPhone(name);
     };
 
-
     const rangeIndices = getRangeIndices();
-    // console.log(role, '12345');
 
     return (
         <SafeAreaView style={styles.container}>
