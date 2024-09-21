@@ -172,11 +172,11 @@ const ClientDashboard = () => {
                                 setinputValue(text);
                             }}
                             label="Поиск по имени"
-                        /> 
+                        />
                         <Text style={styles.subTitle}>
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}> 
+                        <View style={{ marginTop: 16, gap: 10 }}>
                             {staduims.loading ? (
                                 <Loading />
                             ) : stadiumData && stadiumData.length > 0 ? (
