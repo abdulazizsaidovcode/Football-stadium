@@ -1,5 +1,5 @@
 import { colors } from '@/constants/Colors';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
@@ -14,12 +14,22 @@ const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: stri
         return expiry.replace(/(\d{2})(\d{2})/, '$2/$1');
     };
 
+    // uzcard card numbers: 8600, 5614, 5440, 6262
+    // humo card numbers: 9860, 
+
     return (
         <View style={styles.cardContainer}>
             <View style={styles.topRow}>
-                {cardNumber.startsWith('8600') || cardNumber.startsWith('5614') ? <Image source={require('@/assets/images/uzcard.jpg')} style={styles.deleteIcon} /> :
+                {cardNumber.startsWith('8600') || cardNumber.startsWith('5614') || cardNumber.startsWith('5440') || cardNumber.startsWith('6262') ? <Image source={require('@/assets/images/uzcard.jpg')} style={styles.deleteIcon} /> :
                     <Image source={require('@/assets/images/humo.jpg')} style={styles.deleteIcon} />}
-                <AntDesign onPress={delOnPress} name="delete" size={25} color="white" />
+                <View style={{ flexDirection: 'row', gap: 10 }}>
+                    <AntDesign onPress={delOnPress} name="delete" size={25} color="white" />
+                    {main ?
+                        (<AntDesign name="checkcircle" size={25} color="white" />) :
+                        (<Entypo name="circle" size={25} color="white" />)
+                    }
+
+                </View>
             </View>
             <Text style={styles.cardNumber}>{formatCardNumber(cardNumber)}</Text>
             <View style={styles.cardDetails}>

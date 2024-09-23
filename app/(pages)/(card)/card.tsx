@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
@@ -9,6 +9,9 @@ import CreditCard from '@/components/cards/credit-card'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
 import { card } from '@/helpers/api/api'
 import CenteredModal from '@/components/modal/sentralmodal'
+import { Loading } from '@/components/loading/loading'
+
+const { height: screenHeight } = Dimensions.get('window')
 
 const Cards = () => {
     const navigation = useNavigation<any>();
@@ -16,6 +19,7 @@ const Cards = () => {
     const [isDelModal, setIsDelModal] = useState(false);
     const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
     const deleteCard = useGlobalRequest(`${card.split('/api/v1').join('')}/${cardId}`, 'DELETE');
+    const updateMainCard = useGlobalRequest(`${card.split('/api/v1').join('')}/update/main/${cardId}`, 'DELETE');
 
     useFocusEffect(
         useCallback(() => {
@@ -26,9 +30,9 @@ const Cards = () => {
     useFocusEffect(
         useCallback(() => {
             if (deleteCard.response) {
-                alert('aaaaaaaaaaaaaaaaaa')
                 cards.globalDataFunc();
                 toggleDelModal();
+                deleteCard.response
             }
         }, [deleteCard.response])
     );
@@ -42,7 +46,7 @@ const Cards = () => {
             </View>
             <ScrollView style={{ paddingHorizontal: 16 }}>
                 <View>
-                    {cards.response && cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
+                    {cards.loading ? <View style={{ height: screenHeight / 1.5 }}><Loading /></View> : cards.response && cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
                         <CreditCard
                             key={index}
                             cardExpiry={item.cardExpire}
