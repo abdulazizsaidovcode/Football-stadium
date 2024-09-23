@@ -1,5 +1,7 @@
 export interface RootStackParamList {
     "index": undefined;
+    "(pages)/(card)/(edit-card)/edit-card": undefined;
+    "(pages)/(card)/(add-card)/add-card": undefined;
     "(pages)/(favourity)/favourite": undefined;
     "(pages)/(master)/(stadium)/(add-stadium)/add-stadiumindex": undefined;
     "(pages)/(order)/(order-save)/order-save": any;

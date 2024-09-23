@@ -5,6 +5,7 @@ import { colors } from '@/constants/Colors';
 import MasterDashboardScreen from './dashboard';
 import MasterStadiumScreen from './stadium';
 import MasterOrdersScreen from './orders';
+import MasterCards from './card';
 
 function MasterTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -54,16 +55,16 @@ function MasterTabLayout() {
             )
           }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Profile"
-          component={MasterProfile}
+          component={MasterCards}
           options={{
-            title: "Profile",
+            title: "Card",
             tabBarIcon: ({ color }) => (
-              <Feather name="user" size={27} color={color} />
+              <Entypo name="credit-card" size={30} color={color} />
             )
-          }} */}
-        {/* /> */}
+          }}
+        />
       </Tab.Navigator>
     </>
   );

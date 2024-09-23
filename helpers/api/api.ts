@@ -1,4 +1,4 @@
-export const BASE_URL: string = 'https://app.coinbyitca.uz/api/v1/';
+export const BASE_URL: string = 'http://134.122.77.107:8085/api/v1/';
 
 // AUTH
 export const auth_login: string = `${BASE_URL}auth/login`;
@@ -36,25 +36,23 @@ export const order_day_master: string = `${BASE_URL}order/today`;
 export const statistics_for_year: string = `${BASE_URL}statistic/for/master/year`;
 
 // order 
-
 export const order_create: string = `${BASE_URL}order/create-order`
-// History 
 
+// History 
 export const order_history: string = `${BASE_URL}order/history`;
 export const order_today: string = `${BASE_URL}order/today`;
 
 // favourite 
-
 export const favourite_add: string = `${BASE_URL}favourite/save`;
 export const favourite_get: string = `${BASE_URL}favourite/list`;
 export const favourite_delate: string = `${BASE_URL}favourite/delete`;
 
 
 // Notification
-
 export const get_notification: string = `${BASE_URL}notification/my-notifications`;
 export const get_notification_cout: string = `${BASE_URL}notification/count-unread-notifications`;
 export const delete_notification: string = `${BASE_URL}notification/soft-delete`;
 export const isread_notification: string = `${BASE_URL}notification/mark-as-read`;
 
-
+// Card
+export const card: string = `${BASE_URL}card`;
