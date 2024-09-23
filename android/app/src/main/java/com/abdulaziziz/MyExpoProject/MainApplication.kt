@@ -2,6 +2,7 @@ package uz.sfera.stadium
 
 import android.app.Application
 import android.content.res.Configuration
+import com.airbnb.lottie.LottiePackage; // Lottie importi
 
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -16,7 +17,13 @@ import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 
 class MainApplication : Application(), ReactApplication {
-
+  @Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+            new LottiePackage() // Lottie package qo'shish
+        );
+    }
   override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
         this,
         object : DefaultReactNativeHost(this) {

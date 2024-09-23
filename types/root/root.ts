@@ -10,7 +10,6 @@ export interface RootStackParamList {
     "(tabs)/(client)": undefined;
     "(tabs)/(master)": undefined;
     "(pages)/(master)/master": undefined;
-    "(pages)/(auth)/(login)/login": undefined;
     "(pages)/(auth)/(master)/register": undefined;
     "(pages)/(auth)/(client)/register": undefined;
     "(pages)/(auth)/(check-code)/check-code": undefined;
@@ -18,4 +17,6 @@ export interface RootStackParamList {
     "(pages)/(order)/(payment)/payment": undefined;
     "(pages)/(master)/(order)/order": undefined
     "(pages)/(master)/(order)/orderDetail": undefined
+    "(pages)/(auth)/(login)/login": undefined
+
 }
