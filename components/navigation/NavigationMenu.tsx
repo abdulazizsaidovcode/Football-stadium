@@ -4,6 +4,7 @@ import { useNavigation } from "expo-router";
 import { INavigationProps } from "@/types/navigation/navigation";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
+import { colors } from '@/constants/Colors';
 
 const NavigationMenu = ({ toggleModal, name, deleteIcon, all = false, delOnPress, editOnPress, addOnPress, navigate }: INavigationProps) => {
     const navigation = useNavigation();
@@ -31,7 +32,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         // marginHorizontal: 7,
-        marginVertical: 20,
+        paddingVertical: 20,
+        backgroundColor: colors.darkGreen
     },
     title: {
         color: 'white',

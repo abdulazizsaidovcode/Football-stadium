@@ -1,5 +1,5 @@
 import { Image, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 import Buttons from '@/components/button/button';
@@ -8,6 +8,7 @@ import { RootStackParamList } from '@/types/root/root';
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { auth_send_code, user_found } from '@/helpers/api/api';
+import { useFocusEffect } from 'expo-router';
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
@@ -23,8 +24,6 @@ const Login = () => {
   const [isPhoneNumberComplete, setIsPhoneNumberComplete] = useState(false); // New state to track phone number completeness
 
   useEffect(() => {
-    console.log("data kelyapti", sendCode);
-    
     if (sendCode.response) {
       navigation.navigate('(pages)/(auth)/(check-code)/check-code');
     }
@@ -40,16 +39,22 @@ const Login = () => {
 
     setPhoneNumber(formattedNumber);
 
-    // Check if phone number is complete (12 characters including spaces)
-    setIsPhoneNumberComplete(formattedNumber.length === 12);
+    setIsPhoneNumberComplete(formattedNumber.length == 12);
   };
 
-  useEffect(() => {
-    if (isPhoneNumberComplete) {
-      userFound.globalDataFunc();
+  useFocusEffect(
+    useCallback(() => {
+      if (isPhoneNumberComplete) {
+        userFound.globalDataFunc();
+      }
+    }, [phoneNumber])
+  )
+
+  useFocusEffect(
+    useCallback(() => {
       setStatus(userFound.response)
-    }
-  }, [isPhoneNumberComplete]);
+    }, [userFound.response])
+  )
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -76,7 +81,7 @@ const Login = () => {
         </View>
         {isPhoneNumberComplete && (
           <View style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
-            {userFound.response === true ? (
+            {status === true ? (
               <Buttons
                 title="Kirish"
                 onPress={() => sendCode.globalDataFunc()}

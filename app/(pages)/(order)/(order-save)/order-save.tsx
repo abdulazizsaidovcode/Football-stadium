@@ -20,6 +20,7 @@ import calenderStory from '@/helpers/stores/order/graficWorkStore'
 import { useAuthStore } from '@/helpers/stores/auth/auth-store'
 import LoadingButtons from '@/components/button/loadingButton'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import LottieRefreshControl from '@/components/lotie/refresh'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -30,6 +31,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 const OrderSave = () => {
     const [role, setRole] = useState<any>('')
     const [userPhone, setUserPhone] = useState<string>('')
+    const [refreshing, setRefreshing] = useState(false);
     const route = useRoute();
     const { id } = route.params as { id: string | number };
     const navigation = useNavigation<SettingsScreenNavigationProp>();
@@ -39,6 +41,14 @@ const OrderSave = () => {
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
     const { calendarDate } = calenderStory()
     const { phoneNumber } = useAuthStore()
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+            // Add refresh logic here
+        }, 1500);
+    }, []);
 
     let data = {
         "stadiumId": id,
@@ -82,7 +92,7 @@ const OrderSave = () => {
                     // console.log("Calculation resulted in NaN");
                 }
             }
-            
+
         }, [selectedTimeSlots, freeTime])
     )
     async function isLogin() {
@@ -183,26 +193,36 @@ const OrderSave = () => {
     return (
         <SafeAreaView style={styles.container}>
             <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
-            <View>
-                <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
-                <ScrollView
-                    horizontal={true}
-                    contentContainerStyle={{ paddingBottom: 10, gap: 5 }}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={34} color="white" />} />
-                    <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
-                    <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={34} color="white" />} />
-                </ScrollView>
-                <View style={styles.imageRow}>
-                    {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
-                        <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
-                    ))}
-                </View>
-            </View>
+
             <ScrollView
+                // refreshControl={
+                //         <LottieRefreshControl
+                //             refreshing={refreshing}
+                //             onRefresh={onRefresh}
+                //             lottieSource={require('../../../../assets/animation/Animation - ball-green.json')}
+                //             lottieStyle={{ width: 100, height: 100 }}
+                //         />
+                 
+                // }
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: 30 }}>
+                <View>
+                    <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={{ paddingBottom: 10, gap: 5 }}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={34} color="white" />} />
+                        <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
+                        <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={34} color="white" />} />
+                    </ScrollView>
+                    <View style={styles.imageRow}>
+                        {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
+                            <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
+                        ))}
+                    </View>
+                </View>
                 <Text style={styles.timeTitle}>Kunni tanlash</Text>
                 <CalendarGrafficEdit />
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>

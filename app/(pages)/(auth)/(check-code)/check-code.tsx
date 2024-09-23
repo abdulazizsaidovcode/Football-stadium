@@ -40,18 +40,25 @@ const CheckCode = () => {
     useEffect(() => {
         const confirm = async () => {
             if (checkCode.response !== false) {
-                const token = checkCode.response.token;
-                const role = checkCode.response.role;
-                await AsyncStorage.setItem('token', token);
-                await AsyncStorage.setItem('role', role === 'ROLE_CLIENT' ? 'CLIENT' : 'MASTER');
-                status === false ? navigation.navigate('(pages)/(auth)/(register)/register') : checkCode.response.role === 'ROLE_CLIENT' ? navigation.navigate('(tabs)/(client)') : navigation.navigate('(tabs)/(master)')
-                setPhoneNumber('');
-                setCode(['', '', '', ''])
+                if (status === false) {
+                    console.log('too register');
+                    navigation.navigate('(pages)/(auth)/(register)/register')
+                    setCode(['', '', '', ''])
+                } else {
+                    console.log('too login');
+                    const token = checkCode.response.token;
+                    const role = checkCode.response.role;
+                    await AsyncStorage.setItem('token', token);
+                    await AsyncStorage.setItem('role', role === 'ROLE_CLIENT' ? 'CLIENT' : 'MASTER');
+                    role === 'ROLE_CLIENT' ? navigation.navigate('(tabs)/(client)') : navigation.navigate('(tabs)/(master)')
+                    setPhoneNumber('');
+                    setCode(['', '', '', ''])
+                }
             }
         }
 
         confirm();
-    }, [checkCode.response])
+    }, [checkCode.response]);
 
     useEffect(() => {
         if (code.every(digit => digit !== '')) {
