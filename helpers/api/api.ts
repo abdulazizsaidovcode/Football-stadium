@@ -56,3 +56,4 @@ export const isread_notification: string = `${BASE_URL}notification/mark-as-read
 
 // Card
 export const card: string = `${BASE_URL}card`;
+export const check_card: string = `${BASE_URL}card/check-code`;

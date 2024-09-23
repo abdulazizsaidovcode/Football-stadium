@@ -1,4 +1,4 @@
-import Cards from '@/app/(pages)/(card)/check-card'
+import Cards from '@/app/(pages)/(card)/card'
 import React from 'react'
 
 const MasterCards = () => {

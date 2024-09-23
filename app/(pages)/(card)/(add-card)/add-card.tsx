@@ -8,11 +8,13 @@ import Buttons from '@/components/button/button'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
 import { card } from '@/helpers/api/api'
 import { useAuthStore } from '@/helpers/stores/auth/auth-store'
+import { useNavigation } from '@react-navigation/native'
 
 const AddCard = () => {
+    const navigation = useNavigation<any>()
     const [cardNumber, setCardNumber] = useState('');
     const [cardExpire, setEardExpire] = useState('');
-    const { } = useAuthStore()
+    const { setPhoneNumber } = useAuthStore()
     const addCard = useGlobalRequest(card.split('/api/v1').join(''), 'POST', { cardNumber: cardNumber.split(' ').join(''), cardExpire: cardExpire.split('/').reverse().join(''), main: true })
     const formatCardNumber = (text: string) => {
         return text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
@@ -26,11 +28,12 @@ const AddCard = () => {
 
     useEffect(() => {
         if (addCard.response) {
-            console.log(addCard.response);
-        } else {
-            console.log(addCard.error);
+            setPhoneNumber(addCard.response);
+            setCardNumber('')
+            setEardExpire('')
+            navigation.navigate('(pages)/(card)/(check-card)/check-card')
         }
-    }, [addCard.response, addCard.error])
+    }, [addCard.response])
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

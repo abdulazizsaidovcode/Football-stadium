@@ -163,7 +163,7 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-          name="(pages)/(card)/(check-card)/check-card"
+            name="(pages)/(card)/(check-card)/check-card"
             component={CheckCard}
             options={{ headerShown: false }}
           />
