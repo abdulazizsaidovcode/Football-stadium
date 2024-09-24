@@ -10,6 +10,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { Colors, colors } from "@/constants/Colors";
 import {
+    AntDesign,
     Entypo,
     FontAwesome,
     FontAwesome6,
@@ -34,6 +35,8 @@ import StadiumCard from "@/components/cards/StadiumCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
 import useFavoutiteOrders from "@/helpers/stores/favourite/favourite";
+import CenteredModal from "@/components/modal/sentralmodal";
+import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -45,6 +48,7 @@ const ClientDashboard = () => {
     const [token, setToken] = useState<string | null>("");
     const [stadiumData, setstadiumData] = useState<any>(null);
     const [inputValue, setinputValue] = useState<string | null>("");
+    const { isLoginModal, setIsLoginModal } = useAuthStore();
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
     const staduims = useGlobalRequest(
@@ -142,7 +146,6 @@ const ClientDashboard = () => {
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
                         <View style={styles.headerIcon}>
-
                             <MaterialIcons
                                 name="history"
                                 onPress={() =>
@@ -232,6 +235,32 @@ const ClientDashboard = () => {
                     </View>
                 </View>
             </Modal>
+            <CenteredModal
+                btnRedText="Ro'yhatda o'tish"
+                btnWhiteText="Keyinroq"
+                isFullBtn
+                isModal={isLoginModal}
+                toggleModal={() => setIsLoginModal(false)}
+                onConfirm={() => {
+                    navigation.navigate('(pages)/(auth)/(login)/login')
+                    setIsLoginModal(false)
+                }}
+            >
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                    }}
+                >
+                    <AntDesign name="login" size={80} color={colors.lightGreen} />
+                    <Text
+                        style={{ fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10 }}
+                    >
+                        Tizmdan foydalanish uchun ro'yhatsan o'ting
+                    </Text>
+                </View>
+            </CenteredModal>
         </SafeAreaView>
     );
 };

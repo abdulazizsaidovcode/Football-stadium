@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     cardHolder: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#fff',
         textTransform: 'uppercase',
     },

@@ -44,7 +44,7 @@ const Cards = () => {
             <View style={{ padding: 10 }}>
                 <Text style={{ color: colors.white, fontSize: 25 }}>Kartalar</Text>
             </View>
-            <ScrollView style={{ paddingHorizontal: 16 }}>
+            <ScrollView>
                 <View>
                     {cards.loading ? <View style={{ height: screenHeight / 1.5 }}><Loading /></View> : cards.response && cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
                         <CreditCard
