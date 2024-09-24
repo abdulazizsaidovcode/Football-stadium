@@ -1,5 +1,5 @@
 import { colors } from '@/constants/Colors';
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import ClientDashboard from './dashboard';
@@ -7,6 +7,7 @@ import ClientProfile from './profile';
 import OrdersDay from './ordersDay';
 import MasterOrder from '@/app/(pages)/(master)/(order)/order';
 import Favourite from '@/app/(pages)/(favourity)/favourite';
+import ClientCards from './card';
 
 export default function ClientTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -56,11 +57,21 @@ export default function ClientTabLayout() {
         }}
       />
       <Tab.Screen
+        name="Card"
+        component={ClientCards}
+        options={{
+          title: "Cards",
+          tabBarIcon: ({ color }) => (
+            <Entypo name="credit-card" size={30} color={color} />
+          )
+        }}
+      />
+      <Tab.Screen
         name="Favourite"
         component={Favourite}
         options={{
           title: "Favourite",
-          tabBarIcon: ({ color }) => ( 
+          tabBarIcon: ({ color }) => (
             <Ionicons name="bookmarks-sharp" size={24} color={color} />
           )
         }}
