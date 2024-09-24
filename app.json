@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "MyExpoProject",
+    "slug": "booking-stadium",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -62,8 +62,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b8a3eb8a-b8a8-4fab-a01f-86096536e247"
+        "projectId": "38bc12a0-ee55-47b9-9f1a-37535826e96f"
       }
-    }
+    },
+    "owner": "itca_team"
   }
 }
