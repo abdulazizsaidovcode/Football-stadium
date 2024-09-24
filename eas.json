@@ -10,9 +10,18 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "ios": {
+      }
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "abdulazizsaidov5599@icloud.com",
+        "ascAppId": "6711337537",
+        "appleTeamId": "QGWH4H5H2J"
+      }
+    }
   }
 }
