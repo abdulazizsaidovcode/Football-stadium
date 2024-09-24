@@ -59,7 +59,12 @@ const AddCard = () => {
                     </View>
                 </View>
                 <View style={styles.btnContainer}>
-                    <Buttons loading={addCard.loading} isDisebled={cardExpire.length === 5 && cardNumber.length === 19} title="Maydon qo'shish" onPress={addCard.globalDataFunc} />
+                    <Buttons
+                        title="Kartani qo'shish"
+                        loading={addCard.loading}
+                        isDisebled={cardExpire.length === 5 && cardNumber.length === 19}
+                        onPress={addCard.globalDataFunc}
+                    />
                 </View>
             </SafeAreaView>
         </TouchableWithoutFeedback>

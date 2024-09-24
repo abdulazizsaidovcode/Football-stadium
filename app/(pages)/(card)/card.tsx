@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
 import Buttons from '@/components/button/button'
-import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Entypo, Feather, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import CreditCard from '@/components/cards/credit-card'
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
@@ -46,19 +46,37 @@ const Cards = () => {
             </View>
             <ScrollView>
                 <View>
-                    {cards.loading ? <View style={{ height: screenHeight / 1.5 }}><Loading /></View> : cards.response && cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
-                        <CreditCard
-                            key={index}
-                            cardExpiry={item.cardExpire}
-                            cardNumber={item.cardNumber}
-                            main={item.main}
-                            owner={item.owner}
-                            delOnPress={() => {
-                                toggleDelModal()
-                                setCardId(item.id)
-                            }}
-                        />
-                    ))}
+                    {cards.loading ?
+                        (
+                            <View style={{ height: screenHeight / 1.5 }}>
+                                <Loading />
+                            </View>
+                        )
+                        : (
+                            cards.response ?
+                                (
+                                    cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
+                                        <CreditCard
+                                            key={index}
+                                            cardExpiry={item.cardExpire}
+                                            cardNumber={item.cardNumber}
+                                            main={item.main}
+                                            owner={item.owner}
+                                            delOnPress={() => {
+                                                toggleDelModal()
+                                                setCardId(item.id)
+                                            }}
+                                        />
+                                    ))
+                                ) : (
+                                    <View style={{ height: screenHeight / 1.5, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Feather name="credit-card" size={70} color="white" />
+                                        <Text style={{ color: colors.white, fontSize: 20 }}>Siz toʻlov kartasini qoʻshmagansiz</Text>
+                                        <Text style={{ color: '#828282', fontSize: 14, textAlign: 'center' }}>Ilova orqali tez va oson toʻlovlarni amalga oshirish uchun karta qoʻshing</Text>
+                                    </View>
+                                )
+                        )
+                    }
                 </View>
             </ScrollView>
             <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
