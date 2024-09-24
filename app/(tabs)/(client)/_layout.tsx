@@ -46,7 +46,7 @@ export default function ClientTabLayout() {
           )
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MasterOrder"
         component={MasterOrder}
         options={{
@@ -55,7 +55,7 @@ export default function ClientTabLayout() {
             <MaterialCommunityIcons name="clipboard-list" size={27} color={color} />
           )
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Card"
         component={ClientCards}
