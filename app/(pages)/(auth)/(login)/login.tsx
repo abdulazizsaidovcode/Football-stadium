@@ -59,8 +59,8 @@ const Login = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <NavigationMenu name=''/>
       <SafeAreaView style={styles.container}>
+        <NavigationMenu name='' />
         <View style={{ marginTop: 50 }}>
           <Text style={styles.title}>Ваш номер телефона</Text>
           <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
