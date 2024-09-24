@@ -11,7 +11,12 @@
       "distribution": "internal"
     },
     "production": {
-      "ios": {
+      "ios": {},
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "API_BASE_URL": "https://app.coinbyitca.uz/swagger-ui/index.html/"
       }
     }
   },
