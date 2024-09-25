@@ -21,7 +21,7 @@ const Payment = () => {
     const navigation = useNavigation<any>();
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const { pay, setPay } = useOrderStory();
+    const { pay, setPay, setCardExpire, setCardNumber } = useOrderStory();
     const [cardId, setCardId] = useState('')
     const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
 
@@ -36,8 +36,23 @@ const Payment = () => {
             cards.globalDataFunc()
         }, [])
     );
+    const selectCard = (id: string) => {
+        console.log(cardId, '1');
+        console.log(id, 2);
+
+        if (cardId !== id) {
+            setCardId(id)
+            let card = cards.response.find((item: any) => item.id == id)
+            setCardExpire(card.cardExpire)
+            setCardNumber(card.cardNumber)
+        } else if (cardId == id) {
+            setCardId('')
+        }
+    }
     console.log(cards.loading);
-console.log(cardId);
+    console.log(cardId);
+    console.log(cards.response);
+
 
 
 
@@ -99,8 +114,9 @@ console.log(cardId);
                 <View style={styles.topSection}>
                     <Text style={styles.label}>{"so'mmani kiriting"}</Text>
                     <TextInput
+                        editable={!!cardId}
                         keyboardType='numeric'
-                        style={styles.input}
+                        style={[styles.input, { backgroundColor: cardId == '' ? 'gray' : colors.inDarkGreen }]}
                         placeholder={("so'mmani kiriting")}
                         placeholderTextColor="#FFF"
                         value={pay}
@@ -122,11 +138,9 @@ console.log(cardId);
                                             key={index}
                                             cardExpiry={item.cardExpire}
                                             cardNumber={item.cardNumber}
-                                            main={item.main}
+                                            main={cardId ? true : false}
                                             owner={item.owner}
-                                            delOnPress={() => {
-                                                setCardId(item.id)
-                                            }}
+                                            onMainSelect={() => selectCard(item.id)}
                                         />
                                     ))
                                 ) : (

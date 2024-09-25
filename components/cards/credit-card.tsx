@@ -3,7 +3,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: string, owner: string, delOnPress: () => void, onMainSelect: () => void }> = ({ cardExpiry, cardNumber, main, owner, delOnPress, onMainSelect }) => {
+const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: string, owner: string, delOnPress?: () => void, onMainSelect?: () => void }> = ({ cardExpiry, cardNumber, main, owner, delOnPress, onMainSelect }) => {
     const formatCardNumber = (number: string) => {
         return number.replace(/(\d{4})(?=\d)/g, '$1 ');
     };
@@ -21,7 +21,7 @@ const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: stri
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                     <AntDesign onPress={delOnPress} name="delete" size={25} color="white" />
                     {main ?
-                        (<AntDesign name="checkcircle" size={25} color="white" />) :
+                        (<AntDesign name="checkcircle" size={25} color="white" onPress={onMainSelect} />) :
                         (<Entypo name="circle" size={25} color="white" onPress={onMainSelect} />)  // Update main card on selection
                     }
                 </View>

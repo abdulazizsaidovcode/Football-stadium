@@ -1,6 +1,7 @@
 import {
     BackHandler,
     Modal,
+    RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
@@ -52,6 +53,8 @@ const ClientDashboard = () => {
     const { isLoginModal, setIsLoginModal } = useAuthStore();
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
+    const [refreshing, setRefreshing] = React.useState(false);
+
     const staduims = useGlobalRequest(
         inputValue && inputValue.trim() !== ""
             ? `${stadium_search}?name=${inputValue}`
@@ -134,11 +137,22 @@ const ClientDashboard = () => {
         hideModal();
     };
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        staduims.globalDataFunc();
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             <ScrollView
-
+                // contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing && !staduims.response} onRefresh={onRefresh} />
+                }
                 style={{ paddingHorizontal: 16 }}>
                 {role && token && (
                     <View style={styles.header}>
@@ -179,7 +193,9 @@ const ClientDashboard = () => {
                         </Text>
                         <View style={{ marginVertical: 16, gap: 10 }}>
                             {staduims.loading ? (
-                                <Loading />
+                                <View>
+                                    {!refreshing && <Loading />}
+                                </View>
                             ) : stadiumData && stadiumData.length > 0 ? (
                                 stadiumData.map((item: StadiumTypes, index: number) => (
                                     <StadiumCard
