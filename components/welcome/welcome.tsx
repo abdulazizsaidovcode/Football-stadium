@@ -9,7 +9,7 @@ import { RootStackParamList } from "@/types/root/root";
 // import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
 import { FontAwesome } from "@expo/vector-icons";
-import * as SecureStore from "expo-secure-store";
+// import * as SecureStore from "expo-secure-store";
 import { colors } from "@/constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import { useAuthStore } from "@/helpers/stores/auth/auth-store";
@@ -29,7 +29,7 @@ const Welcome: React.FC = () => {
 
     const changeLanguage = async (lng: string) => {
         // i18n.changeLanguage(lng);
-        await SecureStore.setItemAsync("selectedLanguage", lng);
+        // await SecureStore.setItemAsync("selectedLanguage", lng);
         // setLanguage(lng);
     };
 

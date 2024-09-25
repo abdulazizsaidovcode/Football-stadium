@@ -1,4 +1,4 @@
-package uz.sfera.com
+package uz.sfera.stadium
 
 import android.app.Application
 import android.content.res.Configuration

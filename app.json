@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "stadium",
+    "slug": "stadium-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -52,9 +52,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "7f50d147-91c4-490a-a10d-38927e4577a7"
+        "projectId": "6826ac0f-1868-4986-a948-b35be7c9afbd"
       }
     },
-    "owner": "alisher09"
+    "owner": "tolipov0000"
   }
 }

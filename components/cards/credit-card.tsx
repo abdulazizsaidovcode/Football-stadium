@@ -3,32 +3,27 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: string, owner: string, delOnPress: () => void }> = ({ cardExpiry, cardNumber, main, owner, delOnPress }) => {
-    // Format the card number: 0000000000000000 -> 0000 0000 0000 0000
+const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: string, owner: string, delOnPress: () => void, onMainSelect: () => void }> = ({ cardExpiry, cardNumber, main, owner, delOnPress, onMainSelect }) => {
     const formatCardNumber = (number: string) => {
         return number.replace(/(\d{4})(?=\d)/g, '$1 ');
     };
 
-    // Format the expiry date: 0000 -> 00/00
     const formatExpiryDate = (expiry: string) => {
         return expiry.replace(/(\d{2})(\d{2})/, '$2/$1');
     };
 
-    // uzcard card numbers: 8600, 5614, 5440, 6262
-    // humo card numbers: 9860, 
-
     return (
         <View style={styles.cardContainer}>
             <View style={styles.topRow}>
-                {cardNumber.startsWith('8600') || cardNumber.startsWith('5614') || cardNumber.startsWith('5440') || cardNumber.startsWith('6262') ? <Image source={require('@/assets/images/uzcard.jpg')} style={styles.deleteIcon} /> :
+                {cardNumber.startsWith('8600') || cardNumber.startsWith('5614') || cardNumber.startsWith('5440') || cardNumber.startsWith('6262') ?
+                    <Image source={require('@/assets/images/uzcard.jpg')} style={styles.deleteIcon} /> :
                     <Image source={require('@/assets/images/humo.jpg')} style={styles.deleteIcon} />}
                 <View style={{ flexDirection: 'row', gap: 10 }}>
                     <AntDesign onPress={delOnPress} name="delete" size={25} color="white" />
                     {main ?
                         (<AntDesign name="checkcircle" size={25} color="white" />) :
-                        (<Entypo name="circle" size={25} color="white" />)
+                        (<Entypo name="circle" size={25} color="white" onPress={onMainSelect} />)  // Update main card on selection
                     }
-
                 </View>
             </View>
             <Text style={styles.cardNumber}>{formatCardNumber(cardNumber)}</Text>

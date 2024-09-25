@@ -15,6 +15,7 @@ import {
     FontAwesome,
     FontAwesome6,
     Ionicons,
+    MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -70,7 +71,7 @@ const ClientDashboard = () => {
 
             getConfig();
         }, [])
-    );    
+    );
 
     useFocusEffect(
         useCallback(() => {
@@ -101,7 +102,7 @@ const ClientDashboard = () => {
             } else if (staduims.error) {
                 setstadiumData(null);
             }
-        }, [staduims.error, staduims.response,userLocation?.coords?.latitude])
+        }, [staduims.error, staduims.response, userLocation?.coords?.latitude])
     );
 
     useFocusEffect(
@@ -115,14 +116,9 @@ const ClientDashboard = () => {
     );
 
     const logOut = async () => {
-        // Clear AsyncStorage token and role
         await AsyncStorage.removeItem("token");
         await AsyncStorage.removeItem("role");
-        // Navigate to the Login page
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "(pages)/(login)/login" }], // Replace with your login route
-        });
+        navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
     };
 
     const showModal = () => {
@@ -141,9 +137,9 @@ const ClientDashboard = () => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
-            <ScrollView 
-            
-            style={{ paddingHorizontal: 16 }}>
+            <ScrollView
+
+                style={{ paddingHorizontal: 16 }}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
@@ -181,7 +177,7 @@ const ClientDashboard = () => {
                         <Text style={styles.subTitle}>
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}>
+                        <View style={{ marginVertical: 16, gap: 10 }}>
                             {staduims.loading ? (
                                 <Loading />
                             ) : stadiumData && stadiumData.length > 0 ? (
@@ -211,32 +207,29 @@ const ClientDashboard = () => {
                     </View>
                 </View>
             </ScrollView>
-            <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={hideModal}
+            <CenteredModal
+                isModal={isModalVisible}
+                isFullBtn
+                btnRedText='Logout'
+                btnWhiteText='Cancel'
+                toggleModal={hideModal}
+                onConfirm={confirmLogOut}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                onPress={confirmLogOut}
-                                style={styles.confirmButton}
-                            >
-                                <Text style={styles.buttonText}>да</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={hideModal}
-                                style={styles.cancelButton}
-                            >
-                                <Text style={styles.buttonText}>нет</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                    }}
+                >
+                    <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+                    <Text
+                        style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
+                    >
+                        Siz aniq tizimdan chiqmoqchimisz ?
+                    </Text>
                 </View>
-            </Modal>
+            </CenteredModal>
             <CenteredModal
                 btnRedText="Ro'yhatda o'tish"
                 btnWhiteText="Keyinroq"
