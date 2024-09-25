@@ -125,10 +125,6 @@ const OrderSave = () => {
         }
     }, [CreateOreder.response])
 
-    if (stadium.loading) {
-        return <Loading />
-    }
-
     console.log(freeTimeRes.response, 1);
     console.log(freeTimeRes.error, 2);
     console.log(id, 3);
@@ -281,7 +277,7 @@ const OrderSave = () => {
                         />
                     </View>
                 }
-                <View style={styles.payCard}>
+                {role !== 'MASTER' && <View style={styles.payCard}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.timeTitle}>Kutilayotgan to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
                         {creasePay > 1 &&
@@ -301,7 +297,7 @@ const OrderSave = () => {
                         :
                         <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
                     }
-                </View>
+                </View>}
                 {!pay && <Buttons
                     title="To'lovni so'mmani kiritish" onPress={() => {
                         navigation.navigate('(pages)/(order)/(payment)/payment')

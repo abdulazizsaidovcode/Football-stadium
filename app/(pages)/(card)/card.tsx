@@ -38,6 +38,7 @@ const Cards = () => {
     );
 
     const toggleDelModal = () => setIsDelModal(!isDelModal)
+    console.log(cards.error);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -53,7 +54,7 @@ const Cards = () => {
                             </View>
                         )
                         : (
-                            cards.response ?
+                            cards.response && cards.response.length > 0 ?
                                 (
                                     cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
                                         <CreditCard

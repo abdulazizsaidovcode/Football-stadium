@@ -101,7 +101,7 @@ const ClientDashboard = () => {
             } else if (staduims.error) {
                 setstadiumData(null);
             }
-        }, [staduims.error, staduims.response])
+        }, [staduims.error, staduims.response,userLocation?.coords?.latitude])
     );
 
     useFocusEffect(
@@ -141,7 +141,9 @@ const ClientDashboard = () => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
-            <ScrollView style={{ paddingHorizontal: 16 }}>
+            <ScrollView 
+            
+            style={{ paddingHorizontal: 16 }}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
