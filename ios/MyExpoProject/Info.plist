@@ -46,27 +46,24 @@
 
     <!-- Camera Access -->
     <key>NSCameraUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your camera for capturing photos or videos.</string>
+    <string>Need camera access for uploading images</string>
+
 
     <!-- Location Access -->
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location at all times, even when the app is not in use.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location while the app is in the background.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location while using the app.</string>
+    <string>This app uses your location to show nearby stadiums.</string>
 
     <!-- Microphone Access -->
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your microphone for recording audio.</string>
+    <!-- <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone for recording audio.</string> -->
 
     <!-- Photo Library Access -->
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your photo library for uploading or saving photos.</string>
+    <string>Need photo library access for saving and uploading images</string>
 
     <!-- Face ID Access -->
-    <key>NSFaceIDUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to authenticate you using Face ID.</string>
+    <!-- <key>NSFaceIDUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to authenticate you using Face ID.</string> -->
 
     <!-- User Activity Types -->
     <key>NSUserActivityTypes</key>
