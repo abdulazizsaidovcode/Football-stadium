@@ -54,7 +54,7 @@ const ClientDashboard = () => {
     const staduims = useGlobalRequest(
         inputValue && inputValue.trim() !== ""
             ? `${stadium_search}?name=${inputValue}`
-            : `${stadium_get}?lat=${38.8472248}&lang=${65.7963752}`,
+            : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
         "GET"
     );
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
@@ -70,9 +70,7 @@ const ClientDashboard = () => {
 
             getConfig();
         }, [])
-    );
-    console.log(userLocation);
-    
+    );    
 
     useFocusEffect(
         useCallback(() => {

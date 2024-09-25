@@ -43,7 +43,7 @@ const Stadium = () => {
                   <Image
                     source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
                     style={styles.cardImage}
-
+                    height={200}
                   />
                   <View style={styles.cardContent}>
                     <Text style={styles.titleCard}>{stadium.name}</Text>
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
   cardImage: {
     width: '100%',
     height: 200,
-    resizeMode: 'cover',
+    objectFit: 'cover',
+
   },
   cardContent: {
     padding: 15,

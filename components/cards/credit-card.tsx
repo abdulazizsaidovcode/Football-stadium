@@ -42,6 +42,7 @@ const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: stri
 
 const styles = StyleSheet.create({
     cardContainer: {
+        width: '93%',
         height: 200,
         borderRadius: 16,
         padding: 20,
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
         fontWeight: 'bold',
         marginTop: 20,
+        textAlign: 'left'
     },
     cardDetails: {
         flexDirection: 'row',
