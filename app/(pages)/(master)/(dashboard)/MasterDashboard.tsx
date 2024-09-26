@@ -106,6 +106,7 @@ export default function Dashboard() {
               label='Year'
               placeholder='Enter count'
               type='numeric'
+              
               value={year.toString()}
               onChangeText={(text) => setYear(Number(text))}
             />

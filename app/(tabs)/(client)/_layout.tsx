@@ -37,25 +37,15 @@ export default function ClientTabLayout() {
         }}
       />
       <Tab.Screen
-        name="ordersDay"
+        name="Order"
         component={OrdersDay}
         options={{
-          title: "Orders Day",
+          title: "Orders",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user-alt" size={24} color={color} />
           )
         }}
       />
-      {/* <Tab.Screen
-        name="MasterOrder"
-        component={MasterOrder}
-        options={{
-          title: "Master Order",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="clipboard-list" size={27} color={color} />
-          )
-        }}
-      /> */}
       <Tab.Screen
         name="Card"
         component={ClientCards}

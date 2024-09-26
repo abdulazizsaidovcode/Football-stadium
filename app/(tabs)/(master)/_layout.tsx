@@ -46,10 +46,10 @@ function MasterTabLayout() {
           }}
         />
         <Tab.Screen
-          name="order"
+          name="Order"
           component={MasterOrdersScreen}
           options={{
-            title: "order",
+            title: "Order",
             tabBarIcon: ({ color }) => (
               <Entypo name="ticket" size={30} color={color} />
             )

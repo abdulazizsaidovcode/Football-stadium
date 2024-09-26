@@ -19,7 +19,7 @@ const Cards = () => {
     const [selectedMainId, setSelectedMainId] = useState('')  // To track selected main card ID
     const [currentMainId, setCurrentMainId] = useState('')  // To track the existing main card before change
     const [isDelModal, setIsDelModal] = useState(false);
-    
+
     const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
     const deleteCard = useGlobalRequest(`${card.split('/api/v1').join('')}/${cardId}`, 'DELETE');
     const updateMainCard = useGlobalRequest(`${card.split('/api/v1').join('')}/update/main/${selectedMainId}?isMain=true`, 'PUT');
@@ -73,7 +73,7 @@ const Cards = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ padding: 10 }}>
-                <Text style={{ color: colors.white, fontSize: 25 }}>Kartalar</Text>
+                <Text style={{ fontSize: 22, color: "white", marginVertical: 10, }}>Kartalar</Text>
             </View>
             <ScrollView>
                 <View>
