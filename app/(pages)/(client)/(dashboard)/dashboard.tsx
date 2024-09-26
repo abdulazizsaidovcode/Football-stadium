@@ -54,6 +54,7 @@ const ClientDashboard = () => {
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
     const [refreshing, setRefreshing] = React.useState(false);
+    const [locationLoading, setLocationLoading] = useState(false)
 
     const staduims = useGlobalRequest(
         inputValue && inputValue.trim() !== ""
@@ -61,11 +62,13 @@ const ClientDashboard = () => {
             : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
         "GET"
     );
+
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
     const [isModalVisible, setModalVisible] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
+            setLocationLoading(true)
             getUserLocation(setUserLocation);
             const getConfig = async () => {
                 setToken(await AsyncStorage.getItem("token"));
@@ -102,6 +105,7 @@ const ClientDashboard = () => {
         useCallback(() => {
             if (staduims.response) {
                 setstadiumData(staduims.response);
+                setLocationLoading(false)
             } else if (staduims.error) {
                 setstadiumData(null);
             }
@@ -192,33 +196,82 @@ const ClientDashboard = () => {
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
                         <View style={{ marginVertical: 16, gap: 10 }}>
-                            {staduims.loading ? (
-                                <View>
-                                    {!refreshing && <Loading />}
+                            {/* {!locationLoading ?
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Entypo name="location-pin" size={44} color={colors.green} />
+                                    <Text style={{ color: '#fff' }}>location olinmoqda ...</Text>
                                 </View>
-                            ) : stadiumData && stadiumData.length > 0 ? (
-                                stadiumData.map((item: StadiumTypes, index: number) => (
-                                    <StadiumCard
-                                        key={index}
-                                        fetchFunction={staduims.globalDataFunc}
-                                        data={item}
-                                        onMapPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
-                                                { id: item.id }
-                                            )
-                                        }
-                                        onPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(order)/(order-save)/order-save",
-                                                { id: item.id }
-                                            )
-                                        }
-                                    />
-                                ))
-                            ) : (
-                                <Text style={styles.noDataText}>Стадион не найден</Text>
-                            )}
+                                :
+                                (<View>
+                                    {staduims.loading ? (
+                                        <View>
+                                            {!refreshing && <Loading />}
+                                        </View>
+                                    ) : stadiumData && stadiumData.length > 0 ? (
+                                        stadiumData.map((item: StadiumTypes, index: number) => (
+                                            <StadiumCard
+                                                key={index}
+                                                fetchFunction={staduims.globalDataFunc}
+                                                data={item}
+                                                onMapPress={() =>
+                                                    navigation.navigate(
+                                                        "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                                                        { id: item.id }
+                                                    )
+                                                }
+                                                onPress={() =>
+                                                    navigation.navigate(
+                                                        "(pages)/(order)/(order-save)/order-save",
+                                                        { id: item.id }
+                                                    )
+                                                }
+                                            />
+                                        ))
+                                    ) : (
+                                        <Text style={styles.noDataText}>Стадион не найден</Text>
+                                    )}
+                                </View>)
+                            } */}
+                            {locationLoading ?
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Entypo name="location-pin" size={44} color={colors.green} />
+                                    <Text style={{ color: '#fff' }}>location olinmoqda ...</Text>
+                                </View>
+                                :
+                                <View style={{ marginBottom: 5 }}>
+                                    {
+                                        staduims.loading ? (
+                                            <View>
+                                                {!refreshing && <Loading />}
+                                            </View>
+                                        ) : stadiumData && stadiumData.length > 0 ? (
+                                            stadiumData.map((item: StadiumTypes, index: number) => (
+                                                <View style={{ marginBottom: 10 }}>
+                                                    <StadiumCard
+                                                        key={index}
+                                                        fetchFunction={staduims.globalDataFunc}
+                                                        data={item}
+                                                        onMapPress={() =>
+                                                            navigation.navigate(
+                                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                                                                { id: item.id }
+                                                            )
+                                                        }
+                                                        onPress={() =>
+                                                            navigation.navigate(
+                                                                "(pages)/(order)/(order-save)/order-save",
+                                                                { id: item.id }
+                                                            )
+                                                        }
+                                                    />
+                                                </View>
+                                            ))
+                                        ) : (
+                                            <Text style={styles.noDataText}>Стадион не найден</Text>
+                                        )
+                                    }
+                                </View>
+                            }
                         </View>
                     </View>
                 </View>

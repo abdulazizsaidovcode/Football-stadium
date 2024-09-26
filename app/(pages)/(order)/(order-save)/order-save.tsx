@@ -65,8 +65,10 @@ const OrderSave = () => {
 
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
-    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
+    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}&localDate=${calendarDate}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
+    console.log(id);
+
 
     useFocusEffect(
         useCallback(() => {
@@ -287,7 +289,7 @@ const OrderSave = () => {
                         <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
                     }
                 </View>}
-                {!pay && <Buttons
+                {!pay && role !== 'MASTER' && <Buttons
                     title="To'lovni so'mmani kiritish" onPress={async () => {
                         let isLogining = await isLogin().then((res) => res)
                         if (isLogining) {
