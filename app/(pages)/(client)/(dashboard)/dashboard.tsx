@@ -1,21 +1,17 @@
 import {
     BackHandler,
-    Modal,
     RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import { Colors, colors } from "@/constants/Colors";
+import React, { useCallback, useState } from "react";
+import { colors } from "@/constants/Colors";
 import {
     AntDesign,
     Entypo,
     FontAwesome,
-    FontAwesome6,
-    Ionicons,
     MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
@@ -29,14 +25,13 @@ import {
 import { getUserLocation } from "@/helpers/global_functions/user_functions/user-functions";
 import { useUserStore } from "@/helpers/stores/user/user-store";
 import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
-import { favourite_add, stadium_get, stadium_search } from "@/helpers/api/api";
+import { stadium_get, stadium_search } from "@/helpers/api/api";
 import { RootStackParamList } from "@/types/root/root";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import { Loading } from "@/components/loading/loading";
 import StadiumCard from "@/components/cards/StadiumCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
-import useFavoutiteOrders from "@/helpers/stores/favourite/favourite";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 
