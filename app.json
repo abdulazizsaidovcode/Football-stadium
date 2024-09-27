@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "stadium-app",
-    "version": "1.0.0",
+    "slug": "stadium",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -52,9 +52,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "edea70f9-7669-46b2-ab06-99c522a09ff2"
+        "projectId": "96564d5b-d1a5-46b8-82e7-477483185ac7"
       }
     },
-    "owner": "sfera-team"
+    "owner": "abdulazizcha2"
   }
 }
