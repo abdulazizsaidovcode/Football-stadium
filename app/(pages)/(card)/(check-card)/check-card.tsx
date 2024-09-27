@@ -3,12 +3,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '@/constants/Colors';
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { auth_check_code, check_card } from '@/helpers/api/api';
+import { check_card } from '@/helpers/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getConfig } from '@/helpers/api/token';
-import { useNavigation } from 'expo-router';
 import { RootStackParamList } from '@/types/root/root';
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -40,14 +39,16 @@ const CheckCard = () => {
     useEffect(() => {
         const confirm = async () => {
             if (checkCode.response) {
-                navigation.navigate('(tabs)/(master)')
-                setCode(['', '', '', ''])
+                navigation.goBack();
+                navigation.goBack();
+                setCode(['', '', '', '']);
                 setPhoneNumber('');
             }
         }
 
         confirm();
     }, [checkCode.response]);
+
 
     useEffect(() => {
         if (code.every(digit => digit !== '')) {
