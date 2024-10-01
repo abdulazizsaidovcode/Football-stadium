@@ -8,7 +8,7 @@ import {getConfig} from '@/helpers/api/token';
 import {AntDesign} from '@expo/vector-icons';
 
 const ClientProfile = () => {
-    const userMee = useGlobalRequest<any[]>(user_me, 'GET');
+    const userMee = useGlobalRequest<string | null>(user_me, 'GET');
 
     useEffect(() => {
         userMee.globalDataFunc()

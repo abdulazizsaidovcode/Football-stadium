@@ -42,7 +42,7 @@ const Payment = () => {
 
         if (cardId !== id) {
             setCardId(id)
-            let card = cards.response.find((item: any) => item.id == id)
+            let card = cards.response.find((item: {id: string}) => item.id == id)
             setCardExpire(card.cardExpire)
             setCardNumber(card.cardNumber)
         } else if (cardId == id) {

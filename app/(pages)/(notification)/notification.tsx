@@ -15,11 +15,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const Notification = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [notificationIds, setNotificationIds] = useState<string[]>([]); // UUID list
-  const [isRead, setIsRead] = useState<boolean>(true); // Control load more
+  const [notificationIds, setNotificationIds] = useState<string[]>([]);
+  const [isRead, setIsRead] = useState<boolean>(true);
   const GetNotification = useGlobalRequest(get_notification, "GET");
-  const DeleteNotification = useGlobalRequest(delete_notification, "PUT", {ids: notificationIds});
-  const IsReadNotification = useGlobalRequest(isread_notification, "PUT", {ids: notificationIds});
+  const DeleteNotification = useGlobalRequest(delete_notification, "PUT", { ids: notificationIds });
+  const IsReadNotification = useGlobalRequest(isread_notification, "PUT", { ids: notificationIds });
 
   // Focusing the component to refresh notifications
   useFocusEffect(
@@ -41,8 +41,8 @@ const Notification = () => {
   const handleCheckPress = () => {
     setIsRead(true)
     const unreadIds = GetNotification.response
-      ?.filter((item: any) => !item.read)
-      .map((item: any) => item.uuid) || [];
+      ?.filter((item: { read: string | number | null }) => !item.read)
+      .map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(unreadIds);
     console.log("Unread notification IDs:", unreadIds);
   };
@@ -50,7 +50,7 @@ const Notification = () => {
   // Delete icon press handler
   const handleDeletePress = () => {
     setIsRead(false)
-    const allIds = GetNotification.response?.map((item: any) => item.uuid) || [];
+    const allIds = GetNotification.response?.map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(allIds);
     console.log("All notification IDs:", allIds);
   };
@@ -96,7 +96,7 @@ const Notification = () => {
         </View>
       ) : GetNotification.response ? (
         <>
-          {GetNotification.response.map((item: any) => (
+          {GetNotification.response.map((item: { time: string , text: string, id: string, read: string }) => (
             <View
               key={item.id}
               style={[
@@ -113,7 +113,7 @@ const Notification = () => {
                 }}
               >
                 <Text style={styles.orderNumber}>
-                  Date: {item?.time.slice(0, 10)}
+                  Date: {item.time && item?.time.slice(0, 10)}
                 </Text>
               </View>
             </View>

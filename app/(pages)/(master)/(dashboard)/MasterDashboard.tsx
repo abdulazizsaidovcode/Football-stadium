@@ -114,7 +114,6 @@ const Dashboard: React.FC = () => {
               label='Year'
               placeholder='Enter count'
               type='numeric'
-              
               value={year.toString()}
               onChangeText={(text) => setYear(Number(text))}
             />
@@ -124,9 +123,9 @@ const Dashboard: React.FC = () => {
               getStatistics.response && getStatistics.response.length > 0 ? (
                 <LineChart
                   data={{
-                    labels: getStatistics.response.map((item: { month: number }) => item.month || "0"),
+                    labels: getStatistics.response.map((item: {month: number}) => item.month || "0"),
                     datasets: [{
-                      data: getStatistics.response.map((item: { totalPrice: number }) => item.totalPrice || 0),
+                      data: getStatistics.response.map((item: {totalPrice :number}) => item.totalPrice || 0),
                     }]
                   }}
                   width={Dimensions.get('window').width / 1.05}

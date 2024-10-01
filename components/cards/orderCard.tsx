@@ -9,7 +9,7 @@ import { useNavigation } from 'expo-router'
 import CenteredModal from '../modal/sentralmodal'
 import OrderStore from '@/helpers/stores/order/orderStore'
 
-interface OrderTofay {
+export interface OrderTofay {
     "clientFirstName": string,
     "clientLastName": string,
     "stadiumNumber": number,
@@ -18,16 +18,15 @@ interface OrderTofay {
     "endTime": string,
     "startPrice": number,
     orderStatus: string | null,
-    isMainAttachmentId: any,
+    isMainAttachmentId: 'string',
     fileId: string | null
 }
+
 const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: () => void, iconColor?: string | any }> = ({ data, onPress, boxOnPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
 
     const { OrderData, setOrderData } = OrderStore()
     const [isModalVisible, setIsModalVisible] = useState(false);
-    console.log(data);
-
 
     const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
 
@@ -45,7 +44,7 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: 
                     }
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={styles.title}>{data.clientFirstName} {data.clientFirstName}</Text>
+                    <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text> {/* Fixed typo */}
                     <Text style={styles.priceTitle}>{data.startPrice} sum</Text>
                 </View>
                 <Text style={styles.priceTitle}>{data.date}</Text>
@@ -57,7 +56,6 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: 
                     </View>
                 </View>
             </Pressable>
-
         </>
     )
 }
@@ -100,4 +98,4 @@ const styles = StyleSheet.create({
         gap: 3,
         justifyContent: 'space-between'
     }
-})  
+})

@@ -39,7 +39,7 @@ function OrderDetail() {
     }
   }, [orderDetail?.response?.stadiumId]);
 
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = ({ item }: { item: string | null | number }) => {
     return (
       <View>
         <Image

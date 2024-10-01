@@ -23,7 +23,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { StadiumTypes } from "@/types/stadium/stadium";
-import OrderCard from "@/components/cards/orderCard";
+import OrderCard, { OrderTofay } from "@/components/cards/orderCard";
 import OrderStore from "@/helpers/stores/order/orderStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -33,7 +33,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 export default function MasterOrder() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [role, setRole] = useState<any>('')
+  const [role, setRole] = useState<string | null>('')
 
   const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
   const { OrderData, setOrderData } = OrderStore()
@@ -47,7 +47,7 @@ export default function MasterOrder() {
   const OrdersDay = useGlobalRequest(order_day_master, "GET");
   const navigation = useNavigation<SettingsScreenNavigationProp>();
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, "GET");
-  const [selectedValue, setSelectedValue] = useState<any>('');
+  const [selectedValue, setSelectedValue] = useState<string>('');
 
   const openModal = () => setIsModalVisible(!isModalVisible);
   const openRejectModal = () => setIsRejectModalVisible(!isRejectModalVisible);
@@ -89,7 +89,7 @@ export default function MasterOrder() {
           <Text style={styles.title}>Bugungi qilingan bronlaringiz</Text>
 
           {OrdersDay.response && OrdersDay.response.length > 0 ? (
-            OrdersDay.response.map((item: any) => (
+            OrdersDay.response.map((item: OrderTofay) => (
               <OrderCard
                 boxOnPress={async () => {
                   await setOrderData(item)
@@ -130,8 +130,6 @@ export default function MasterOrder() {
           icon={<Entypo name="plus" size={24} color="white" />}
         />}
       </View>
-      {/* Nima vazifa bajarishini tushunmadm shunchun kament qibquydm!!!!!!!!!!! */}
-      {/* <View style={{ marginBottom: 10 }}></View> */}
 
       <CenteredModal
         isModal={isModalVisible}
@@ -164,7 +162,7 @@ export default function MasterOrder() {
             }
           >
             {stadiums.response &&
-              stadiums.response.map((res: any, index: any) => (
+              stadiums.response.map((res: { name: string, id: number | string }, index: string) => (
                 <Picker.Item
                   label={`${index + 1}: ${res.name}`}
                   value={res.id}
@@ -174,7 +172,7 @@ export default function MasterOrder() {
           <Text style={{ color: "#fff", fontSize: 16 }}>
             Tanlangan stadion:
             {stadiums.response &&
-              stadiums.response.find((item: any) => item.id == selectedValue)
+              stadiums.response.find((item: { id: number | null | string }) => item.id == selectedValue)
                 ?.name}
           </Text>
         </View>

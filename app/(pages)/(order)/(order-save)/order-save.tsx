@@ -29,7 +29,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const OrderSave = () => {
-    const [role, setRole] = useState<any>('')
+    const [role, setRole] = useState<string | null>('')
     const [userPhone, setUserPhone] = useState<string>('')
     const [refreshing, setRefreshing] = useState(false);
     const route = useRoute();
@@ -226,7 +226,7 @@ const OrderSave = () => {
                             <Text style={{ color: '#fff', marginTop: 10 }}>Loading available times...</Text>
                         </View>
                     ) : freeTimeRes.response && Array.isArray(freeTimeRes.response) && freeTimeRes.response.length > 1 ? (
-                        freeTimeRes.response.map((time: any, index: any) => (
+                        freeTimeRes.response.map((time: { time: string, ordered: boolean }, index: number,) => (
                             <TimesCard
                                 key={index}
                                 title={time.time}
