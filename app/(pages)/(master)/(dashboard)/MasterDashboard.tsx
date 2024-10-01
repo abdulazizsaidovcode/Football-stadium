@@ -13,20 +13,26 @@ import { useNavigation } from 'expo-router';
 import { RootStackParamList } from '@/types/root/root';
 import { NavigationProp } from '@react-navigation/native';
 
+type UserResponse = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+};
+
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "(pages)/(client)/(dashboard)/dashboard"
 >;
 
-export default function Dashboard() {
+const Dashboard: React.FC = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   const userMee = useGlobalRequest(user_me, 'GET');
-  const [year, setYear] = useState(2024)
+  const [year, setYear] = useState<number>(2024);
   const getStatistics = useGlobalRequest(`${statistics_for_year}?year=${year}`, 'GET', {}, 'DEFAULT');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
-  const [formData, setFormData] = useState({
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState<boolean>(false);
+  const [formData, setFormData] = useState<UserResponse>({
     firstName: '',
     lastName: '',
     phoneNumber: '',
@@ -46,19 +52,21 @@ export default function Dashboard() {
         phoneNumber: userMee.response.phoneNumber || '',
       });
     }
-  }, [userMee.response])
+  }, [userMee.response]);
 
   useEffect(() => {
     const updateToken = async () => {
-      await AsyncStorage.setItem('token', userEdit.response)
-    }
-
-    updateToken()
-  }, [userEdit.response])
+      if (userEdit.response) {
+        await AsyncStorage.setItem('token', userEdit.response);
+      }
+    };
+    updateToken();
+  }, [userEdit.response]);
 
   const handleEditPress = () => {
     setIsModalVisible(true);
   };
+
   const handleLogoutPress = () => {
     setIsLogoutModalVisible(true);
   };
@@ -74,11 +82,11 @@ export default function Dashboard() {
   };
 
   const logOut = async () => {
-    AsyncStorage.removeItem('token')
-    AsyncStorage.removeItem('role')
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('role');
     setIsLogoutModalVisible(false);
-    navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
-  }
+    navigation.navigate('(pages)/(client)/(dashboard)/dashboard');
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -115,9 +123,9 @@ export default function Dashboard() {
               getStatistics.response && getStatistics.response.length > 0 ? (
                 <LineChart
                   data={{
-                    labels: getStatistics.response.map((item: any) => item.month || "0"),
+                    labels: getStatistics.response.map((item: { month: number }) => item.month || "0"),
                     datasets: [{
-                      data: getStatistics.response.map((item: any) => Number(item.totalPrice) || 0),
+                      data: getStatistics.response.map((item: { totalPrice: number }) => item.totalPrice || 0),
                     }]
                   }}
                   width={Dimensions.get('window').width / 1.05}
@@ -130,21 +138,19 @@ export default function Dashboard() {
                     decimalPlaces: 2, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     style: {
-                      borderRadius: 16
-                    }
+                      borderRadius: 16,
+                    },
                   }}
                   bezier
                   style={{
                     marginVertical: 8,
-                    borderRadius: 16
+                    borderRadius: 16,
                   }}
                 />
               ) : (
                 <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Buyurtmalar mavjud emas</Text>
               )
             }
-
-
           </View>
         </View>
         <CenteredModal
@@ -156,7 +162,6 @@ export default function Dashboard() {
           onConfirm={handleSave}
         >
           <View style={styles.modalContent}>
-
             <TextInput
               style={styles.input}
               placeholder="First Name"
@@ -196,9 +201,7 @@ export default function Dashboard() {
             }}
           >
             <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
-            <Text
-              style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
-            >
+            <Text style={{ fontSize: 17, color: '#fff', textAlign: "center" }}>
               Siz aniq tizimdan chiqmoqchimisz ?
             </Text>
           </View>
@@ -206,7 +209,7 @@ export default function Dashboard() {
       </Layout>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {

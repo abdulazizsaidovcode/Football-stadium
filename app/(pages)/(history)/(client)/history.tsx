@@ -8,16 +8,23 @@ import { order_history } from '@/helpers/api/api';
 import Layout from '@/layout/layout';
 import { Loading } from '@/components/loading/loading';
 import Buttons from '@/components/button/button';
- 
+interface OrderHistory {
+  id: string;
+  date: string;
+  orderNumber: string;
+  startTime: string;
+  endTime: string;
+  orderStatus: string;
+}
 const ClientHistory = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);  
-  const [historyData, setHistoryData] = useState<any[]>([]);  
-  const [hasMore, setHasMore] = useState<boolean>(true);  
+  const [page, setPage] = useState<number>(1);
+  const [historyData, setHistoryData] = useState<OrderHistory[]>([]);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const GetHistory = useGlobalRequest(order_history, "GET");
 
   const loadMoreData = () => {
-    if (hasMore) setPage((prevPage) => prevPage + 1); 
+    if (hasMore) setPage((prevPage) => prevPage + 1);
   };
 
   return (

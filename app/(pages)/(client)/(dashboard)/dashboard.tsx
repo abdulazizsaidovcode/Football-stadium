@@ -43,7 +43,7 @@ type SettingsScreenNavigationProp = NavigationProp<
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
     const [token, setToken] = useState<string | null>("");
-    const [stadiumData, setstadiumData] = useState<any>(null);
+    const [stadiumData, setstadiumData] = useState<StadiumTypes[] | null>(null);
     const [inputValue, setinputValue] = useState<string | null>("");
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
