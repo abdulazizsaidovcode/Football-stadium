@@ -25,6 +25,8 @@ export function useGlobalRequest<T>(
                     res = await axios.get(url, config || {});
                     break;
                 case 'POST':
+                    console.log(data);
+                    console.log(url);
                     res = await axios.post(url, data || {}, config || {});
                     break;
                 case 'PUT': 

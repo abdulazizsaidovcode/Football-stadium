@@ -114,6 +114,7 @@ const Dashboard: React.FC = () => {
               label='Year'
               placeholder='Enter count'
               type='numeric'
+              
               value={year.toString()}
               onChangeText={(text) => setYear(Number(text))}
             />

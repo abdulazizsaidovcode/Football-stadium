@@ -19,7 +19,7 @@ export default function OrdersDay() {
         <Layout scroll style={styles.container}>
             {/* <NavigationMenu name='History' /> */}
             <Text style={styles.title}>
-                bugungi qilingan Orderlar
+                Bugungi qilingan orderlar
             </Text>
             {getOrdersTodey.response && getOrdersTodey.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
                 <View key={item.id} style={styles.itemContainer}>

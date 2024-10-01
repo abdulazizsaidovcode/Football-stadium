@@ -9,6 +9,7 @@ import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { auth_send_code, user_found } from '@/helpers/api/api';
 import { useFocusEffect } from 'expo-router';
+import NavigationMenu from '@/components/navigation/NavigationMenu';
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
@@ -59,6 +60,7 @@ const Login = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        <NavigationMenu name='' />
         <View style={{ marginTop: 50 }}>
           <Text style={styles.title}>Ваш номер телефона</Text>
           <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>

@@ -35,7 +35,7 @@ const OrderSave = () => {
     const route = useRoute();
     const { id } = route.params as { id: string | number };
     const navigation = useNavigation<SettingsScreenNavigationProp>();
-    const { freeTime, setFreeTime, pay, setPay } = useOrderStory()
+    const { freeTime, setFreeTime, pay, setPay, cardExpire, cardNumber } = useOrderStory()
     const [activeTime, setActiveTime] = useState('');
     const [creasePay, setCreasePay] = useState(1)
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
@@ -57,22 +57,18 @@ const OrderSave = () => {
         "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2),
         "endTimeMinute": selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5))),
         "date": calendarDate,
-        "paySum": +pay,
-        "cardNumber": null,
+        "paySum": role !== "MASTER" ? +pay : null,
+        "cardNumber": role !== "MASTER" ? cardNumber : null,
+        "cardExpire": role !== "MASTER" ? cardExpire : null,
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
 
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
-    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}`, 'GET');
+    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}&localDate=${calendarDate}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
+    console.log(id);
 
-    // if (freeTimeRes.error) {
-    //     alert(freeTimeRes.error)
-    //     setTimeout(() => {
-    //         // console.log(id);
-    //     }, 2000)
-    // }
 
     useFocusEffect(
         useCallback(() => {
@@ -119,21 +115,12 @@ const OrderSave = () => {
     )
     useEffect(() => {
         if (CreateOreder.response === 'Stadium has been successfully reserved') {
-            alert(CreateOreder.response.response)
+            alert(CreateOreder.response)
+            freeTimeRes.globalDataFunc()
             setPay('')
             setSelectedTimeSlots([])
         }
     }, [CreateOreder.response])
-
-    if (stadium.loading) {
-        return <Loading />
-    }
-
-    console.log(freeTimeRes.response, 1);
-    console.log(freeTimeRes.error, 2);
-    console.log(id, 3);
-    console.log(calendarDate);
-
 
     async function getRole() {
         let selRole = await AsyncStorage.getItem('role')
@@ -202,7 +189,7 @@ const OrderSave = () => {
                 //             lottieSource={require('../../../../assets/animation/Animation - ball-green.json')}
                 //             lottieStyle={{ width: 100, height: 100 }}
                 //         />
-                 
+
                 // }
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: 30 }}>
@@ -281,7 +268,7 @@ const OrderSave = () => {
                         />
                     </View>
                 }
-                <View style={styles.payCard}>
+                {role !== 'MASTER' && <View style={styles.payCard}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.timeTitle}>Kutilayotgan to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
                         {creasePay > 1 &&
@@ -301,10 +288,16 @@ const OrderSave = () => {
                         :
                         <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
                     }
-                </View>
-                {!pay && <Buttons
-                    title="To'lovni so'mmani kiritish" onPress={() => {
-                        navigation.navigate('(pages)/(order)/(payment)/payment')
+                </View>}
+                {!pay && role !== 'MASTER' && <Buttons
+                    title="To'lovni so'mmani kiritish" onPress={async () => {
+                        let isLogining = await isLogin().then((res) => res)
+                        if (isLogining) {
+                            navigation.navigate('(pages)/(order)/(payment)/payment')
+                        } else {
+                            alert("Avval Ro'yhatdan o'ting")
+                            navigation.navigate('(pages)/(auth)/(login)/login')
+                        }
                     }} />}
                 <View style={{ marginBottom: 10 }}></View>
                 {CreateOreder.loading ?

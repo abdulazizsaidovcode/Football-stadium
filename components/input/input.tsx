@@ -6,6 +6,7 @@ const Input: React.FC<{
     label?: string;
     labalVisible?: boolean;
     value?: string;
+    maxLength?: number;
     onChangeText?: (text: string) => void;
     placeholder?: string;
     type?: "default" | "numeric" | "email-address" | "phone-pad";
@@ -16,7 +17,8 @@ const Input: React.FC<{
         value,
         onChangeText,
         placeholder,
-        type
+        type,
+        maxLength
     }) => {
         return (
             <SafeAreaView>
@@ -31,6 +33,7 @@ const Input: React.FC<{
                         placeholderTextColor='#828282'
                         value={value}
                         keyboardType={type}
+                        maxLength={maxLength}
                     />
                 </View>
             </SafeAreaView>

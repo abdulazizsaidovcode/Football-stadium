@@ -28,6 +28,8 @@ import OrdersDay from './(tabs)/(client)/ordersDay';
 import Favourite from './(pages)/(favourity)/favourite';
 import OrderDetail from './(pages)/(master)/(order)/orderDetail';
 import Notification from './(pages)/(notification)/notification';
+import AddCard from './(pages)/(card)/(add-card)/add-card';
+import CheckCard from './(pages)/(card)/(check-card)/check-card';
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -153,6 +155,16 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(notification)/notification"
             component={Notification}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(card)/(add-card)/add-card"
+            component={AddCard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/(card)/(check-card)/check-card"
+            component={CheckCard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

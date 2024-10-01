@@ -44,7 +44,7 @@ const InternetNotice = () => {
                 } catch (e) {
                     console.error(e);
                 }
-            } else  alert('Пожалуйста, проверьте свой Интернет',   )
+            } else alert('Пожалуйста, проверьте свой Интернет',)
         });
     };
 
@@ -53,7 +53,7 @@ const InternetNotice = () => {
             <Image style={{ width: 200, height: 200, borderRadius: 50 }} source={require('../../assets/images/dinosaur.jpg')} />
             <Text style={{ color: 'white', fontSize: 20, textAlign: 'center', marginTop: 10 }}>Произошла ошибка при подключении к Интеру.</Text>
             <View style={{ marginTop: 20, paddingHorizontal: 10, width: '100%' }}>
-                <Buttons onPress={handleRetry} backgroundColor='white' textColor='#9C0A35' title='Повторить попытку' />
+                <Buttons onPress={handleRetry} backgroundColor='white' textColor={colors.lightGreen} title='Повторить попытку' />
             </View>
         </Animated.View>
     );

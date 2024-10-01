@@ -18,7 +18,7 @@ const Profile = () => {
         <Layout scroll style={styles.container}>
             <View style={styles.profile}>
                 {userMee.response && userMee.response.attaachmentId ?
-                    <Image source={file_get + userMee.response.attaachmentId} style={styles.avatar} />
+                    <Image source={{uri: file_get + userMee.response.attaachmentId}} alt={`img`} style={styles.avatar} />
                     : <AntDesign name="user" size={70} color="white" />
 
                 }

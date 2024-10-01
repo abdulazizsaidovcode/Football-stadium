@@ -1,19 +1,18 @@
 import {
     BackHandler,
-    Modal,
+    RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import { Colors, colors } from "@/constants/Colors";
+import React, { useCallback, useState } from "react";
+import { colors } from "@/constants/Colors";
 import {
+    AntDesign,
     Entypo,
     FontAwesome,
-    FontAwesome6,
-    Ionicons,
+    MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,14 +25,15 @@ import {
 import { getUserLocation } from "@/helpers/global_functions/user_functions/user-functions";
 import { useUserStore } from "@/helpers/stores/user/user-store";
 import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
-import { favourite_add, stadium_get, stadium_search } from "@/helpers/api/api";
+import { stadium_get, stadium_search } from "@/helpers/api/api";
 import { RootStackParamList } from "@/types/root/root";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import { Loading } from "@/components/loading/loading";
 import StadiumCard from "@/components/cards/StadiumCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
-import useFavoutiteOrders from "@/helpers/stores/favourite/favourite";
+import CenteredModal from "@/components/modal/sentralmodal";
+import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -45,19 +45,25 @@ const ClientDashboard = () => {
     const [token, setToken] = useState<string | null>("");
     const [stadiumData, setstadiumData] = useState<StadiumTypes[] | null>(null);
     const [inputValue, setinputValue] = useState<string | null>("");
+    const { isLoginModal, setIsLoginModal } = useAuthStore();
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [locationLoading, setLocationLoading] = useState(false)
+
     const staduims = useGlobalRequest(
         inputValue && inputValue.trim() !== ""
             ? `${stadium_search}?name=${inputValue}`
             : `${stadium_get}?lat=${userLocation?.coords.latitude}&lang=${userLocation?.coords.longitude}`,
         "GET"
     );
+
     const navigation = useNavigation<SettingsScreenNavigationProp | any>();
     const [isModalVisible, setModalVisible] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
+            setLocationLoading(true)
             getUserLocation(setUserLocation);
             const getConfig = async () => {
                 setToken(await AsyncStorage.getItem("token"));
@@ -94,10 +100,11 @@ const ClientDashboard = () => {
         useCallback(() => {
             if (staduims.response) {
                 setstadiumData(staduims.response);
+                setLocationLoading(false)
             } else if (staduims.error) {
                 setstadiumData(null);
             }
-        }, [staduims.error, staduims.response])
+        }, [staduims.error, staduims.response, userLocation?.coords?.latitude])
     );
 
     useFocusEffect(
@@ -111,14 +118,9 @@ const ClientDashboard = () => {
     );
 
     const logOut = async () => {
-        // Clear AsyncStorage token and role
         await AsyncStorage.removeItem("token");
         await AsyncStorage.removeItem("role");
-        // Navigate to the Login page
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "(pages)/(login)/login" }], // Replace with your login route
-        });
+        navigation.navigate('(pages)/(client)/(dashboard)/dashboard')
     };
 
     const showModal = () => {
@@ -134,15 +136,27 @@ const ClientDashboard = () => {
         hideModal();
     };
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        staduims.globalDataFunc();
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
-            <ScrollView style={{ paddingHorizontal: 16 }}>
+            <ScrollView
+                // contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing && !staduims.response} onRefresh={onRefresh} />
+                }
+                style={{ paddingHorizontal: 16 }}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
                         <View style={styles.headerIcon}>
-
                             <MaterialIcons
                                 name="history"
                                 onPress={() =>
@@ -176,62 +190,136 @@ const ClientDashboard = () => {
                         <Text style={styles.subTitle}>
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
-                        <View style={{ marginTop: 16, gap: 10 }}>
-                            {staduims.loading ? (
-                                <Loading />
-                            ) : stadiumData && stadiumData.length > 0 ? (
-                                stadiumData.map((item: StadiumTypes, index: number) => (
-                                    <StadiumCard
-                                        key={index}
-                                        fetchFunction={staduims.globalDataFunc}
-                                        data={item}
-                                        onMapPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
-                                                { id: item.id }
-                                            )
-                                        }
-                                        onPress={() =>
-                                            navigation.navigate(
-                                                "(pages)/(order)/(order-save)/order-save",
-                                                { id: item.id }
-                                            )
-                                        }
-                                    />
-                                ))
-                            ) : (
-                                <Text style={styles.noDataText}>Стадион не найден</Text>
-                            )}
+                        <View style={{ marginVertical: 16, gap: 10 }}>
+                            {/* {!locationLoading ?
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Entypo name="location-pin" size={44} color={colors.green} />
+                                    <Text style={{ color: '#fff' }}>location olinmoqda ...</Text>
+                                </View>
+                                :
+                                (<View>
+                                    {staduims.loading ? (
+                                        <View>
+                                            {!refreshing && <Loading />}
+                                        </View>
+                                    ) : stadiumData && stadiumData.length > 0 ? (
+                                        stadiumData.map((item: StadiumTypes, index: number) => (
+                                            <StadiumCard
+                                                key={index}
+                                                fetchFunction={staduims.globalDataFunc}
+                                                data={item}
+                                                onMapPress={() =>
+                                                    navigation.navigate(
+                                                        "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                                                        { id: item.id }
+                                                    )
+                                                }
+                                                onPress={() =>
+                                                    navigation.navigate(
+                                                        "(pages)/(order)/(order-save)/order-save",
+                                                        { id: item.id }
+                                                    )
+                                                }
+                                            />
+                                        ))
+                                    ) : (
+                                        <Text style={styles.noDataText}>Стадион не найден</Text>
+                                    )}
+                                </View>)
+                            } */}
+                            {locationLoading ?
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Entypo name="location-pin" size={44} color={colors.green} />
+                                    <Text style={{ color: '#fff' }}>location olinmoqda ...</Text>
+                                </View>
+                                :
+                                <View style={{ marginBottom: 5 }}>
+                                    {
+                                        staduims.loading ? (
+                                            <View>
+                                                {!refreshing && <Loading />}
+                                            </View>
+                                        ) : stadiumData && stadiumData.length > 0 ? (
+                                            stadiumData.map((item: StadiumTypes, index: number) => (
+                                                <View style={{ marginBottom: 10 }}>
+                                                    <StadiumCard
+                                                        key={index}
+                                                        fetchFunction={staduims.globalDataFunc}
+                                                        data={item}
+                                                        onMapPress={() =>
+                                                            navigation.navigate(
+                                                                "(pages)/(maps)/(stadium-locations)/stadium-locations",
+                                                                { id: item.id }
+                                                            )
+                                                        }
+                                                        onPress={() =>
+                                                            navigation.navigate(
+                                                                "(pages)/(order)/(order-save)/order-save",
+                                                                { id: item.id }
+                                                            )
+                                                        }
+                                                    />
+                                                </View>
+                                            ))
+                                        ) : (
+                                            <Text style={styles.noDataText}>Стадион не найден</Text>
+                                        )
+                                    }
+                                </View>
+                            }
                         </View>
                     </View>
                 </View>
             </ScrollView>
-            <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={hideModal}
+            <CenteredModal
+                isModal={isModalVisible}
+                isFullBtn
+                btnRedText='Logout'
+                btnWhiteText='Cancel'
+                toggleModal={hideModal}
+                onConfirm={confirmLogOut}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalText}>Вы уверены, что хотите выйти?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                onPress={confirmLogOut}
-                                style={styles.confirmButton}
-                            >
-                                <Text style={styles.buttonText}>да</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={hideModal}
-                                style={styles.cancelButton}
-                            >
-                                <Text style={styles.buttonText}>нет</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                    }}
+                >
+                    <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+                    <Text
+                        style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
+                    >
+                        Siz aniq tizimdan chiqmoqchimisz ?
+                    </Text>
                 </View>
-            </Modal>
+            </CenteredModal>
+            <CenteredModal
+                btnRedText="Ro'yhatda o'tish"
+                btnWhiteText="Keyinroq"
+                isFullBtn
+                isModal={isLoginModal}
+                toggleModal={() => setIsLoginModal(false)}
+                onConfirm={() => {
+                    navigation.navigate('(pages)/(auth)/(login)/login')
+                    setIsLoginModal(false)
+                }}
+            >
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 10,
+                    }}
+                >
+                    <AntDesign name="login" size={80} color={colors.lightGreen} />
+                    <Text
+                        style={{ fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10 }}
+                    >
+                        Tizmdan foydalanish uchun ro'yhatsan o'ting
+                    </Text>
+                </View>
+            </CenteredModal>
         </SafeAreaView>
     );
 };

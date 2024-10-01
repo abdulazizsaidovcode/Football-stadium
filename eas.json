@@ -10,9 +10,23 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "ios": {},
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "API_BASE_URL": "https://app.coinbyitca.uz/api/v1/'"
+      }
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "abdulazizsaidov5599@icloud.com",
+        "ascAppId": "6711337537",
+        "appleTeamId": "QGWH4H5H2J"
+      }
+    }
   }
 }

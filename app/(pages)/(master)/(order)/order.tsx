@@ -16,7 +16,7 @@ import {
 } from "@/helpers/api/api";
 import Buttons from "@/components/button/button";
 import { colors } from "@/constants/Colors";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "expo-router";
 import { RootStackParamList } from "@/types/root/root";
 import { NavigationProp } from "@react-navigation/native";
@@ -85,7 +85,7 @@ export default function MasterOrder() {
       }}
     >
       <Layout scroll>
-        <View style={styles.Container}>
+        <View style={styles.container}>
           <Text style={styles.title}>Bugungi qilingan bronlaringiz</Text>
 
           {OrdersDay.response && OrdersDay.response.length > 0 ? (
@@ -182,35 +182,36 @@ export default function MasterOrder() {
       <CenteredModal
         isModal={isRejectModalVisible}
         toggleModal={openRejectModal}
-        btnWhiteText="Close"
-        btnRedText="Reject"
+        btnWhiteText="Orqaga"
+        btnRedText="Rad etish"
         isFullBtn={true}
-        onConfirm={async () => {
+        onConfirm={() => {
           if (OrderData && OrderData?.id) {
-            await orderReject.globalDataFunc();
+            orderReject.globalDataFunc();
             if (orderReject.response) {
               openRejectModal();
               OrdersDay.globalDataFunc()
-              alert("Order bekor qilindi!")
+              alert("Buyurtma muvaffaqiyatli rad etildi!")
             }
-            await setOrderData(null);
+            setOrderData(null);
           } else {
-            await setOrderData(null);
+            setOrderData(null);
           }
         }}
       >
-        <Text style={[styles.OrderText, { paddingVertical: 10 }]}>
-          Orderni rad etmoqchimisiz{" "}
-        </Text>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+          <Text style={[styles.OrderText, { paddingVertical: 10 }]}>
+            Siz aniq bu buyurtmani rad etmoqchimisiz?
+          </Text>
+        </View>
       </CenteredModal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  Container: {
-    marginVertical: 20,
-    // marginBottom: -60,
+  container: {
     borderBottomColor: "#000",
     paddingHorizontal: 16,
   },
@@ -220,8 +221,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: "white",
-    marginVertical: 20,
-    // marginBottom: 10,
+    marginBottom: 10,
   },
   OrderText: {
     fontSize: 15,
