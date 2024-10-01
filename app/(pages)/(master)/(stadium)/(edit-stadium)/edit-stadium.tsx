@@ -27,11 +27,11 @@ const EditStadium = () => {
   const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
   const delStadium = useGlobalRequest(`${stadium_delete}?id=${id}`, 'DELETE',)
   const [markerPosition, setMarkerPosition] = useState<Region | null>(null);
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   // const [attachmentId, setAttachmentId] = useState<string[]>([]);
   const [details, setDetails] = useState({ toilet: false, shower: false, shop: false });
   const navigation = useNavigation();
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormValid, setIsFormValid] = useState<number | "" | undefined | boolean>(false);
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false)
@@ -111,7 +111,7 @@ const EditStadium = () => {
 
   useEffect(() => {
     const validateForm = () => {
-      const isValid: any =
+      const isValid: number | "" | undefined | boolean =
         formValues.name &&
         formValues.count &&
         formValues.description &&
@@ -458,7 +458,7 @@ const EditStadium = () => {
               </View>
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={handleSubmit} />
+              <Buttons isDisebled={!isFormValid || true} title='Saqlash' loading={isLoading} onPress={handleSubmit} />
             </View>
           </View>
         </TouchableWithoutFeedback >

@@ -6,13 +6,15 @@ import { file_get, stadium_get_master } from '@/helpers/api/api';
 import { StadiumTypes } from '@/types/stadium/stadium';
 import { colors } from '@/constants/Colors';
 import Buttons from '@/components/button/button';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Loading } from '@/components/loading/loading';
 import { Entypo } from '@expo/vector-icons';
+import { RootStackParamList } from '@/types/root/root';
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 const Stadium = () => {
   const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   useFocusEffect(
     useCallback(() => {

@@ -1,10 +1,14 @@
 export interface RootStackParamList {
     "index": undefined;
+    '(pages)/(master)/(stadium)/(add-stadium)/add-stadium': undefined;
+    '(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium': undefined |any;
+    '(pages)/(notification)/notification': undefined;
+    "(pages)/(auth)/(register)/getInfo": undefined;
     "(pages)/(card)/(edit-card)/edit-card": undefined;
     "(pages)/(card)/(add-card)/add-card": undefined;
     "(pages)/(favourity)/favourite": undefined;
     "(pages)/(master)/(stadium)/(add-stadium)/add-stadiumindex": undefined;
-    "(pages)/(order)/(order-save)/order-save": any;
+    "(pages)/(order)/(order-save)/order-save": string | number | boolean | any;
     "(pages)/(client)/(dashboard)/dashboard": undefined;
     "(tabs)/(client)/dashboard": undefined;
     "(pages)/(maps)/(stadium-locations)/stadium-locations": any;

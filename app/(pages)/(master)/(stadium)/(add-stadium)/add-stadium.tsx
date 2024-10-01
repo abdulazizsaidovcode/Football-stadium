@@ -27,7 +27,7 @@ const AddStadium = () => {
   const [details, setDetails] = useState({ toilet: false, shower: false, shop: false });
   const { setUserLocation, userLocation } = useUserStore();
   const navigation = useNavigation();
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormValid, setIsFormValid] = useState<number | "" | undefined | boolean>(false);
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +60,7 @@ const AddStadium = () => {
   };
   useEffect(() => {
     const validateForm = () => {
-      const isValid: any =
+      const isValid: number | "" | undefined | boolean =
         formValues.name &&
         formValues.count &&
         formValues.description &&
@@ -400,7 +400,7 @@ const AddStadium = () => {
               </View> */}
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Buttons isDisebled={isFormValid} title='Saqlash' loading={isLoading} onPress={submitStadiumPost} />
+              <Buttons isDisebled={!isFormValid || true} title='Saqlash' loading={isLoading} onPress={submitStadiumPost} />
             </View>
           </View>
         </TouchableWithoutFeedback >

@@ -6,9 +6,8 @@ import { StyleSheet, View, Text, Image, SafeAreaView } from 'react-native';
 import Buttons from '@/components/button/button';
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { FontAwesome } from '@expo/vector-icons';
-
-type SettingsScreenNavigationProp = NavigationProp<any, '(pages)/(auth)/(register)/getInfo'>;
-
+import { RootStackParamList } from '@/types/root/root';
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 const MasterorClient: React.FC = () => {
   const { setRole } = useAuthStore()
   const navigation = useNavigation<SettingsScreenNavigationProp>();

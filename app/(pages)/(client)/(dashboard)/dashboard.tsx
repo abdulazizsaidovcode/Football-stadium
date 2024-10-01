@@ -35,10 +35,8 @@ import Input from "@/components/input/input";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 
-type SettingsScreenNavigationProp = NavigationProp<
-    RootStackParamList,
-    "(pages)/(client)/(dashboard)/dashboard"
->;
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
+
 
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
@@ -58,7 +56,7 @@ const ClientDashboard = () => {
         "GET"
     );
 
-    const navigation = useNavigation<SettingsScreenNavigationProp | any>();
+    const navigation = useNavigation<SettingsScreenNavigationProp>();
     const [isModalVisible, setModalVisible] = useState(false);
 
     useFocusEffect(

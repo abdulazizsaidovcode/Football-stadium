@@ -3,7 +3,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 // import LottieView from 'lottie-react-native';
 import Buttons from '@/components/button/button';
 import { colors } from '@/constants/Colors';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import LoadingButtons from '@/components/button/loadingButton';
 import { useOrderStory } from '@/helpers/stores/order/order-store';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
@@ -13,12 +13,14 @@ import { useFocusEffect } from 'expo-router';
 import { Loading } from '@/components/loading/loading';
 import CreditCard from '@/components/cards/credit-card';
 import { Entypo, Feather } from '@expo/vector-icons';
+import { RootStackParamList } from '@/types/root/root';
 
 const { height: screenHeight } = Dimensions.get('window')
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 
 const Payment = () => {
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation<SettingsScreenNavigationProp>();
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const { pay, setPay, setCardExpire, setCardNumber } = useOrderStory();

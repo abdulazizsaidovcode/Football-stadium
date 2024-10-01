@@ -2,15 +2,18 @@ import Buttons from '@/components/button/button';
 import { auth_register } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
+import { RootStackParamList } from '@/types/root/root';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 const UserInfo: React.FC = () => {
     const [isFild, setIsFild] = useState(false)
     const { role, firstName, setFirstName, lastName, setLastName, phoneNumber, setPhoneNumber } = useAuthStore();
-    const navigate = useNavigation<any>();
+    const navigate = useNavigation<SettingsScreenNavigationProp>();
 
     let info = {
         firstName: firstName,

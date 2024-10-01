@@ -4,17 +4,19 @@ import { favourite_get, favourite_delate } from '@/helpers/api/api'; // Make sur
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout'
 import { StadiumTypes } from '@/types/stadium/stadium';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Loading } from '@/components/loading/loading';
+import { RootStackParamList } from '@/types/root/root';
+type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 export default function Favourite() {
   const [id, setId] = useState<string>('');
   const GetFav = useGlobalRequest(favourite_get, "GET");
-  const DelFav = useGlobalRequest(`${favourite_delate + id}`, "DELETE"); // Assuming favourite_delete is the correct endpoint for deleting a favorite
-  const navigation = useNavigation<any>();
+  const DelFav = useGlobalRequest(`${favourite_delate + id}`, "DELETE"); 
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   useEffect(() => {
     GetFav.globalDataFunc();

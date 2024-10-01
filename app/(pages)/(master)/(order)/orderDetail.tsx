@@ -70,7 +70,7 @@ function OrderDetail() {
                 autoPlay={true}
                 autoPlayInterval={500}
                 data={stadiumDetail?.response?.attechmentIds}
-                renderItem={({ item }: { item: any }) => renderItem({ item })}
+                renderItem={({ item }: { item:  string | null | number }) => renderItem({ item })}
                 scrollAnimationDuration={1000}
                 pagingEnabled={true}
                 mode="parallax"
