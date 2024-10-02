@@ -24,7 +24,7 @@ type SettingsScreenNavigationProp = NavigationProp<
   "(pages)/(client)/(dashboard)/dashboard"
 >;
 
-const Dashboard: React.FC = () => {
+const MasterDashboardScreen: React.FC = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   const userMee = useGlobalRequest(user_me, 'GET');
@@ -323,3 +323,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+
+export default MasterDashboardScreen
