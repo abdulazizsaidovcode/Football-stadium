@@ -40,7 +40,6 @@ const OrderSave = () => {
     const [creasePay, setCreasePay] = useState(1)
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
     const { calendarDate } = calenderStory()
-    const { phoneNumber } = useAuthStore()
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -63,11 +62,11 @@ const OrderSave = () => {
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
 
-
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}&localDate=${calendarDate}`, 'GET');
     const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
-    console.log(id);
+
+    console.log(id, calendarDate);
 
 
     useFocusEffect(
@@ -257,7 +256,7 @@ const OrderSave = () => {
                 </View>
                 {freeTimeRes.response && freeTimeRes.response.length > 1 && role == 'MASTER' &&
                     <View style={{ marginBottom: 15 }}>
-                        <Text style={styles.label}>{"Telifon raqam kiritish"}</Text>
+                        <Text style={styles.label}>Telefon raqam kiritish</Text>
                         <TextInput
                             keyboardType='numeric'
                             style={styles.input}
@@ -266,6 +265,7 @@ const OrderSave = () => {
                             value={userPhone}
                             onChangeText={handleFirstNameChange}
                         />
+                        <Text style={{ color: '#fff' }}>Namuna: 999595599</Text>
                     </View>
                 }
                 {role !== 'MASTER' && <View style={styles.payCard}>
@@ -304,16 +304,23 @@ const OrderSave = () => {
                     <LoadingButtons title='Bron qilish' />
                     :
                     <Buttons
-                        isDisebled={selectedTimeSlots.length == 2 && !!calendarDate && !!id && pay !== '' && (role !== 'MASTER' ? true : (userPhone !== '' ? true : false))}
-                        title='Bron qilish' onPress={async () => {
-                            let isLogining = await isLogin().then((res) => res)
+                        isDisebled={
+                            role === 'MASTER'
+                                ? selectedTimeSlots.length === 2 && !!calendarDate && !!id && userPhone.length === 12
+                                : selectedTimeSlots.length === 2 && !!calendarDate && !!id && pay !== ''
+                        }
+                        title='Bron qilish'
+                        onPress={async () => {
+                            let isLogining = await isLogin().then((res) => res);
                             if (isLogining) {
-                                CreateOreder.globalDataFunc()
+                                CreateOreder.globalDataFunc();
                             } else {
-                                alert("Avval Ro'yhatdan o'ting")
-                                navigation.navigate('(pages)/(auth)/(login)/login')
+                                alert("Avval Ro'yhatdan o'ting");
+                                navigation.navigate('(pages)/(auth)/(login)/login');
                             }
-                        }} />
+                        }}
+                    />
+
                 }
             </ScrollView>
         </SafeAreaView >

@@ -20,6 +20,8 @@ export function useGlobalRequest<T>(
         mutationFn: async () => {
             let res;       
             const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
+            console.log(config);
+            
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
