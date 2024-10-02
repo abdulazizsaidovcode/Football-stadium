@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaVi
 import React, { useCallback, useEffect } from 'react';
 import Layout from '@/layout/layout';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { file_get, stadium_get_master } from '@/helpers/api/api';
+import { card, file_get, stadium_get_master } from '@/helpers/api/api';
 import { StadiumTypes } from '@/types/stadium/stadium';
 import { colors } from '@/constants/Colors';
 import Buttons from '@/components/button/button';
@@ -13,14 +13,19 @@ import { RootStackParamList } from '@/types/root/root';
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 const Stadium = () => {
-  const stadiums = useGlobalRequest<StadiumTypes>(stadium_get_master, 'GET');
+  const stadiums = useGlobalRequest(stadium_get_master, 'GET');
+  const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   useFocusEffect(
     useCallback(() => {
       stadiums.globalDataFunc();
-    }, [stadiums.globalDataFunc])
+      cards.globalDataFunc();
+    }, [])
   )
+
+  console.log(cards);
+
 
   return (
     <SafeAreaView style={{
@@ -58,7 +63,16 @@ const Stadium = () => {
         </ScrollView>
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
-        <Buttons icon={<Entypo name="plus" size={24} color="white" />} title="Maydon qo'shish" onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')} />
+        <Buttons
+          icon={<Entypo name="plus" size={24} color="white" />}
+          title="Maydon qo'shish
+          "
+          onPress={() => {
+            if (cards.response && cards.response.length === 0) {
+              alert('Dovud kut birinchi carta qush')
+            } else navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')
+          }}
+        />
       </View>
     </SafeAreaView>
   );

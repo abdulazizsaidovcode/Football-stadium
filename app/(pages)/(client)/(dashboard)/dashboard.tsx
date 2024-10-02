@@ -34,6 +34,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { useAuthStore } from "@/helpers/stores/auth/auth-store";
+import Buttons from "@/components/button/button";
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
@@ -175,6 +176,7 @@ const ClientDashboard = () => {
                         </View>
                     </View>
                 )}
+
                 <View style={{ marginTop: 15 }}>
                     <View>
                         <Input
@@ -188,6 +190,14 @@ const ClientDashboard = () => {
                         <Text style={styles.subTitle}>
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
+                        {!token && !role && (
+                            <View style={{ marginVertical: 10 }}>
+                                <Buttons
+                                    title="Tizimga kirish"
+                                    onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')}
+                                />
+                            </View>
+                        )}
                         <View style={{ marginVertical: 16, gap: 10 }}>
                             {/* {!locationLoading ?
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
