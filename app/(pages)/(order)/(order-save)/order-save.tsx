@@ -265,7 +265,7 @@ const OrderSave = () => {
                             value={userPhone}
                             onChangeText={handleFirstNameChange}
                         />
-                        <Text style={{ color: '#fff' }}>Namuna: 999595599</Text>
+                        <Text style={{ color: '#fff' }}>Namuna: 998 99 999 99 99</Text>
                     </View>
                 }
                 {role !== 'MASTER' && <View style={styles.payCard}>
@@ -286,7 +286,7 @@ const OrderSave = () => {
                             </Pressable>
                         </View>
                         :
-                        <Text style={styles.timeTitle}>to'lov so'mini kirting</Text>
+                        <Text style={styles.timeTitle}></Text>
                     }
                 </View>}
                 {!pay && role !== 'MASTER' && <Buttons

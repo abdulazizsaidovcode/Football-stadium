@@ -44,8 +44,8 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: 
                     }
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text> {/* Fixed typo */}
-                    <Text style={styles.priceTitle}>{data.startPrice} sum</Text>
+                    <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text> 
+                    <Text style={styles.priceTitle}> {data.startPrice} sum</Text>
                 </View>
                 <Text style={styles.priceTitle}>{data.date}</Text>
                 <Text style={[styles.priceTitle, { color: '#fff' }]}>{data.startTime && data.startTime.slice(0, 5)} - {data.endTime.slice(0, 5)}</Text>
