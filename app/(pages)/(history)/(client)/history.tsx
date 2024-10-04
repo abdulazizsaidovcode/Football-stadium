@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useCallback, useState } from 'react';
 import { colors } from '@/constants/Colors';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
@@ -8,6 +7,7 @@ import { order_history } from '@/helpers/api/api';
 import Layout from '@/layout/layout';
 import { Loading } from '@/components/loading/loading';
 import Buttons from '@/components/button/button';
+import { useFocusEffect } from '@react-navigation/native';
 interface OrderHistory {
   id: string;
   date: string;
@@ -17,20 +17,31 @@ interface OrderHistory {
   orderStatus: string;
 }
 const ClientHistory = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
   const [historyData, setHistoryData] = useState<OrderHistory[]>([]);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const GetHistory = useGlobalRequest(order_history, "GET");
+  const [size, setSize] = useState(10)
+  const GetHistory = useGlobalRequest(`${order_history}?page=0&size=${size}`, "GET");
 
-  const loadMoreData = () => {
-    if (hasMore) setPage((prevPage) => prevPage + 1);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      GetHistory.globalDataFunc()
+    }, [])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (GetHistory.response) {
+        setHistoryData(GetHistory.response)
+      }
+    }, [GetHistory.response])
+  );
+
+  console.log(size);
+
 
   return (
     <Layout scroll style={styles.container}>
       <NavigationMenu name="История заказов" />
-      {loading && page === 1 ? (
+      {GetHistory.loading ? (
         <Loading />
       ) : historyData.length > 0 ? (
         <>
@@ -42,13 +53,17 @@ const ClientHistory = () => {
               <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
             </View>
           ))}
-          {hasMore && (
-            <Buttons title="Показать больше" onPress={loadMoreData} />
-          )}
         </>
       ) : (
         <Text style={styles.noDataText}>Заказы не найдены</Text>
       )}
+      <Buttons
+        title='Yandan koproq'
+        onPress={() => {
+          setSize((prevSize) => prevSize + 10);
+          GetHistory.globalDataFunc()
+        }}
+      />
     </Layout>
   );
 };

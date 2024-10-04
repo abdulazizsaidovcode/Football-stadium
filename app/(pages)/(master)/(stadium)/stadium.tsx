@@ -24,9 +24,6 @@ const Stadium = () => {
     }, [])
   )
 
-  console.log(cards);
-
-
   return (
     <SafeAreaView style={{
       flex: 1,
@@ -39,9 +36,6 @@ const Stadium = () => {
         <ScrollView contentContainerStyle={styles.stadiumList}>
           <View style={styles.header}>
             <Text style={styles.title}>Maydonlar</Text>
-            <View style={styles.headerIcon}>
-              {/* <Entypo name="share" size={27} color="white" /> */}
-            </View>
           </View>
           {!stadiums.loading ?
             stadiums.response ?
@@ -91,11 +85,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 70,
     marginBottom: 30
-  },
-  headerIcon: {
-    flexDirection: 'row',
-    gap: 15,
-    alignItems: 'center'
   },
   title: {
     fontSize: 25,
