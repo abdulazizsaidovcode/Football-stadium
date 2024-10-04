@@ -19,6 +19,7 @@ interface OrderHistory {
 const ClientHistory = () => {
   const [historyData, setHistoryData] = useState<OrderHistory[]>([]);
   const [size, setSize] = useState(10)
+  const [totalElements, setTotalElements] = useState(10)
   const GetHistory = useGlobalRequest(`${order_history}?page=0&size=${size}`, "GET");
 
   useFocusEffect(
@@ -30,12 +31,13 @@ const ClientHistory = () => {
   useFocusEffect(
     useCallback(() => {
       if (GetHistory.response) {
-        setHistoryData(GetHistory.response)
+        setHistoryData(GetHistory.response.object)
+        setTotalElements(GetHistory.response.totalElements)
       }
     }, [GetHistory.response])
   );
 
-  console.log(size);
+  console.log(totalElements);
 
 
   return (
@@ -57,13 +59,13 @@ const ClientHistory = () => {
       ) : (
         <Text style={styles.noDataText}>Заказы не найдены</Text>
       )}
-      <Buttons
+      {historyData && size < totalElements && < Buttons
         title='Yandan koproq'
         onPress={() => {
           setSize((prevSize) => prevSize + 10);
           GetHistory.globalDataFunc()
         }}
-      />
+      />}
     </Layout>
   );
 };
