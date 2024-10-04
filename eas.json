@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env": {
-        "API_BASE_URL": "https://app.coinbyitca.uz/api/v1/'"
+        "API_BASE_URL": "https://app.coinbyitca.uz/api/v1/"
       }
     }
   },
