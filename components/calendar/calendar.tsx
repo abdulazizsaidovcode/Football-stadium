@@ -1,13 +1,12 @@
-
-
 import React, { useState, useCallback } from "react";
-import { SafeAreaView, StyleSheet, Platform, View, Dimensions } from "react-native";
+import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { MarkedDates } from "react-native-calendars/src/types";
 import moment from "moment";
 import { useFocusEffect } from "expo-router";
 import calenderStory from "@/helpers/stores/order/graficWorkStore";
 import { colors } from "@/constants/Colors";
+import { getSize } from "@/constants/sizes";
 
 export interface DateObject {
     dateString: string;
@@ -19,26 +18,41 @@ export interface DateObject {
 
 const { width: screenWidth } = Dimensions.get('window')
 
-const CalendarGrafficEdit: React.FC = () => {
+const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
     const [selectedDate, setSelectedDate] = useState<MarkedDates>({});
     const { setCalendarDate } = calenderStory();
-
 
     useFocusEffect(
         useCallback(() => {
             const today = moment().format("YYYY-MM-DD");
-            const newSelectedDate: MarkedDates = {
-                [today]: {
-                    selected: true,
-                    marked: true,
-                    dotColor: "red",
-                    color: "#9C0A35",
-                },
-            };
-            setSelectedDate(newSelectedDate);
-            setCalendarDate(today); // Default bugungi sanani saqlash
-            return () => { }
-        }, [setCalendarDate])
+
+            // Agar `saveTime` mavjud bo'lsa, tanlangan sanani belgilang
+            if (saveTime && moment(saveTime, "YYYY-MM-DD", true).isValid()) {
+                const newSelectedDate: MarkedDates = {
+                    [saveTime]: {
+                        selected: true,
+                        marked: true,
+                        dotColor: "red",
+                        color: "#9C0A35",
+                    },
+                };
+                setSelectedDate(newSelectedDate);
+                setCalendarDate(saveTime); // Saqlangan sanani o'rnatish
+            } else {
+                const newSelectedDate: MarkedDates = {
+                    [today]: {
+                        selected: true,
+                        marked: true,
+                        dotColor: "red",
+                        color: "#9C0A35",
+                    },
+                };
+                setSelectedDate(newSelectedDate);
+                setCalendarDate(today); // Default bugungi sanani saqlash
+            }
+
+            return () => { };
+        }, [saveTime, setCalendarDate])
     );
 
     const onDayPress = (day: DateObject) => {
@@ -106,10 +120,11 @@ const CalendarGrafficEdit: React.FC = () => {
                     textDayFontWeight: '300',
                     textMonthFontWeight: 'bold',
                     textDayHeaderFontWeight: '300',
-                    textDayFontSize: 16,
-                    textMonthFontSize: 16,
-                    textDayHeaderFontSize: 16
+                    textDayFontSize: getSize('smallText'),
+                    textMonthFontSize: getSize('smallText'),
+                    textDayHeaderFontSize: getSize('smallText'),
                 }}
+                
             />
         </View>
     );
@@ -117,16 +132,14 @@ const CalendarGrafficEdit: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         backgroundColor: "#fff",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 30,
-        paddingVertical: 10,
-
+        paddingVertical: getSize('marginBottom'),
     },
     containerCall: {
-        width: screenWidth / 1.20,
+        width: screenWidth / 1.30,
         paddingHorizontal: 0
     }
 });

@@ -21,12 +21,15 @@ import { useAuthStore } from '@/helpers/stores/auth/auth-store'
 import LoadingButtons from '@/components/button/loadingButton'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LottieRefreshControl from '@/components/lotie/refresh'
+import { getSize, Sizes } from '@/constants/sizes'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "(pages)/(client)/(dashboard)/dashboard"
 >;
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
+
 
 const OrderSave = () => {
     const [role, setRole] = useState<string | null>('')
@@ -62,12 +65,12 @@ const OrderSave = () => {
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
 
+    const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = (new Date()).toLocaleDateString('en-CA', options).replace(/\//g, '-');
+
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
-    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}&localDate=${calendarDate}`, 'GET');
-    const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data);
-
-    console.log(id, calendarDate);
-
+    const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}` + (date !== calendarDate ? `&localDate=${calendarDate}` : ""), 'GET');
+    const CreateOreder = useGlobalRequest(`${order_create} `, 'POST', data);
 
     useFocusEffect(
         useCallback(() => {
@@ -77,11 +80,11 @@ const OrderSave = () => {
             } else if (selectedTimeSlots.length === 2) {
                 let a = selectedTimeSlots[0].slice(0, 2);
                 let b = selectedTimeSlots[1].slice(0, 2);
-                // console.log(`Time slots: ${a}, ${b}`);
+                // console.log(`Time slots: ${ a }, ${ b } `);
                 let c = Math.abs(Number(b) - Number(a));  // Use Math.abs to ensure the result is always positive
                 if (!isNaN(c)) {
                     setCreasePay(c);
-                    // console.log(`Calculated crease pay: ${c}`);
+                    // console.log(`Calculated crease pay: ${ c } `);
                 } else {
                     setCreasePay(1);
                     // console.log("Calculation resulted in NaN");
@@ -107,9 +110,11 @@ const OrderSave = () => {
 
     useFocusEffect(
         useCallback(() => {
-            stadium.globalDataFunc();
-            freeTimeRes.globalDataFunc()
-            getRole()
+            if (!pay) {
+                stadium.globalDataFunc();
+                freeTimeRes.globalDataFunc()
+                getRole()
+            }
         }, [])
     )
     useEffect(() => {
@@ -175,6 +180,7 @@ const OrderSave = () => {
     };
 
     const rangeIndices = getRangeIndices();
+    console.log(calendarDate, 1234);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -193,15 +199,15 @@ const OrderSave = () => {
                 showsVerticalScrollIndicator={false}
                 style={{ marginBottom: 30 }}>
                 <View>
-                    <Text style={{ fontSize: 20, color: '#fff', marginBottom: 10 }}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
+                    <Text style={styles.timeTitle}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
                     <ScrollView
                         horizontal={true}
-                        contentContainerStyle={{ paddingBottom: 10, gap: 5 }}
+                        contentContainerStyle={{ paddingBottom: 10, gap: isTablet ? 15 : 5 }}
                         showsHorizontalScrollIndicator={false}
                     >
-                        <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={34} color="white" />} />
-                        <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={34} color="white" />} />
-                        <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={34} color="white" />} />
+                        <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={getSize('largeText')} color="white" />} />
+                        <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={getSize('largeText')} color="white" />} />
+                        <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={getSize('largeText')} color="white" />} />
                     </ScrollView>
                     <View style={styles.imageRow}>
                         {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
@@ -210,7 +216,9 @@ const OrderSave = () => {
                     </View>
                 </View>
                 <Text style={styles.timeTitle}>Kunni tanlash</Text>
-                <CalendarGrafficEdit />
+                <View style={{ paddingHorizontal: isTablet ? 60 : 0 }}>
+                    <CalendarGrafficEdit saveTime={calendarDate} />
+                </View>
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>
                 <View style={styles.timeListContainer}>
                     {freeTimeRes.loading ? (
@@ -299,7 +307,7 @@ const OrderSave = () => {
                             navigation.navigate('(pages)/(auth)/(login)/login')
                         }
                     }} />}
-                <View style={{ marginBottom: 10 }}></View>
+                <View style={{ marginBottom: getSize('marginBottom') }}></View>
                 {CreateOreder.loading ?
                     <LoadingButtons title='Bron qilish' />
                     :
@@ -333,7 +341,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.darkGreen,
-        paddingHorizontal: 16
+        paddingHorizontal: getSize('defaultPadding')
     },
     timeContainer: {
         flexDirection: 'row',
@@ -363,7 +371,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: colors.inDarkGreen,
         borderRadius: 10,
-        marginBottom: 10,
+        marginBottom: getSize('marginBottom'),
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: '#fff',
@@ -373,9 +381,9 @@ const styles = StyleSheet.create({
     },
     timeTitle: {
         color: colors.white,
-        fontSize: 18,
+        fontSize: getSize('mediumText'),
         fontWeight: 'bold',
-        marginBottom: 5,
+        marginBottom: getSize('marginBottom'),
         marginTop: 20,
     },
     timeText: {
@@ -392,7 +400,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "center",
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: getSize('marginBottom')
     },
     label: {
         color: '#FFFFFF',

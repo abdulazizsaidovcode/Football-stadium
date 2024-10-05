@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { IButton } from "@/types/button/button";
+import { getSize } from '@/constants/sizes';
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
-const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', bordered = false, icon, textColor = 'white', textSize = 18, onPress, isDisebled = true, loading = false }) => {
+const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', bordered = false, icon, textColor = 'white', textSize = getSize('smallText') + (isTablet ? 5 : 0), onPress, isDisebled = true, loading = false }) => {
     return (
         <TouchableOpacity
             style={[
@@ -25,7 +28,7 @@ const Buttons: React.FC<IButton> = ({ title, backgroundColor = '#41B06E', border
 const styles = StyleSheet.create({
     button: {
         width: '100%',
-        paddingVertical: 10,
+        paddingVertical: getSize('marginBottom'),
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',

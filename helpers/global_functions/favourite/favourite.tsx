@@ -4,8 +4,12 @@ import { getConfig } from "@/helpers/api/token";
 import { StadiumTypes } from "@/types/stadium/stadium";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios"
-import { TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { toastMessage } from "../toast-message/toast-message";
+import { getSize } from "@/constants/sizes";
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 export const addFavouriteOrder = async (masterId: string, fetchFunction: () => void) => {
     const config = await getConfig();
@@ -49,9 +53,9 @@ export const haveOrNot = (favourite: boolean, masterId: any, fetchFunction: () =
                 alignItems: 'center',
                 backgroundColor: colors.green,
                 borderRadius: 50,
-                width: 46,
+                width: isTablet ? 70 : 46,
             }}>
-                <MaterialIcons name="bookmark" size={24} color="white" />
+                <MaterialIcons name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
             </TouchableOpacity>
         )
     } else {
@@ -62,9 +66,9 @@ export const haveOrNot = (favourite: boolean, masterId: any, fetchFunction: () =
                 alignItems: 'center',
                 backgroundColor: colors.green,
                 borderRadius: 50,
-                width: 46,
+                width: isTablet ? 70 : 46,
             }}>
-                <Feather name="bookmark" size={24} color="white" />
+                <Feather name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
             </TouchableOpacity>
         )
     }

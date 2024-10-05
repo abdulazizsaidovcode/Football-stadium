@@ -1,5 +1,6 @@
 import {
     BackHandler,
+    Dimensions,
     RefreshControl,
     ScrollView,
     StyleSheet,
@@ -35,9 +36,12 @@ import Input from "@/components/input/input";
 import CenteredModal from "@/components/modal/sentralmodal";
 import { useAuthStore } from "@/helpers/stores/auth/auth-store";
 import Buttons from "@/components/button/button";
+import { getSize } from "@/constants/sizes";
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const ClientDashboard = () => {
     const { userLocation, setUserLocation } = useUserStore();
@@ -151,7 +155,7 @@ const ClientDashboard = () => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing && !staduims.response} onRefresh={onRefresh} />
                 }
-                style={{ paddingHorizontal: 16 }}>
+                style={{ paddingHorizontal: getSize('defaultPadding') }}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
@@ -161,16 +165,20 @@ const ClientDashboard = () => {
                                 onPress={() =>
                                     navigation.navigate("(pages)/(history)/(client)/history")
                                 }
-                                size={30}
+                                size={getSize('mediumText') + (isTablet ? 8 : 12)}
                                 color="white"
                             />
                             <View>
-                                <MaterialIcons name="notifications" onPress={() => navigation.navigate('(pages)/(notification)/notification')} size={30} color="white" />
+                                <MaterialIcons
+                                    name="notifications"
+                                    onPress={() => navigation.navigate('(pages)/(notification)/notification')}
+                                    size={getSize('mediumText') + (isTablet ? 8 : 12)}
+                                    color="white" />
                             </View>
                             <FontAwesome
                                 onPress={showModal}
                                 name="sign-out"
-                                size={30}
+                                size={getSize('mediumText') + (isTablet ? 8 : 12)}
                                 color="white"
                             />
                         </View>
@@ -249,7 +257,7 @@ const ClientDashboard = () => {
                                             </View>
                                         ) : stadiumData && stadiumData.length > 0 ? (
                                             stadiumData.map((item: StadiumTypes, index: number) => (
-                                                <View style={{ marginBottom: 10 }}>
+                                                <View style={{ marginBottom: getSize('marginBottom') }}>
                                                     <StadiumCard
                                                         key={index}
                                                         fetchFunction={staduims.globalDataFunc}
@@ -389,7 +397,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 25,
+        fontSize: getSize('mediumText') + (isTablet ? 0 : 10),
         color: colors.white
     },
     noDataText: {
@@ -398,7 +406,7 @@ const styles = StyleSheet.create({
         color: 'gray',
     },
     subTitle: {
-        fontSize: 18,
+        fontSize: getSize('mediumText'),
         color: colors.white
     }
 })

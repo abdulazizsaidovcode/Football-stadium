@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
@@ -8,6 +8,10 @@ import { file_get } from '@/helpers/api/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from 'expo-router'
 import { haveOrNot } from '@/helpers/global_functions/favourite/favourite'
+import { getSize } from '@/constants/sizes'
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress: () => void, onPress: () => void, iconColor?: string | any, fetchFunction: () => void }> = ({ data, onMapPress, onPress, fetchFunction }) => {
     const [role, setRole] = useState<string | null>(null);
@@ -35,7 +39,7 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
             </View>
 
             {/* Image loading indicator */}
-            <View style={{ position: 'relative', height: 200 }}>
+            <View style={{ position: 'relative', height: isTablet ? 500 : 200, marginBottom: getSize('marginBottom') }}>
                 {isLoading && (
                     <ActivityIndicator
                         size="large"
@@ -44,7 +48,7 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                     />
                 )}
                 <Image
-                    height={200}
+                    height={isTablet ? 500 : 200}
                     style={[styles.image, isLoading && { opacity: 0.5 }]} // Dim the image when loading
                     source={data.isMainAttachmentId
                         ? { uri: file_get + data.isMainAttachmentId }
@@ -55,24 +59,31 @@ const StadiumCard: React.FC<{ disabled?: boolean, data: StadiumTypes, onMapPress
                 />
             </View>
 
-            <Text style={styles.description}>{data.description}</Text>
+            <Text style={[styles.description, { marginBottom: getSize('marginBottom') }]}>{data.description}</Text>
             <View style={styles.btnContainer}>
                 <View style={{ width: '70%' }}>
                     <Buttons onPress={onPress} title='Записаться' />
                 </View>
-                <TouchableOpacity onPress={onMapPress} activeOpacity={.8} style={styles.locationBtn}>
-                    <FontAwesome6 name="location-dot" size={24} color="white" />
+                <TouchableOpacity
+                    onPress={onMapPress}
+                    activeOpacity={.8}
+                    style={styles.locationBtn}>
+                    <FontAwesome6 name="location-dot" size={getSize('mediumText') + (isTablet ? 13 : 0)} color="white" />
                 </TouchableOpacity>
-                {role && token ? data.id && haveOrNot(data.favourite, data.id, fetchFunction) : <TouchableOpacity onPress={() => alert("Birinchi logindan o'ting")} activeOpacity={0.8} style={{
-                    padding: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: colors.green,
-                    borderRadius: 50,
-                    width: 46,
-                }}>
-                    <Feather name="bookmark" size={24} color="white" />
-                </TouchableOpacity>}
+                {role && token ? data.id && haveOrNot(data.favourite, data.id, fetchFunction) :
+                    <TouchableOpacity
+                        onPress={() => alert("Birinchi logindan o'ting")}
+                        activeOpacity={0.8}
+                        style={{
+                            padding: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: colors.green,
+                            borderRadius: 50,
+                            width: isTablet ? 70 : 46,
+                        }}>
+                        <Feather name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
+                    </TouchableOpacity>}
             </View>
         </View>
     )
@@ -84,21 +95,21 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         backgroundColor: '#698474',
-        padding: 10,
+        padding: getSize('defaultPadding') - 5,
         borderRadius: 10
     },
     title: {
-        fontSize: 20,
+        fontSize: getSize('mediumText'),
         color: colors.white,
         marginVertical: 5
     },
     priceTitle: {
-        fontSize: 15,
+        fontSize: getSize('smallText'),
         color: colors.lightGreen,
         marginVertical: 5
     },
     description: {
-        fontSize: 13,
+        fontSize: getSize('smallText'),
         color: colors.white,
         marginVertical: 5
     },
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: colors.green,
         borderRadius: 50,
-        width: 46,
+        width: isTablet ? 70 : 46,
     },
     btnContainer: {
         flexDirection: 'row',

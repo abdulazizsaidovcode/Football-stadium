@@ -98,6 +98,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
+        width: "100%",
+        paddingHorizontal: 50
     },
     modalView: {
         backgroundColor: colors.darkGreen,

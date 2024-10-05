@@ -5,12 +5,13 @@ import { INavigationProps } from "@/types/navigation/navigation";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { colors } from '@/constants/Colors';
+import { getSize } from '@/constants/sizes';
 
 const NavigationMenu = ({ toggleModal, name, deleteIcon, all = false, delOnPress, editOnPress, addOnPress, navigate }: INavigationProps) => {
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <Feather name="chevron-left" size={30} color="white" onPress={navigate ? navigate : () => navigation.goBack()} />
+            <Feather name="chevron-left" size={getSize("mediumText") + 8} color="white" onPress={navigate ? navigate : () => navigation.goBack()} />
             <Text style={styles.title}>{name}</Text>
             {deleteIcon
                 ? <MaterialIcons name="delete" size={25} color="white" onPress={toggleModal} />
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: 'white',
-        fontSize: 20,
+        fontSize: getSize("mediumText"),
     },
 });
 

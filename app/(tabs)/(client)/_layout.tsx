@@ -8,6 +8,11 @@ import OrdersDay from './ordersDay';
 import MasterOrder from '@/app/(pages)/(master)/(order)/order';
 import Favourite from '@/app/(pages)/(favourity)/favourite';
 import ClientCards from './card';
+import { getSize } from '@/constants/sizes';
+import { Dimensions } from 'react-native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 export default function ClientTabLayout() {
   const Tab = createBottomTabNavigator();
@@ -21,7 +26,7 @@ export default function ClientTabLayout() {
           backgroundColor: colors.inDarkGreen,
           paddingBottom: 20,
           paddingTop: 5,
-          height: 80
+          height: isTablet ? 120 : 80,
         },
         headerShown: false,
       })}
@@ -32,7 +37,7 @@ export default function ClientTabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="space-dashboard" size={27} color={color} />
+            <MaterialIcons name="space-dashboard" size={getSize('mediumText') + (isTablet ? 15 : 5)} color={color} style={{ width: isTablet ? 55 : 22 }} />
           )
         }}
       />
@@ -42,7 +47,7 @@ export default function ClientTabLayout() {
         options={{
           title: "Orders",
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="user-alt" size={24} color={color} />
+            <FontAwesome5 name="user-alt" size={getSize('mediumText') + (isTablet ? 15 : 5)} color={color} style={{ width: isTablet ? 55 : 22 }}/>
           )
         }}
       />
@@ -52,7 +57,7 @@ export default function ClientTabLayout() {
         options={{
           title: "Cards",
           tabBarIcon: ({ color }) => (
-            <Entypo name="credit-card" size={30} color={color} />
+            <Entypo name="credit-card" size={getSize('mediumText') + (isTablet ? 15 : 5)} color={color} style={{ width: isTablet ? 60 : 22 }}/>
           )
         }}
       />
@@ -62,7 +67,7 @@ export default function ClientTabLayout() {
         options={{
           title: "Favourite",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="bookmarks-sharp" size={24} color={color} />
+            <Ionicons name="bookmarks-sharp" size={getSize('mediumText') + (isTablet ? 15 : 5)} color={color} style={{ width: isTablet ? 55 : 22 }}/>
           )
         }}
       />
