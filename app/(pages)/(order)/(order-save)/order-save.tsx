@@ -64,6 +64,8 @@ const OrderSave = () => {
         "cardExpire": role !== "MASTER" ? cardExpire : null,
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
+    console.log(data);
+    
 
     const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = (new Date()).toLocaleDateString('en-CA', options).replace(/\//g, '-');

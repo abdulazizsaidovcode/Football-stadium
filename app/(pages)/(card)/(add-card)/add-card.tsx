@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors } from '@/constants/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,6 +9,10 @@ import { useGlobalRequest } from '@/helpers/global_functions/global-response/glo
 import { card } from '@/helpers/api/api'
 import { useAuthStore } from '@/helpers/stores/auth/auth-store'
 import { useNavigation } from '@react-navigation/native'
+import { getSize } from '@/constants/sizes'
+
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const AddCard = () => {
     const navigation = useNavigation<any>()
@@ -40,8 +44,8 @@ const AddCard = () => {
             <SafeAreaView style={styles.container}>
                 <NavigationMenu name="Karta qo'shish" />
                 <View>
-                    <View style={{ marginTop: 100 }}>
-                        <Text style={{ color: colors.white, fontSize: 20 }}>Karta ma'lumotlarini kiriting</Text>
+                    <View style={{ marginTop: 50 }}>
+                        <Text style={{ color: colors.white, fontSize: getSize('mediumText') }}>Karta ma'lumotlarini kiriting</Text>
                         <Input
                             placeholder='0000 0000 0000 0000'
                             maxLength={19}

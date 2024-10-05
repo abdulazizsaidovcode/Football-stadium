@@ -37,14 +37,14 @@ const CreditCard: React.FC<{ main: boolean, cardNumber: string, cardExpiry: stri
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width: '93%',
+        width: '100%',
         height: 200,
         borderRadius: 16,
         padding: 20,
         backgroundColor: colors.inDarkGreen,
         alignSelf: 'center',
         justifyContent: 'space-between',
-        marginTop: 50,
+        marginTop: 10,
         position: 'relative',
     },
     topRow: {

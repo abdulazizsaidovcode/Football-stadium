@@ -1,17 +1,20 @@
 import React from "react";
-import {View, StyleSheet, Dimensions} from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import Buttons from "../button/button";
 import { colors } from "@/constants/Colors";
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 export interface IBottomModalProps {
     children: JSX.Element; // modal body qismi
     toggleBottomModal: () => void; // modal ochib yopish un function
     isBottomModal: boolean; // modal ochib yopish un state
-  }
-  
-  //centered modal
-  export interface ICenteredModalProps {
+}
+
+//centered modal
+export interface ICenteredModalProps {
     children: JSX.Element; //modal body qismi
     btnWhiteText: string; // oq btn uchun text
     btnRedText: string; // qizil btn uchun text
@@ -20,9 +23,9 @@ export interface IBottomModalProps {
     toggleModal: () => void; // modalni ochib yopish uchun function m: => const toggleModal = () => setIsModal(!isModal);
     onConfirm?: () => void; //tasdiqlash uchun function
     oneBtn?: boolean
-  }
+}
 
-const {width, height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const CenteredModal: React.FC<ICenteredModalProps> = (props) => {
     const {
@@ -98,8 +101,6 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
-        width: "100%",
-        paddingHorizontal: 50
     },
     modalView: {
         backgroundColor: colors.darkGreen,
@@ -107,6 +108,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         borderRadius: 20,
         alignItems: "center",
+        alignSelf: "center",
+        justifyContent: "center",
+
+        width: isTablet ? "60%" : "100%",
+
     },
     buttonContainer: {
         width: "100%",
@@ -119,10 +125,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
     },
     buttonWrapper: {
-      flex: 1,
+        flex: 1,
     },
     fullWidthHalf: {
-        width: "48%",
+        width: "49.5%",
     },
     marginVertical: {
         marginVertical: 6,

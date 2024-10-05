@@ -10,8 +10,11 @@ import { useGlobalRequest } from '@/helpers/global_functions/global-response/glo
 import { card } from '@/helpers/api/api'
 import CenteredModal from '@/components/modal/sentralmodal'
 import { Loading } from '@/components/loading/loading'
+import { getSize } from '@/constants/sizes'
 
-const { height: screenHeight } = Dimensions.get('window')
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
+
 
 const Cards = () => {
     const navigation = useNavigation<any>();
@@ -75,27 +78,29 @@ const Cards = () => {
             <View style={{ padding: 10 }}>
                 <Text style={{ fontSize: 22, color: "white", marginVertical: 10, }}>Kartalar</Text>
             </View>
-            <ScrollView>
-                <View>
+            <ScrollView horizontal={isTablet} style={{ flex: 1 }}>
+                <View style={[{ padding: 0, flexDirection: isTablet ? 'row' : "column", width: '100%', flex: 1, gap: 10 }, isTablet && { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
                     {cards.loading ? (
-                        <View style={{ height: screenHeight / 1.5 }}>
+                        <View style={[{ height: screenHeight / 1.5, }, isTablet && { width: screenWidth, position: 'absolute', left: '0%' }]}>
                             <Loading />
                         </View>
                     ) : (
                         cards.response && cards.response.length > 0 ? (
                             cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
-                                <CreditCard
-                                    key={index}
-                                    cardExpiry={item.cardExpire}
-                                    cardNumber={item.cardNumber}
-                                    main={item.id === selectedMainId}  // Reflect the selected main card
-                                    owner={item.owner}
-                                    delOnPress={() => {
-                                        toggleDelModal();
-                                        setCardId(item.id);
-                                    }}
-                                    onMainSelect={() => setSelectedMainId(item.id)}  // Set selected card as main
-                                />
+                                <View>
+                                    <CreditCard
+                                        key={index}
+                                        cardExpiry={item.cardExpire}
+                                        cardNumber={item.cardNumber}
+                                        main={item.id === selectedMainId}  // Reflect the selected main card
+                                        owner={item.owner}
+                                        delOnPress={() => {
+                                            toggleDelModal();
+                                            setCardId(item.id);
+                                        }}
+                                        onMainSelect={() => setSelectedMainId(item.id)}  // Set selected card as main
+                                    />
+                                </View>
                             ))
                         ) : (
                             <View style={{ height: screenHeight / 1.5, justifyContent: 'center', alignItems: 'center' }}>
@@ -152,21 +157,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.darkGreen,
+        paddingHorizontal: getSize('defaultPadding'),
+
     },
     saveButtonContainer: {
-        position: 'absolute',
-        bottom: 60,
-        left: 16,
-        right: 16,
         backgroundColor: colors.darkGreen,
-        paddingVertical: 10,
     },
     addButtonContainer: {
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 16,
         width: '100%',
         backgroundColor: colors.darkGreen,
-        paddingVertical: 10,
+        justifyContent: 'center',
     },
 });

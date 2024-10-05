@@ -26,6 +26,7 @@ import { StadiumTypes } from "@/types/stadium/stadium";
 import OrderCard, { OrderTofay } from "@/components/cards/orderCard";
 import OrderStore from "@/helpers/stores/order/orderStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getSize } from "@/constants/sizes";
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
@@ -211,7 +212,7 @@ export default function MasterOrder() {
 const styles = StyleSheet.create({
   container: {
     borderBottomColor: "#000",
-    paddingHorizontal: 16,
+    paddingHorizontal: getSize('defaultPadding'),
   },
   Buttons: {
     display: "flex",

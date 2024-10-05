@@ -1,11 +1,15 @@
 import NavigationMenu from '@/components/navigation/NavigationMenu';
 import { colors } from '@/constants/Colors';
+import { getSize } from '@/constants/sizes';
 import { order_today } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout'
 import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 export default function OrdersDay() {
     const getOrdersTodey = useGlobalRequest(order_today, 'GET',);
@@ -37,13 +41,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.darkGreen,
         // color: "white",
-        paddingHorizontal: 16,
+        paddingHorizontal: getSize('defaultPadding'),
     },
     listContainer: {
         paddingTop: 16,
     },
     title: {
-        fontSize: 24,
+        fontSize: getSize('mediumText') + (isTablet ? 10 : 5),
         fontWeight: 'bold',
         marginTop: 20,
         color: "white",
@@ -57,23 +61,23 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     orderNumber: {
-        fontSize: 16,
+        fontSize: getSize('smallText') + (isTablet ? 6 : 5),
         fontWeight: 'bold',
         color: "white",
         marginBottom: 8,
     },
     orderTime: {
         color: "white",
-        fontSize: 14,
+        fontSize: getSize('smallText') + (isTablet ? 2 : 0),
         marginBottom: 4,
     },
     orderDate: {
-        fontSize: 14,
+        fontSize: getSize('smallText') + (isTablet ? 2 : 0),
         color: "white",
         marginBottom: 4,
     },
     orderStatus: {
-        fontSize: 14,
+        fontSize: getSize('smallText') + (isTablet ? 2 : 0),
         fontWeight: 'bold',
         color: "white",
     },

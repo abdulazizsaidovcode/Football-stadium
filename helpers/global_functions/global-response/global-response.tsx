@@ -21,13 +21,14 @@ export function useGlobalRequest<T>(
             let res;       
             const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
             console.log(config);
-            
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
                     break;
                 case 'POST':
                     res = await axios.post(url, data || {}, config || {});
+                    console.log(url);
+                    
                     break;
                 case 'PUT': 
                     res = await axios.put(url, data || {}, config || {});

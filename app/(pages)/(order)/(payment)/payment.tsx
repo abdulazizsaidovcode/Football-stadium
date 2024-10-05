@@ -14,9 +14,11 @@ import { Loading } from '@/components/loading/loading';
 import CreditCard from '@/components/cards/credit-card';
 import { Entypo, Feather } from '@expo/vector-icons';
 import { RootStackParamList } from '@/types/root/root';
+import { getSize } from '@/constants/sizes';
 
-const { height: screenHeight } = Dimensions.get('window')
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
+const isTablet = screenWidth > 768;
 
 
 const Payment = () => {
@@ -44,7 +46,7 @@ const Payment = () => {
 
         if (cardId !== id) {
             setCardId(id)
-            let card = cards.response.find((item: {id: string}) => item.id == id)
+            let card = cards.response.find((item: { id: string }) => item.id == id)
             setCardExpire(card.cardExpire)
             setCardNumber(card.cardNumber)
         } else if (cardId == id) {
@@ -98,7 +100,9 @@ const Payment = () => {
                 loop
                 style={styles.lottieAnimationTest}
             /> */}
-            <NavigationMenu name='qedir' />
+            <View style={{ paddingHorizontal: getSize('defaultPadding') }}>
+                <NavigationMenu name='qedir' />
+            </View>
             <ScrollView
                 style={{ flex: 1 }}
                 showsHorizontalScrollIndicator={false}
@@ -118,43 +122,49 @@ const Payment = () => {
                     <TextInput
                         editable={!!cardId}
                         keyboardType='numeric'
-                        style={[styles.input, { backgroundColor: cardId == '' ? 'gray' : colors.inDarkGreen }]}
+                        style={[styles.input, { backgroundColor: cardId == '' ? 'gray' : colors.inDarkGreen, marginBottom: 20 }]}
                         placeholder={("so'mmani kiriting")}
                         placeholderTextColor="#FFF"
                         value={pay}
                         onChangeText={handleFirstNameChange}
                     />
                 </View>
-                {
-                    cards.loading ?
-                        (
-                            <View style={{ height: screenHeight / 1.5 }}>
-                                <Loading />
-                            </View>
-                        )
-                        : (
-                            cards.response && cards.response.length > 0 ?
+                <ScrollView horizontal={isTablet} style={{ paddingHorizontal: getSize('defaultPadding'), flexDirection: isTablet ? 'row' : "column", flex: 1, gap: 10 }}>
+                    <View style={[{ padding: 0, flexDirection: isTablet ? 'row' : "column", width: '100%', flex: 1, gap: 10 }, isTablet && { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
+                        {
+                            cards.loading ?
                                 (
-                                    cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
-                                        <CreditCard
-                                            key={index}
-                                            cardExpiry={item.cardExpire}
-                                            cardNumber={item.cardNumber}
-                                            main={cardId ? true : false}
-                                            owner={item.owner}
-                                            onMainSelect={() => selectCard(item.id)}
-                                        />
-                                    ))
-                                ) : (
-                                    <View style={{ height: screenHeight / 1.5, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
-                                        <Feather name="credit-card" size={70} color="white" />
-                                        <Text style={{ color: colors.white, fontSize: 20 }}>Siz toʻlov kartasini qoʻshmagansiz</Text>
-                                        <Text style={{ color: '#828282', fontSize: 14, textAlign: 'center', marginBottom: 10 }}>Ilova orqali tez va oson toʻlovlarni amalga oshirish uchun karta qoʻshing</Text>
-                                        <Buttons icon={<Entypo name="plus" size={24} color="white" />} title="Karta qo'shish" onPress={() => navigation.navigate('(pages)/(card)/(add-card)/add-card')} />
+                                    <View style={{ height: screenHeight / 1.5 }}>
+                                        <Loading />
                                     </View>
                                 )
-                        )
-                }
+                                : (
+                                    cards.response && cards.response.length > 0 ?
+                                        (
+                                            cards.response.map((item: { cardExpire: string, cardNumber: string, id: string, main: boolean, owner: string }, index: number) => (
+                                                <View>
+                                                    <CreditCard
+                                                        key={index}
+                                                        cardExpiry={item.cardExpire}
+                                                        cardNumber={item.cardNumber}
+                                                        main={cardId ? true : false}
+                                                        owner={item.owner}
+                                                        onMainSelect={() => selectCard(item.id)}
+                                                    />
+                                                </View>
+                                            ))
+                                        ) : (
+                                            <View style={{ height: screenHeight / 1.5, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
+                                                <Feather name="credit-card" size={70} color="white" />
+                                                <Text style={{ color: colors.white, fontSize: 20 }}>Siz toʻlov kartasini qoʻshmagansiz</Text>
+                                                <Text style={{ color: '#828282', fontSize: 14, textAlign: 'center', marginBottom: 10 }}>Ilova orqali tez va oson toʻlovlarni amalga oshirish uchun karta qoʻshing</Text>
+                                                <Buttons icon={<Entypo name="plus" size={24} color="white" />} title="Karta qo'shish" onPress={() => navigation.navigate('(pages)/(card)/(add-card)/add-card')} />
+                                            </View>
+                                        )
+                                )
+                        }
+                    </View>
+                </ScrollView>
 
 
             </ScrollView>
@@ -182,14 +192,14 @@ const Payment = () => {
     container: {
         flex: 1,
         backgroundColor: colors.darkGreen,
-        paddingHorizontal: 16,
+        paddingHorizontal: getSize('defaultPadding'),
         justifyContent: 'space-between',
     },
     topSection: {
         flex: 1,
         // paddingTop: 30,
         backgroundColor: colors.darkGreen,
-        paddingHorizontal: 16,
+        paddingHorizontal: getSize('defaultPadding'),
     },
     lottieAnimationTest: {
         width: 100,
@@ -200,7 +210,7 @@ const Payment = () => {
     },
     label: {
         color: '#FFFFFF',
-        fontSize: 18,
+        fontSize: getSize('smallText'),
         marginTop: 20,
     },
     input: {

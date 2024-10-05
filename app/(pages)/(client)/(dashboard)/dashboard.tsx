@@ -304,7 +304,7 @@ const ClientDashboard = () => {
                 >
                     <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
                     <Text
-                        style={{ fontSize: 17, color: '#fff', textAlign: "center" }}
+                        style={{ fontSize: getSize('smallText') + (isTablet ? 5 : 0), color: '#fff', textAlign: "center" }}
                     >
                         Siz aniq tizimdan chiqmoqchimisz ?
                     </Text>
