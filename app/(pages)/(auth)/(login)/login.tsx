@@ -1,4 +1,4 @@
-import { Image, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, Image, Keyboard, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '@/constants/Colors'
@@ -10,11 +10,14 @@ import { useGlobalRequest } from '@/helpers/global_functions/global-response/glo
 import { auth_send_code, user_found } from '@/helpers/api/api';
 import { useFocusEffect } from 'expo-router';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
+import { getSize } from '@/constants/sizes';
 
 type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "(pages)/(auth)/(login)/login"
 >;
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const Login = () => {
   const { phoneNumber, setPhoneNumber, status, setStatus } = useAuthStore();
@@ -61,13 +64,13 @@ const Login = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <NavigationMenu name='' />
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: 50, paddingHorizontal: 0 + (isTablet ? 100 : 0) }}>
           <Text style={styles.title}>Ваш номер телефона</Text>
           <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             <View style={styles.phoneCard}>
-              <Image source={require('../../../../assets/images/uzb.png')} />
-              <Text style={{ fontSize: 17, color: colors.white }}>+998</Text>
+              <Image style={{ width: isTablet ? 20 : 10, height: isTablet ? 20 : 10 }} source={require('../../../../assets/images/uzb.png')} />
+              <Text style={{ fontSize: 17 + (isTablet ? 20 : 0), color: colors.white }}>+998</Text>
             </View>
             <View style={{ width: '69%' }}>
               <TextInput
@@ -113,31 +116,31 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   title: {
-    fontSize: 25,
+    fontSize: getSize('mediumText') + (isTablet ? 10 : 5),
     color: colors.white,
     textAlign: 'center'
   },
   des: {
-    fontSize: 15,
+    fontSize: getSize('mediumText') + (isTablet ? 10 : 0),
     color: '#828282',
     textAlign: 'center',
     marginTop: 10
   },
   phoneCard: {
     backgroundColor: colors.inDarkGreen,
-    padding: 15,
+    padding: 15 + (isTablet ? 15 : 0),
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    width: '29%'
+    width: '29%',
   },
   phoneInput: {
     backgroundColor: colors.inDarkGreen,
-    paddingVertical: 15,
+    paddingVertical: 15 + (isTablet ? 15 : 0),
     paddingHorizontal: 15,
     borderRadius: 10,
     color: colors.white,
-    fontSize: 17,
+    fontSize: 17 + (isTablet ? 20 : 0),
   }
 });

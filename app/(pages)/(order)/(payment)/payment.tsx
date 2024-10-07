@@ -113,7 +113,7 @@ const Payment = () => {
             //         tintColor="transparent" // Hides the default spinner
             //         colors={['transparent']} // Hides the default spinner on Android
             //     >
-            //         <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>
+            //         <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>917777777
             //     </RefreshControl>
             // }
             >

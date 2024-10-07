@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getConfig } from '@/helpers/api/token';
 import { Loading } from '@/components/loading/loading';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import { getSize } from '@/constants/sizes';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -224,8 +225,10 @@ const AddStadium = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NavigationMenu name="Maydon qo'shish" />
-      <ScrollView style={{ paddingHorizontal: 16 }}>
+      <View style={{ paddingHorizontal: getSize('defaultPadding'), paddingVertical: 16 }}>
+        <NavigationMenu name={"Maydon qo'shish"} />
+      </View>
+      <ScrollView style={{ paddingHorizontal: getSize('defaultPadding') }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
             <Input
@@ -418,7 +421,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "white",
-    fontSize: 16,
+    fontSize: getSize('smallText'),
   },
   map: {
     width: screenWidth * 1.05,

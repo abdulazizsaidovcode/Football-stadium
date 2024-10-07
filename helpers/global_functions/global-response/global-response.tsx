@@ -19,7 +19,7 @@ export function useGlobalRequest<T>(
     const mutation = useMutation({
         mutationFn: async () => {
             let res;       
-            const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
+            const config = (configType === 'DEFAULT' ? await getConfig() : await getConfigImg());
             console.log(config);
             switch (method) {
                 case 'GET':

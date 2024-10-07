@@ -10,6 +10,7 @@ import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation
 import { Loading } from '@/components/loading/loading';
 import { Entypo } from '@expo/vector-icons';
 import { RootStackParamList } from '@/types/root/root';
+import { getSize } from '@/constants/sizes';
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
 const Stadium = () => {
@@ -56,7 +57,7 @@ const Stadium = () => {
           }
         </ScrollView>
       </ScrollView>
-      <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 16, width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
+      <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: getSize('defaultPadding'), width: '100%', backgroundColor: colors.darkGreen, paddingVertical: 10 }}>
         <Buttons
           icon={<Entypo name="plus" size={24} color="white" />}
           title="Maydon qo'shish
@@ -76,7 +77,7 @@ export default Stadium;
 
 const styles = StyleSheet.create({
   stadiumList: {
-    padding: 20,
+    padding: getSize('defaultPadding'),
     marginBottom: 50
   },
   header: {
@@ -124,12 +125,12 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   titleCard: {
-    fontSize: 20,
+    fontSize: getSize('mediumText'),
     color: '#FFFFFF',
     marginBottom: 10,
   },
   description: {
-    fontSize: 14,
+    fontSize: getSize('smallText'),
     color: '#CCCCCC',
     marginBottom: 10,
   },

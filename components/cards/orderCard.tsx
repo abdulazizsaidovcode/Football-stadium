@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { colors } from '@/constants/Colors'
 import Buttons from '../button/button'
@@ -8,6 +8,7 @@ import { file_get } from '@/helpers/api/api'
 import { useNavigation } from 'expo-router'
 import CenteredModal from '../modal/sentralmodal'
 import OrderStore from '@/helpers/stores/order/orderStore'
+import { getSize } from '@/constants/sizes'
 
 export interface OrderTofay {
     "clientFirstName": string,
@@ -21,6 +22,10 @@ export interface OrderTofay {
     isMainAttachmentId: 'string',
     fileId: string | null
 }
+
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
+
 
 const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: () => void, iconColor?: string | any }> = ({ data, onPress, boxOnPress, iconColor = 'white' }) => {
     const navigation = useNavigation<any>();
@@ -44,7 +49,7 @@ const OrderCard: React.FC<{ data: OrderTofay, onPress: () => void, boxOnPress?: 
                     }
                 />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text> 
+                    <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text>
                     <Text style={styles.priceTitle}> {data.startPrice} sum</Text>
                 </View>
                 <Text style={styles.priceTitle}>{data.date}</Text>
@@ -71,12 +76,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     title: {
-        fontSize: 20,
+        fontSize: getSize('mediumText'),
         color: colors.white,
         marginVertical: 5
     },
     priceTitle: {
-        fontSize: 15,
+        fontSize: getSize('mediumText'),
         color: colors.lightGreen,
         marginVertical: 5
     },

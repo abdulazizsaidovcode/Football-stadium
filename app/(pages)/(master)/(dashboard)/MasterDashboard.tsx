@@ -12,6 +12,7 @@ import { colors } from '@/constants/Colors';
 import { useNavigation } from 'expo-router';
 import { RootStackParamList } from '@/types/root/root';
 import { NavigationProp } from '@react-navigation/native';
+import { getSize } from '@/constants/sizes';
 
 type UserResponse = {
   firstName: string;
@@ -23,6 +24,9 @@ type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "(pages)/(client)/(dashboard)/dashboard"
 >;
+
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const MasterDashboardScreen: React.FC = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
@@ -108,7 +112,7 @@ const MasterDashboardScreen: React.FC = () => {
               <FontAwesome name="sign-out" size={24} color="white" />
             </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 50, marginHorizontal: 20, width: 100 }}>
+          <Text style={{ marginTop: isTablet ? 100 : 50, width: 100 }}>
             <Input
               labalVisible
               label='Year'
@@ -123,9 +127,9 @@ const MasterDashboardScreen: React.FC = () => {
               getStatistics.response && getStatistics.response.length > 0 ? (
                 <LineChart
                   data={{
-                    labels: getStatistics.response.map((item: {month: number}) => item.month || "0"),
+                    labels: getStatistics.response.map((item: { month: number }) => item.month || "0"),
                     datasets: [{
-                      data: getStatistics.response.map((item: {totalPrice :number}) => item.totalPrice || 0),
+                      data: getStatistics.response.map((item: { totalPrice: number }) => item.totalPrice || 0),
                     }]
                   }}
                   width={Dimensions.get('window').width / 1.05}
@@ -143,7 +147,6 @@ const MasterDashboardScreen: React.FC = () => {
                   }}
                   bezier
                   style={{
-                    marginVertical: 8,
                     borderRadius: 16,
                   }}
                 />
@@ -216,6 +219,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 40,
     borderBottomColor: "#000",
+    paddingHorizontal: getSize('defaultPadding')
   },
   Buttons: {
     display: "flex",
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    height: 130,
+    height: isTablet ? 200 : 130,
     zIndex: -2,
   },
   ImageBox: {
@@ -248,7 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     top: 0,
     left: 0,
-    height: 130,
+    height: isTablet ? 200 : 130,
   },
   order: {
     backgroundColor: '#698474',
@@ -288,10 +292,9 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     flex: 1,
-    marginLeft: 16,
   },
   name: {
-    fontSize: 18,
+    fontSize: getSize('mediumText'),
     color: '#fff',
     fontWeight: 'bold',
   },

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import Layout from "@/layout/layout";
 import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
@@ -32,6 +33,10 @@ type SettingsScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "(pages)/(master)/(order)/order"
 >;
+
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const isTablet = screenWidth > 768;
+
 export default function MasterOrder() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState<string | null>('')
@@ -112,7 +117,7 @@ export default function MasterOrder() {
           )}
         </View>
       </Layout>
-      <View style={{ paddingHorizontal: 16, paddingVertical: 10, backgroundColor: colors.darkGreen }}>
+      <View style={{ paddingHorizontal: getSize('defaultPadding'), paddingVertical: 10, backgroundColor: colors.darkGreen }}>
         {role == 'MASTER' && <Buttons
           onPress={() => {
             if (stadiums.response && stadiums.response.length == 0) {
@@ -218,7 +223,7 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   title: {
-    fontSize: 22,
+    fontSize: getSize('mediumText') + (isTablet ? 12 : 0),
     color: "white",
     marginBottom: 10,
   },

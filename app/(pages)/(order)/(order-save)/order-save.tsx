@@ -52,12 +52,13 @@ const OrderSave = () => {
         }, 1500);
     }, []);
 
+
     let data = {
         "stadiumId": id,
-        "startTimeHour": selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 2),
-        "startTimeMinute": selectedTimeSlots[0] && +(selectedTimeSlots[0].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[0].slice(3, 5))),
-        "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2),
-        "endTimeMinute": selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5))),
+        "startTimeHour": "" + (selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 2)),
+        "startTimeMinute": "" + (selectedTimeSlots[0] && +(selectedTimeSlots[0].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[0].slice(3, 5)))),
+        "endTimeHour": "" + (selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2)),
+        "endTimeMinute": "" + (selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5)))),
         "date": calendarDate,
         "paySum": role !== "MASTER" ? +pay : null,
         "cardNumber": role !== "MASTER" ? cardNumber : null,
@@ -65,14 +66,14 @@ const OrderSave = () => {
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
     console.log(data);
-    
+
 
     const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = (new Date()).toLocaleDateString('en-CA', options).replace(/\//g, '-');
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}` + (date !== calendarDate ? `&localDate=${calendarDate}` : ""), 'GET');
-    const CreateOreder = useGlobalRequest(`${order_create} `, 'POST', data);
+    const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data, 'DEFAULT');
 
     useFocusEffect(
         useCallback(() => {
