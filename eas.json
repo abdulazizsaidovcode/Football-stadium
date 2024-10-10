@@ -11,9 +11,11 @@
       "distribution": "internal"
     },
     "production": {
-      "ios": {},
+      "ios": {
+
+      },
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle"
       },
       "env": {
         "API_BASE_URL": "https://app.coinbyitca.uz/api/v1/"
