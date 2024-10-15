@@ -1,7 +1,7 @@
 export interface RootStackParamList {
     "index": undefined;
     '(pages)/(master)/(stadium)/(add-stadium)/add-stadium': undefined;
-    '(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium': undefined |any;
+    '(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium': undefined | any;
     '(pages)/(notification)/notification': undefined;
     "(pages)/(auth)/(register)/getInfo": undefined;
     "(pages)/(card)/(edit-card)/edit-card": undefined;
@@ -24,5 +24,6 @@ export interface RootStackParamList {
     "(pages)/(master)/(order)/order": undefined
     "(pages)/(master)/(order)/orderDetail": undefined
     "(pages)/(auth)/(login)/login": undefined
-
+    "(pages)/offer/policy-offer": undefined
+    "(pages)/offer/user-offer": undefined
 }

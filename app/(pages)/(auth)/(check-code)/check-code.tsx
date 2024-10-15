@@ -52,7 +52,7 @@ const CheckCode = () => {
                     console.log('too login');
                     const token = checkCode.response.token;
                     const role = checkCode.response.role;
-                    console.log(role);
+                    // console.log(role);
 
                     await AsyncStorage.setItem('token', token);
                     await AsyncStorage.setItem('role', role === 'ROLE_CLIENT' ? 'CLIENT' : 'MASTER');

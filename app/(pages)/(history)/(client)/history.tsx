@@ -37,8 +37,7 @@ const ClientHistory = () => {
     }, [GetHistory.response])
   );
 
-  console.log(totalElements);
-
+  // console.log(totalElements);
 
   return (
     <Layout scroll style={styles.container}>

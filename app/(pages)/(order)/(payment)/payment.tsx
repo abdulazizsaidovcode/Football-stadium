@@ -41,8 +41,8 @@ const Payment = () => {
         }, [])
     );
     const selectCard = (id: string) => {
-        console.log(cardId, '1');
-        console.log(id, 2);
+        // console.log(cardId, '1');
+        // console.log(id, 2);
 
         if (cardId !== id) {
             setCardId(id)
@@ -53,12 +53,9 @@ const Payment = () => {
             setCardId('')
         }
     }
-    console.log(cards.loading);
-    console.log(cardId);
-    console.log(cards.response);
-
-
-
+    // console.log(cards.loading);
+    // console.log(cardId);
+    // console.log(cards.response);
 
     // useEffect(() => {
     //     // Dastlab Lottie animatsiyani to'xtating

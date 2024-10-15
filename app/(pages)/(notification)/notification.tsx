@@ -44,7 +44,7 @@ const Notification = () => {
       ?.filter((item: { read: string | number | null }) => !item.read)
       .map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(unreadIds);
-    console.log("Unread notification IDs:", unreadIds);
+    // console.log("Unread notification IDs:", unreadIds);
   };
 
   // Delete icon press handler
@@ -52,7 +52,7 @@ const Notification = () => {
     setIsRead(false)
     const allIds = GetNotification.response?.map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(allIds);
-    console.log("All notification IDs:", allIds);
+    // console.log("All notification IDs:", allIds);
   };
 
   return (

@@ -30,6 +30,8 @@ import OrderDetail from './(pages)/(master)/(order)/orderDetail';
 import Notification from './(pages)/(notification)/notification';
 import AddCard from './(pages)/(card)/(add-card)/add-card';
 import CheckCard from './(pages)/(card)/(check-card)/check-card';
+import PolicyOffer from "@/app/(pages)/offer/policy-offer";
+import UserOffer from "@/app/(pages)/offer/user-offer";
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -165,6 +167,16 @@ export default function RootLayout() {
           <Stack.Screen
             name="(pages)/(card)/(check-card)/check-card"
             component={CheckCard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/offer/policy-offer"
+            component={PolicyOffer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(pages)/offer/user-offer"
+            component={UserOffer}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

@@ -31,7 +31,7 @@ export const deleteFavouriteOrder = async (masterId: string, fetchFunction: () =
 
     try {
         const { data } = await axios.delete(`${favourite_delate}/${masterId}`, config ? config : {});
-        console.log(data);
+        // console.log(data);
 
         if (data.data) {
             alert('Мастер успешно удален из списка любимый мастеров.',)
@@ -40,7 +40,7 @@ export const deleteFavouriteOrder = async (masterId: string, fetchFunction: () =
             toastMessage(data.error.code, data.error.message)
         }
     } catch (error: any) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
