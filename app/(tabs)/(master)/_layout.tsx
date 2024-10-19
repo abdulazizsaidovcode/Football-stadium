@@ -1,11 +1,16 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Entypo, MaterialCommunityIcons, Octicons} from '@expo/vector-icons';
+import {Entypo, MaterialCommunityIcons, MaterialIcons, Octicons} from '@expo/vector-icons';
 import {colors} from '@/constants/Colors';
 import MasterDashboardScreen from './dashboard';
 import MasterStadiumScreen from './stadium';
 import MasterOrdersScreen from './orders';
 import MasterCards from './card';
+import { getSize } from '@/constants/sizes';
+import { Dimensions } from 'react-native';
+
+const {width: screenWidth} = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 function MasterTabLayout() {
     const Tab = createBottomTabNavigator();
@@ -20,7 +25,7 @@ function MasterTabLayout() {
                         backgroundColor: colors.inDarkGreen,
                         paddingBottom: 13,
                         paddingTop: 10,
-                        height: 70
+                        height: isTablet ? 120 : 80,
                     },
                     headerShown: false,
                 })}
@@ -31,7 +36,7 @@ function MasterTabLayout() {
                     options={{
                         title: "Home",
                         tabBarIcon: ({color}) => (
-                            <Octicons name="home" size={30} color={color}/>
+                            <Octicons name="home" size={getSize('mediumText') + (isTablet ? 15 : 5)} style={{width: isTablet ? 55 : 22}} color={color}/>
                         )
                     }}
                 />
@@ -41,7 +46,7 @@ function MasterTabLayout() {
                     options={{
                         title: "Stadium",
                         tabBarIcon: ({color}) => (
-                            <MaterialCommunityIcons name="stadium" size={30} color={color}/>
+                            <MaterialCommunityIcons name="stadium" size={getSize('mediumText') + (isTablet ? 15 : 5)} style={{width: isTablet ? 59 : 22}} color={color}/>
                         )
                     }}
                 />
@@ -51,7 +56,7 @@ function MasterTabLayout() {
                     options={{
                         title: "Order",
                         tabBarIcon: ({color}) => (
-                            <Entypo name="ticket" size={30} color={color}/>
+                            <Entypo name="ticket" size={getSize('mediumText') + (isTablet ? 15 : 5)} style={{width: isTablet ? 55 : 22}} color={color}/>
                         )
                     }}
                 />
@@ -61,7 +66,7 @@ function MasterTabLayout() {
                     options={{
                         title: "Card",
                         tabBarIcon: ({color}) => (
-                            <Entypo name="credit-card" size={30} color={color}/>
+                            <Entypo name="credit-card" size={getSize('mediumText') + (isTablet ? 15 : 5)} style={{width: isTablet ? 59 : 22}} color={color}/>
                         )
                     }}
                 />

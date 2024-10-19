@@ -116,10 +116,10 @@ const MasterDashboardScreen: React.FC = () => {
                             <Text style={styles.phone}>{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
                         </View>
                         <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
-                            <AntDesign name="edit" size={24} color="white"/>
+                            <AntDesign name="edit" size={getSize('mediumText') + (isTablet ? 15 : 5)}  color="white"/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.editButton} onPress={handleLogoutPress}>
-                            <FontAwesome name="sign-out" size={24} color="white"/>
+                            <FontAwesome name="sign-out" size={getSize('mediumText') + (isTablet ? 15 : 5)}  color="white"/>
                         </TouchableOpacity>
                     </View>
                     <Text style={{marginTop: isTablet ? 100 : 50, width: 100}}>

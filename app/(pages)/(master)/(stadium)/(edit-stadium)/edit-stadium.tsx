@@ -18,8 +18,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import * as ImagePicker from 'expo-image-picker';
 import CenteredModal from '@/components/modal/sentralmodal';
+import { getSize } from '@/constants/sizes';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const isTablet = screenWidth > 768;
 
 const EditStadium = () => {
   const route = useRoute();
@@ -364,7 +366,7 @@ const EditStadium = () => {
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.inDarkGreen, padding: 10, borderRadius: 10 }}>
                 <View style={{ flexDirection: 'row', gap: 10 }}>
-                  <FontAwesome5 name="toilet" size={24} color="white" />
+                  <FontAwesome5 name="toilet" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
                   <Text style={[styles.label]}>Hojathona</Text>
                 </View>
                 <Switch
