@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import {StyleSheet, Text} from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '@/constants/Colors'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {colors} from '@/constants/Colors'
 
 const MasterHistory = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text></Text>
-    </SafeAreaView>
-  )
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text></Text>
+        </SafeAreaView>
+    )
 }
 
 export default MasterHistory

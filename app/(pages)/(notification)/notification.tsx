@@ -9,12 +9,12 @@ import {
 } from "@/helpers/api/api";
 import Layout from "@/layout/layout";
 import { Loading } from "@/components/loading/loading";
-import Buttons from "@/components/button/button";
+// import Buttons from "@/components/button/button";
 import { useFocusEffect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Notification = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const [notificationIds, setNotificationIds] = useState<string[]>([]);
   const [isRead, setIsRead] = useState<boolean>(true);
   const GetNotification = useGlobalRequest(get_notification, "GET");
@@ -44,7 +44,7 @@ const Notification = () => {
       ?.filter((item: { read: string | number | null }) => !item.read)
       .map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(unreadIds);
-    console.log("Unread notification IDs:", unreadIds);
+    // console.log("Unread notification IDs:", unreadIds);
   };
 
   // Delete icon press handler
@@ -52,7 +52,7 @@ const Notification = () => {
     setIsRead(false)
     const allIds = GetNotification.response?.map((item: { uuid: string | number | null }) => item.uuid) || [];
     setNotificationIds(allIds);
-    console.log("All notification IDs:", allIds);
+    // console.log("All notification IDs:", allIds);
   };
 
   return (

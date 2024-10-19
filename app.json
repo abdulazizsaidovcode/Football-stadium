@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "stadium",
-    "version": "1.0.1",
+    "slug": "project",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -16,6 +16,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "uz.sfera.stadium",
       "deploymentTarget": "13.4",
+      "buildNumber": "1.0.2",
       "config": {
         "googleMapsApiKey": "AIzaSyA7hQst-XJ1zOl63vgDEfOI05ec3boIPms"
       },
@@ -52,9 +53,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "96564d5b-d1a5-46b8-82e7-477483185ac7"
+        "projectId": "1e530b86-ce84-4fe0-8a44-6e7997c9c8fe"
       }
     },
-    "owner": "abdulazizcha2"
+    "owner": "kimdir"
   }
 }

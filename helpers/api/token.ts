@@ -33,7 +33,7 @@ export const getConfigImg = async () => {
             return null;
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return null;
     }
 };

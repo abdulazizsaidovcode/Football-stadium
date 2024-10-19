@@ -17,7 +17,7 @@ const Index = () => {
       setToken(token);
     }
 
-    getToken()
+    getToken().then(() => console.log('success'))
   }, []);
 
   return token && role ? role === 'CLIENT' ? <ClientTabLayout /> : <MasterTabLayout /> : <Welcome />

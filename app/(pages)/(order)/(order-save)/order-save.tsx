@@ -1,107 +1,97 @@
-import { ActivityIndicator, Button, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '@/constants/Colors'
+import {
+    ActivityIndicator,
+    Dimensions,
+    Image,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
+} from 'react-native'
+import React, {useCallback, useEffect, useState} from 'react'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {colors} from '@/constants/Colors'
 import NavigationMenu from '@/components/navigation/NavigationMenu'
-import { NavigationProp, useFocusEffect, useRoute } from '@react-navigation/native'
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { file_get, order_create, stadium_get_freetime, stadium_get_one } from '@/helpers/api/api'
-import { Loading } from '@/components/loading/loading'
+import {NavigationProp, useFocusEffect, useRoute} from '@react-navigation/native'
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response'
+import {file_get, order_create, stadium_get_freetime, stadium_get_one} from '@/helpers/api/api'
+// import {Loading} from '@/components/loading/loading'
 import OrderDetailsCard from '@/components/cards/OrderDetailsCard'
-import { StadiumTypes } from '@/types/stadium/stadium'
-import { RootStackParamList } from '@/types/root/root'
-import { useNavigation } from 'expo-router'
+// import {StadiumTypes} from '@/types/stadium/stadium'
+import {RootStackParamList} from '@/types/root/root'
+import {useNavigation} from 'expo-router'
 import Buttons from '@/components/button/button'
-import { Entypo, FontAwesome, FontAwesome6, MaterialIcons } from '@expo/vector-icons'
-import { useOrderStory } from '@/helpers/stores/order/order-store'
+import {Entypo, FontAwesome, FontAwesome6, MaterialIcons} from '@expo/vector-icons'
+import {useOrderStory} from '@/helpers/stores/order/order-store'
 import CalendarGrafficEdit from '@/components/calendar/calendar'
 import TimesCard from '@/components/cards/timesCard'
 import calenderStory from '@/helpers/stores/order/graficWorkStore'
-import { useAuthStore } from '@/helpers/stores/auth/auth-store'
+// import {useAuthStore} from '@/helpers/stores/auth/auth-store'
 import LoadingButtons from '@/components/button/loadingButton'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import LottieRefreshControl from '@/components/lotie/refresh'
-import { getSize, Sizes } from '@/constants/sizes'
+// import LottieRefreshControl from '@/components/lotie/refresh'
+import {getSize} from '@/constants/sizes'
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "(pages)/(client)/(dashboard)/dashboard"
 >;
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 
 const OrderSave = () => {
     const [role, setRole] = useState<string | null>('')
     const [userPhone, setUserPhone] = useState<string>('')
-    const [refreshing, setRefreshing] = useState(false);
     const route = useRoute();
-    const { id } = route.params as { id: string | number };
+    const {id} = route.params as { id: string | number };
     const navigation = useNavigation<SettingsScreenNavigationProp>();
-    const { freeTime, setFreeTime, pay, setPay, cardExpire, cardNumber } = useOrderStory()
-    const [activeTime, setActiveTime] = useState('');
+    const {freeTime, setFreeTime, pay, setPay, cardExpire, cardNumber} = useOrderStory()
     const [creasePay, setCreasePay] = useState(1)
     const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
-    const { calendarDate } = calenderStory()
+    const {calendarDate} = calenderStory()
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-            // Add refresh logic here
-        }, 1500);
-    }, []);
 
     let data = {
         "stadiumId": id,
-        "startTimeHour": selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 2),
-        "startTimeMinute": selectedTimeSlots[0] && +(selectedTimeSlots[0].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[0].slice(3, 5))),
-        "endTimeHour": selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2),
-        "endTimeMinute": selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5))),
+        "startTimeHour": "" + (selectedTimeSlots[0] && selectedTimeSlots[0].slice(0, 2)),
+        "startTimeMinute": "" + (selectedTimeSlots[0] && +(selectedTimeSlots[0].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[0].slice(3, 5)))),
+        "endTimeHour": "" + (selectedTimeSlots[1] && selectedTimeSlots[1].slice(0, 2)),
+        "endTimeMinute": "" + (selectedTimeSlots[1] && +(selectedTimeSlots[1].slice(3, 5) == '00' ? 0 : (selectedTimeSlots[1].slice(3, 5)))),
         "date": calendarDate,
         "paySum": role !== "MASTER" ? +pay : null,
         "cardNumber": role !== "MASTER" ? cardNumber : null,
         "cardExpire": role !== "MASTER" ? cardExpire : null,
         "clientPhoneNumber": role == 'MASTER' ? `+${userPhone}` : null
     }
-    console.log(data);
-    
+    // console.log(data);
 
-    const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const options: any = {year: 'numeric', month: '2-digit', day: '2-digit'};
     const date = (new Date()).toLocaleDateString('en-CA', options).replace(/\//g, '-');
 
     const stadium = useGlobalRequest(`${stadium_get_one}/${id}`, 'GET');
     const freeTimeRes = useGlobalRequest(`${stadium_get_freetime}?stadiumId=${id}` + (date !== calendarDate ? `&localDate=${calendarDate}` : ""), 'GET');
-    const CreateOreder = useGlobalRequest(`${order_create} `, 'POST', data);
+    const CreateOreder = useGlobalRequest(`${order_create}`, 'POST', data, 'DEFAULT');
 
     useFocusEffect(
         useCallback(() => {
-            if (selectedTimeSlots.length < 2) {
-                setCreasePay(1);
-                // console.log("Less than 2 time slots selected");
-            } else if (selectedTimeSlots.length === 2) {
+            if (selectedTimeSlots.length < 2) setCreasePay(1);
+            else if (selectedTimeSlots.length === 2) {
                 let a = selectedTimeSlots[0].slice(0, 2);
                 let b = selectedTimeSlots[1].slice(0, 2);
-                // console.log(`Time slots: ${ a }, ${ b } `);
                 let c = Math.abs(Number(b) - Number(a));  // Use Math.abs to ensure the result is always positive
-                if (!isNaN(c)) {
-                    setCreasePay(c);
-                    // console.log(`Calculated crease pay: ${ c } `);
-                } else {
-                    setCreasePay(1);
-                    // console.log("Calculation resulted in NaN");
-                }
-            }
 
+                if (!isNaN(c)) setCreasePay(c);
+                else setCreasePay(1);
+            }
         }, [selectedTimeSlots, freeTime])
     )
+
     async function isLogin() {
         const token = await AsyncStorage.getItem('token');
-        if (token) {
-            return true;
-        } else {
-            return false;
-        }
+        if (token) return true;
+        else return false;
     }
 
     useFocusEffect(
@@ -115,7 +105,7 @@ const OrderSave = () => {
             if (!pay) {
                 stadium.globalDataFunc();
                 freeTimeRes.globalDataFunc()
-                getRole()
+                getRole().then(() => console.log('success'))
             }
         }, [])
     )
@@ -135,10 +125,6 @@ const OrderSave = () => {
         }
 
     }
-    const handleTimeSelect = (time: string) => {
-        setActiveTime(time);
-        setFreeTime(time);
-    };
 
     const sortSelectedTimeSlots = (slots: string[]): string[] => {
         return slots.sort((a, b) => freeTime.indexOf(a) - freeTime.indexOf(b));
@@ -182,44 +168,48 @@ const OrderSave = () => {
     };
 
     const rangeIndices = getRangeIndices();
-    console.log(calendarDate, 1234);
+    // console.log(calendarDate, 1234);
 
     return (
         <SafeAreaView style={styles.container}>
-            <NavigationMenu name={stadium.response ? stadium.response.name : ''} />
+            <NavigationMenu name={stadium.response ? stadium.response.name : ''}/>
 
             <ScrollView
-                // refreshControl={
-                //         <LottieRefreshControl
-                //             refreshing={refreshing}
-                //             onRefresh={onRefresh}
-                //             lottieSource={require('../../../../assets/animation/Animation - ball-green.json')}
-                //             lottieStyle={{ width: 100, height: 100 }}
-                //         />
-
-                // }
                 showsVerticalScrollIndicator={false}
-                style={{ marginBottom: 30 }}>
+                style={{marginBottom: 30}}>
                 <View>
-                    <Text style={styles.timeTitle}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
+                    <Text
+                        style={styles.timeTitle}>{stadium.response && (stadium.response.shower && stadium.response.toilet && stadium.response.shopping) ? "Mavjud xizmatlar" : "Qoshimcha hizmatlar mavjud emas"}</Text>
                     <ScrollView
                         horizontal={true}
-                        contentContainerStyle={{ paddingBottom: 10, gap: isTablet ? 15 : 5 }}
+                        contentContainerStyle={{paddingBottom: 10, gap: isTablet ? 15 : 5}}
                         showsHorizontalScrollIndicator={false}
                     >
-                        <OrderDetailsCard bac={stadium.response && stadium.response.shower && colors.inDarkGreen} icon={<MaterialIcons name="shower" size={getSize('largeText')} color="white" />} />
-                        <OrderDetailsCard bac={stadium.response && stadium.response.toilet && colors.inDarkGreen} icon={<FontAwesome6 name="toilet-portable" size={getSize('largeText')} color="white" />} />
-                        <OrderDetailsCard bac={stadium.response && stadium.response.shopping && colors.inDarkGreen} icon={<Entypo name="shopping-cart" size={getSize('largeText')} color="white" />} />
+                        <OrderDetailsCard
+                            bac={stadium.response && stadium.response.shower && colors.inDarkGreen}
+                            icon={<MaterialIcons name="shower" size={getSize('largeText')} color="white"/>}
+                        />
+                        <OrderDetailsCard
+                            bac={stadium.response && stadium.response.toilet && colors.inDarkGreen}
+                            icon={<FontAwesome6 name="toilet-portable" size={getSize('largeText')} color="white"/>}
+                        />
+                        <OrderDetailsCard
+                            bac={stadium.response && stadium.response.shopping && colors.inDarkGreen}
+                            icon={<Entypo name="shopping-cart" size={getSize('largeText')} color="white"/>}
+                        />
                     </ScrollView>
                     <View style={styles.imageRow}>
                         {stadium.response && stadium.response.attechmentIds && stadium.response.attechmentIds.map((item: string, index: number) => (
-                            <Image key={index} source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')} />
+                            <Image
+                                key={index}
+                                source={item ? file_get + item : require('../../../../assets/images/defaultImg.jpeg')}
+                            />
                         ))}
                     </View>
                 </View>
                 <Text style={styles.timeTitle}>Kunni tanlash</Text>
-                <View style={{ paddingHorizontal: isTablet ? 60 : 0 }}>
-                    <CalendarGrafficEdit saveTime={calendarDate} />
+                <View style={{paddingHorizontal: isTablet ? 60 : 0}}>
+                    <CalendarGrafficEdit saveTime={calendarDate}/>
                 </View>
                 <Text style={styles.timeTitle}>Soatni tanlash</Text>
                 <View style={styles.timeListContainer}>
@@ -231,8 +221,8 @@ const OrderSave = () => {
                             width: '100%',
                             paddingVertical: 20,
                         }}>
-                            <ActivityIndicator size="large" color="#ffffff" />
-                            <Text style={{ color: '#fff', marginTop: 10 }}>Loading available times...</Text>
+                            <ActivityIndicator size="large" color="#ffffff"/>
+                            <Text style={{color: '#fff', marginTop: 10}}>Loading available times...</Text>
                         </View>
                     ) : freeTimeRes.response && Array.isArray(freeTimeRes.response) && freeTimeRes.response.length > 1 ? (
                         freeTimeRes.response.map((time: { time: string, ordered: boolean }, index: number,) => (
@@ -259,13 +249,14 @@ const OrderSave = () => {
                             paddingVertical: 20,
                             backgroundColor: '#e74d4d'
                         }}>
-                            <FontAwesome name="calendar-times-o" size={44} color="white" />
-                            <Text style={{ fontSize: 20, color: '#fff', marginTop: 20 }}>Stadionning bugunga vaqti yo'q</Text>
+                            <FontAwesome name="calendar-times-o" size={44} color="white"/>
+                            <Text style={{fontSize: 20, color: '#fff', marginTop: 20}}>Stadionning bugunga vaqti
+                                yo'q</Text>
                         </View>
                     )}
                 </View>
                 {freeTimeRes.response && freeTimeRes.response.length > 1 && role == 'MASTER' &&
-                    <View style={{ marginBottom: 15 }}>
+                    <View style={{marginBottom: 15}}>
                         <Text style={styles.label}>Telefon raqam kiritish</Text>
                         <TextInput
                             keyboardType='numeric'
@@ -275,24 +266,29 @@ const OrderSave = () => {
                             value={userPhone}
                             onChangeText={handleFirstNameChange}
                         />
-                        <Text style={{ color: '#fff' }}>Namuna: 998 99 999 99 99</Text>
+                        <Text style={{color: '#fff'}}>Namuna: 998 99 999 99 99</Text>
                     </View>
                 }
                 {role !== 'MASTER' && <View style={styles.payCard}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.timeTitle}>Kutilayotgan to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text style={styles.timeTitle}>Kutilayotgan
+                            to'lov: {stadium.response && stadium.response.initialPay * creasePay} so'm </Text>
                         {creasePay > 1 &&
-                            <Text style={[styles.timeTitle, { color: colors.inDarkGreen }]}> jami: {creasePay} soat uchun  </Text>
+                            <Text style={[styles.timeTitle, {color: colors.inDarkGreen}]}> jami: {creasePay} soat
+                                uchun </Text>
                         }
                     </View>
                     {pay ?
-                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                             <Text style={styles.timeTitle}>to'lanmoqda: {pay} so'm</Text>
                             <Pressable
                                 onPress={() => {
                                     navigation.navigate('(pages)/(order)/(payment)/payment')
                                 }}>
-                                <Text style={[styles.timeText, { marginTop: 25, textDecorationLine: 'underline' }]}>edit</Text>
+                                <Text style={[styles.timeText, {
+                                    marginTop: 25,
+                                    textDecorationLine: 'underline'
+                                }]}>edit</Text>
                             </Pressable>
                         </View>
                         :
@@ -301,17 +297,17 @@ const OrderSave = () => {
                 </View>}
                 {!pay && role !== 'MASTER' && <Buttons
                     title="To'lovni so'mmani kiritish" onPress={async () => {
-                        let isLogining = await isLogin().then((res) => res)
-                        if (isLogining) {
-                            navigation.navigate('(pages)/(order)/(payment)/payment')
-                        } else {
-                            alert("Avval Ro'yhatdan o'ting")
-                            navigation.navigate('(pages)/(auth)/(login)/login')
-                        }
-                    }} />}
-                <View style={{ marginBottom: getSize('marginBottom') }}></View>
+                    let isLogining = await isLogin().then((res) => res)
+                    if (isLogining) {
+                        navigation.navigate('(pages)/(order)/(payment)/payment')
+                    } else {
+                        alert("Avval Ro'yhatdan o'ting")
+                        navigation.navigate('(pages)/(auth)/(login)/login')
+                    }
+                }}/>}
+                <View style={{marginBottom: getSize('marginBottom')}}></View>
                 {CreateOreder.loading ?
-                    <LoadingButtons title='Bron qilish' />
+                    <LoadingButtons title='Bron qilish'/>
                     :
                     <Buttons
                         isDisebled={
@@ -333,7 +329,7 @@ const OrderSave = () => {
 
                 }
             </ScrollView>
-        </SafeAreaView >
+        </SafeAreaView>
     )
 }
 

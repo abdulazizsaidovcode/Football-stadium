@@ -1,11 +1,12 @@
-import { Dimensions, StyleSheet, View } from 'react-native'
+import {Dimensions, StyleSheet, View} from 'react-native'
 import React from 'react'
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+
+const {width: screenWidth} = Dimensions.get('window')
 
 
-const OrderDetailsCard: React.FC<{ icon: any, bac?: string }> = ({ icon, bac }) => {
+const OrderDetailsCard: React.FC<{ icon: any, bac?: string }> = ({icon, bac}) => {
     return (
-        <View style={[styles.container, { backgroundColor: bac ? bac : '#828282' }]}>
+        <View style={[styles.container, {backgroundColor: bac ? bac : '#828282'}]}>
             {icon}
         </View>
     )

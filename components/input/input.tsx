@@ -1,4 +1,5 @@
 import { colors } from "@/constants/Colors";
+import { getSize } from "@/constants/sizes";
 import React from "react";
 import { Text, View, TextInput, SafeAreaView, StyleSheet } from "react-native";
 
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: "white",
-        fontSize: 16,
+        fontSize: getSize('smallText'),
     },
     marginBottom: {
         marginBottom: 8,

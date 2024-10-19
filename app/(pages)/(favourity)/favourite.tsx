@@ -1,13 +1,13 @@
 import StadiumCard from '@/components/cards/StadiumCard';
 import NavigationMenu from '@/components/navigation/NavigationMenu'
-import { favourite_get, favourite_delate } from '@/helpers/api/api'; // Make sure you have a delete endpoint or function
+import { favourite_get } from '@/helpers/api/api';
 import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout'
 import { StadiumTypes } from '@/types/stadium/stadium';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Loading } from '@/components/loading/loading';
 import { RootStackParamList } from '@/types/root/root';
 import { useFocusEffect } from 'expo-router';
@@ -16,13 +16,12 @@ type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 export default function Favourite() {
   const [id, setId] = useState<string>('');
   const GetFav = useGlobalRequest(favourite_get, "GET");
-  const DelFav = useGlobalRequest(`${favourite_delate + id}`, "DELETE");
+  // const DelFav = useGlobalRequest(`${favourite_delate + id}`, "DELETE");
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   useFocusEffect(
     useCallback(() => {
       GetFav.globalDataFunc();
-
     }, [id]))
 
   return (

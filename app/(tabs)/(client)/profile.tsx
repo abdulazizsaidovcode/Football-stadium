@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Layout from '@/layout/layout';
-import Buttons from '@/components/button/button';
-import {BASE_URL, file_get, user_me} from '@/helpers/api/api';
+// import Buttons from '@/components/button/button';
+import {file_get, user_me} from '@/helpers/api/api';
 import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
-import {getConfig} from '@/helpers/api/token';
+// import {getConfig} from '@/helpers/api/token';
 import {AntDesign} from '@expo/vector-icons';
 
 const ClientProfile = () => {

@@ -1,13 +1,13 @@
-import { Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { colors } from '@/constants/Colors';
-import { useAuthStore } from '@/helpers/stores/auth/auth-store';
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { check_card } from '@/helpers/api/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getConfig } from '@/helpers/api/token';
-import { RootStackParamList } from '@/types/root/root';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View} from 'react-native'
+import React, {useEffect, useRef, useState} from 'react'
+import {colors} from '@/constants/Colors';
+import {useAuthStore} from '@/helpers/stores/auth/auth-store';
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
+import {check_card} from '@/helpers/api/api';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {getConfig} from '@/helpers/api/token';
+import {RootStackParamList} from '@/types/root/root';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
@@ -15,12 +15,15 @@ type SettingsScreenNavigationProp = NavigationProp<
 >;
 
 const CheckCard = () => {
-    const { phoneNumber, setPhoneNumber } = useAuthStore()
+    const {phoneNumber, setPhoneNumber} = useAuthStore()
     const [code, setCode] = useState<string[]>(['', '', '', '']);
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const inputRefs = useRef<Array<TextInput | null>>([]);
 
-    const checkCode = useGlobalRequest(check_card.split('/api/v1').join(''), 'POST', { phone: phoneNumber, code: +code.join('') })
+    const checkCode = useGlobalRequest(check_card.split('/api/v1').join(''), 'POST', {
+        phone: phoneNumber,
+        code: +code.join('')
+    })
 
     const handleInputChange = (text: string, index: number) => {
         const newCode = [...code];
@@ -46,7 +49,7 @@ const CheckCard = () => {
             }
         }
 
-        confirm();
+        confirm().then(() => console.log('success'));
     }, [checkCode.response]);
 
 
@@ -59,11 +62,16 @@ const CheckCard = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
-                <View style={{ marginTop: 50 }}>
+                <View style={{marginTop: 50}}>
                     <Text style={styles.title}>Подтверждение номера</Text>
-                    <Text style={[styles.title, { fontWeight: '500', marginTop: 30 }]}>{phoneNumber && phoneNumber}</Text>
+                    <Text style={[styles.title, {fontWeight: '500', marginTop: 30}]}>{phoneNumber && phoneNumber}</Text>
                     <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 40 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 20,
+                        marginTop: 40
+                    }}>
                         {code.map((digit, index) => (
                             <TextInput
                                 key={index}

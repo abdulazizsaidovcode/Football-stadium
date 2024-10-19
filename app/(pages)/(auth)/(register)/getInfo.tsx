@@ -48,7 +48,7 @@ const UserInfo: React.FC = () => {
                 await AsyncStorage.setItem('token', register.response.token)
                 await AsyncStorage.setItem('role', role)
             }
-            setToken()
+            setToken().then(() => console.log('success'))
         }
     }, [register.response])
 

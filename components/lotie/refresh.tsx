@@ -12,8 +12,8 @@ interface LottieRefreshControlProps {
 const LottieRefreshControl: React.FC<LottieRefreshControlProps> = ({
     refreshing,
     onRefresh,
-    lottieSource,
-    lottieStyle,
+    // lottieSource,
+    // lottieStyle,
 }) => {
     return (
         <RefreshControl

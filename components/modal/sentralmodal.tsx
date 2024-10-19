@@ -1,17 +1,17 @@
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import {View, StyleSheet, Dimensions} from "react-native";
 import Modal from "react-native-modal";
 import Buttons from "../button/button";
-import { colors } from "@/constants/Colors";
+import {colors} from "@/constants/Colors";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
-export interface IBottomModalProps {
-    children: JSX.Element; // modal body qismi
-    toggleBottomModal: () => void; // modal ochib yopish un function
-    isBottomModal: boolean; // modal ochib yopish un state
-}
+// export interface IBottomModalProps {
+//     children: JSX.Element; // modal body qismi
+//     toggleBottomModal: () => void; // modal ochib yopish un function
+//     isBottomModal: boolean; // modal ochib yopish un state
+// }
 
 //centered modal
 export interface ICenteredModalProps {
@@ -25,7 +25,7 @@ export interface ICenteredModalProps {
     oneBtn?: boolean
 }
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get("window");
 
 const CenteredModal: React.FC<ICenteredModalProps> = (props) => {
     const {
@@ -57,7 +57,7 @@ const CenteredModal: React.FC<ICenteredModalProps> = (props) => {
             >
                 <View style={styles.modalView}>
                     {children}
-                    {oneBtn && <Buttons title={btnRedText} onPress={onConfirm} />}
+                    {oneBtn && <Buttons title={btnRedText} onPress={onConfirm}/>}
                     {!oneBtn && (
                         <View
                             style={[

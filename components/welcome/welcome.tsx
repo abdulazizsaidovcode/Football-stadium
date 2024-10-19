@@ -1,29 +1,32 @@
-import { useFocusEffect, useNavigation } from "expo-router";
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View, Text, Image, SafeAreaView, BackHandler } from "react-native";
+import {useFocusEffect, useNavigation} from "expo-router";
+import React, {useCallback, useState} from "react";
+import {StyleSheet, View, Text, SafeAreaView, BackHandler, Dimensions} from "react-native";
 // import { useTranslation } from "react-i18next";
 // import "../../i18next";
-import { NavigationProp } from "@react-navigation/native";
-import { RootStackParamList } from "@/types/root/root";
+import {NavigationProp} from "@react-navigation/native";
+import {RootStackParamList} from "@/types/root/root";
 // import {langstore} from "@/helpers/state_managment/lang/lang";
 // import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
-import { FontAwesome } from "@expo/vector-icons";
+import {FontAwesome} from "@expo/vector-icons";
 // import * as SecureStore from "expo-secure-store";
-import { colors } from "@/constants/Colors";
-import { StatusBar } from "expo-status-bar";
-import { useAuthStore } from "@/helpers/stores/auth/auth-store";
+import {colors} from "@/constants/Colors";
+import {StatusBar} from "expo-status-bar";
+import {useAuthStore} from "@/helpers/stores/auth/auth-store";
+import {getSize} from "@/constants/sizes";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "index"
 >;
+const {width: screenWidth} = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 
 const Welcome: React.FC = () => {
     // const {t, i18n} = useTranslation();
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     // const {language, setLanguage} = langstore();
-    const { setIsLoginModal } = useAuthStore()
+    const {setIsLoginModal} = useAuthStore()
     const [backPressCount, setBackPressCount] = useState(0);
 
 
@@ -57,19 +60,19 @@ const Welcome: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style='light' />
+            <StatusBar style='light'/>
             <View style={styles.logo}>
-                <FontAwesome name="soccer-ball-o" size={50} color="black" />
+                <FontAwesome name="soccer-ball-o" size={50 + (isTablet ? 60 : 0)} color="black"/>
             </View>
-            <Text style={styles.title}>Socker Bookers</Text>
+            <Text style={styles.title}>Soccer Bookers</Text>
             <Text style={styles.welcome}> </Text>
-            <Text style={styles.selectLanguage}>Buu app orqali o'zngizga yoqan stadion...</Text>
+            <Text style={styles.selectLanguage}>Bu app orqali o'zngizga yoqan stadionlaringizni bron qiling</Text>
             <View style={styles.button}>
                 <Buttons
                     title="Kirish"
                     onPress={() => {
                         navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
-                        changeLanguage("ru");
+                        changeLanguage("ru").then(() => console.log('success'));
                         setIsLoginModal(true)
                     }}
                 />
@@ -86,16 +89,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     logo: {
-        width: 100,
-        height: 100,
+        width: 100 + (isTablet ? 100 : 0),
+        height: 100 + (isTablet ? 100 : 0),
         backgroundColor: "#FFF",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 50,
+        borderRadius: 100,
         marginBottom: 20,
     },
     title: {
-        fontSize: 24,
+        fontSize: getSize('mediumText') + (isTablet ? 12 : 5),
         fontWeight: "600",
         color: "#ffffff",
         marginBottom: 10,
@@ -106,12 +109,14 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     selectLanguage: {
-        fontSize: 16,
+        fontSize: getSize('smallText'),
         color: "#ffffff",
         marginBottom: 20,
+        textAlign: "center",
+        paddingHorizontal: 10
     },
     button: {
-        width: "100%",
+        width: isTablet ? "80%" : "100%",
         display: "flex",
         flexDirection: "column",
         gap: 10,

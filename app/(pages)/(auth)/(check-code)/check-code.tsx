@@ -1,27 +1,43 @@
-import { Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { colors } from '@/constants/Colors';
-import { useAuthStore } from '@/helpers/stores/auth/auth-store';
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { auth_check_code } from '@/helpers/api/api';
+import {
+    Dimensions,
+    Keyboard,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native'
+import React, {useEffect, useRef, useState} from 'react'
+import {colors} from '@/constants/Colors';
+import {useAuthStore} from '@/helpers/stores/auth/auth-store';
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
+import {auth_check_code} from '@/helpers/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getConfig } from '@/helpers/api/token';
-import { useNavigation } from 'expo-router';
-import { RootStackParamList } from '@/types/root/root';
-import { NavigationProp } from '@react-navigation/native';
+// import { getConfig } from '@/helpers/api/token';
+import {useNavigation} from 'expo-router';
+import {RootStackParamList} from '@/types/root/root';
+import {NavigationProp} from '@react-navigation/native';
+import {getSize} from '@/constants/sizes';
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "(pages)/(auth)/(check-code)/check-code"
 >;
 
+const {width: screenWidth} = Dimensions.get('window')
+const isTablet = screenWidth > 768;
+
 const CheckCode = () => {
-    const { phoneNumber, setPhoneNumber, status } = useAuthStore()
+    const {phoneNumber, setPhoneNumber, status} = useAuthStore()
     const [code, setCode] = useState<string[]>(['', '', '', '']);
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const inputRefs = useRef<Array<TextInput | null>>([]);
 
-    const checkCode = useGlobalRequest(auth_check_code, 'POST', { phone: "+998" + phoneNumber.split(' ').join(''), code: +code.join('') })
+    const checkCode = useGlobalRequest(auth_check_code, 'POST', {
+        phone: "+998" + phoneNumber.split(' ').join(''),
+        code: +code.join('')
+    })
 
     const handleInputChange = (text: string, index: number) => {
         const newCode = [...code];
@@ -48,8 +64,8 @@ const CheckCode = () => {
                     console.log('too login');
                     const token = checkCode.response.token;
                     const role = checkCode.response.role;
-                    console.log(role);
-                    
+                    // console.log(role);
+
                     await AsyncStorage.setItem('token', token);
                     await AsyncStorage.setItem('role', role === 'ROLE_CLIENT' ? 'CLIENT' : 'MASTER');
                     role === 'ROLE_CLIENT' ? navigation.navigate('(tabs)/(client)') : navigation.navigate('(tabs)/(master)')
@@ -59,7 +75,7 @@ const CheckCode = () => {
             }
         }
 
-        confirm();
+        confirm().then(() => console.log('success'));
     }, [checkCode.response]);
 
     useEffect(() => {
@@ -71,11 +87,16 @@ const CheckCode = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
-                <View style={{ marginTop: 50 }}>
+                <View style={{marginTop: 50}}>
                     <Text style={styles.title}>Подтверждение номера</Text>
-                    <Text style={[styles.title, { fontWeight: '500', marginTop: 30 }]}>+998 {phoneNumber}</Text>
+                    <Text style={[styles.title, {fontWeight: '500', marginTop: 30}]}>+998 {phoneNumber}</Text>
                     <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 40 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: isTablet ? 200 : 20,
+                        marginTop: 40
+                    }}>
                         {code.map((digit, index) => (
                             <TextInput
                                 key={index}
@@ -104,12 +125,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     title: {
-        fontSize: 25,
+        fontSize: getSize('mediumText') + (isTablet ? 10 : 0),
         color: colors.white,
         textAlign: 'center'
     },
     des: {
-        fontSize: 16.5,
+        fontSize: getSize('smallText') + (isTablet ? 10 : 0),
         color: '#828282',
         textAlign: 'center',
         marginTop: 10,
@@ -117,10 +138,10 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: '#e1e1e1',
-        width: 65,
-        height: 65,
+        width: 65 + (isTablet ? 40 : 0),
+        height: 65 + (isTablet ? 40 : 0),
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 20 + (isTablet ? 30 : 0),
         marginHorizontal: 5,
         borderRadius: 10,
         color: colors.white,

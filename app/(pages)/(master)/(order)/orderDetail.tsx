@@ -8,7 +8,6 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  Dimensions,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import NavigationMenu from "@/components/navigation/NavigationMenu";
@@ -17,6 +16,7 @@ import { file_get, order_detail, stadium_get_one } from "@/helpers/api/api";
 import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
 import OrderStore from "@/helpers/stores/order/orderStore";
 import { useFocusEffect } from "expo-router";
+import { getSize } from "@/constants/sizes";
 
 // const { width: viewportWidth } = Dimensions.get("window");
 
@@ -57,10 +57,10 @@ function OrderDetail() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <View style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
+        <View style={{ paddingHorizontal: getSize('defaultPadding'), paddingVertical: 16 }}>
           <NavigationMenu name={"Detail"} />
         </View>
-        <ScrollView style={{ paddingHorizontal: 16 }}>
+        <ScrollView style={{ paddingHorizontal: getSize('defaultPadding') }}>
           <View style={styles.detailContainer}>
             {stadiumDetail?.response?.attechmentIds?.length > 0 && (
               <Carousel
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   title: {
-    fontSize: 20,
+    fontSize: getSize('mediumText'),
     color: "white",
   },
   titleDesc: {

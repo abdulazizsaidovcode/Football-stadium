@@ -38,7 +38,7 @@
     "expo-system-ui": "~3.0.7",
     "expo-updates": "~0.25.25",
     "expo-web-browser": "~13.0.3",
-    "lottie-react-native": "6.7.0",
+    "lottie-react-native": "^5.1.4",
     "moment": "^2.30.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

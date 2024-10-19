@@ -121,14 +121,14 @@ android {
         debug {
             storeFile file('booking-stadium.keystore')
             storePassword 'bookingstadium'
-            keyAlias 'booking-store-key'
+            keyAlias 'booking-stadium-key'
             keyPassword 'bookingstadium'
         }
         release {
             if (project.hasProperty('booking-stadium.keystore')) {
                 storeFile file(booking-stadium.keystore)
                 storePassword bookingstadium
-                keyAlias booking-store-key
+                keyAlias booking-stadium-key
                 keyPassword bookingstadium
             }
         }

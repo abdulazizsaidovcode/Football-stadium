@@ -19,15 +19,15 @@ export function useGlobalRequest<T>(
     const mutation = useMutation({
         mutationFn: async () => {
             let res;       
-            const config = configType === 'DEFAULT' ? await getConfig() : await getConfigImg();
-            console.log(config);
+            const config = (configType === 'DEFAULT' ? await getConfig() : await getConfigImg());
+            // console.log(config);
             switch (method) {
                 case 'GET':
                     res = await axios.get(url, config || {});
                     break;
                 case 'POST':
                     res = await axios.post(url, data || {}, config || {});
-                    console.log(url);
+                    // console.log(url);
                     
                     break;
                 case 'PUT': 

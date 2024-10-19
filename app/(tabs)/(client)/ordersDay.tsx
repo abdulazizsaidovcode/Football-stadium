@@ -1,14 +1,14 @@
-import NavigationMenu from '@/components/navigation/NavigationMenu';
-import { colors } from '@/constants/Colors';
-import { getSize } from '@/constants/sizes';
-import { order_today } from '@/helpers/api/api';
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+// import NavigationMenu from '@/components/navigation/NavigationMenu';
+import {colors} from '@/constants/Colors';
+import {getSize} from '@/constants/sizes';
+import {order_today} from '@/helpers/api/api';
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
 import Layout from '@/layout/layout'
-import { useFocusEffect } from 'expo-router';
-import React, { useCallback, useEffect } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import {useFocusEffect} from 'expo-router';
+import React, {useCallback} from 'react'
+import {Dimensions, StyleSheet, Text, View} from 'react-native'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 export default function OrdersDay() {
@@ -25,7 +25,14 @@ export default function OrdersDay() {
             <Text style={styles.title}>
                 Bugungi qilingan orderlar
             </Text>
-            {getOrdersTodey.response && getOrdersTodey.response.map((item: { orderNumber: number, id: number | string, startTime: string, endTime: string, date: string, orderStatus: string }) => (
+            {getOrdersTodey.response && getOrdersTodey.response.map((item: {
+                orderNumber: number,
+                id: number | string,
+                startTime: string,
+                endTime: string,
+                date: string,
+                orderStatus: string
+            }) => (
                 <View key={item.id} style={styles.itemContainer}>
                     <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
                     <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
