@@ -1,32 +1,32 @@
-import { useFocusEffect, useNavigation } from "expo-router";
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View, Text, Image, SafeAreaView, BackHandler, Dimensions } from "react-native";
+import {useFocusEffect, useNavigation} from "expo-router";
+import React, {useCallback, useState} from "react";
+import {StyleSheet, View, Text, SafeAreaView, BackHandler, Dimensions} from "react-native";
 // import { useTranslation } from "react-i18next";
 // import "../../i18next";
-import { NavigationProp } from "@react-navigation/native";
-import { RootStackParamList } from "@/types/root/root";
+import {NavigationProp} from "@react-navigation/native";
+import {RootStackParamList} from "@/types/root/root";
 // import {langstore} from "@/helpers/state_managment/lang/lang";
 // import Toast from "react-native-simple-toast";
 import Buttons from "../button/button";
-import { FontAwesome } from "@expo/vector-icons";
+import {FontAwesome} from "@expo/vector-icons";
 // import * as SecureStore from "expo-secure-store";
-import { colors } from "@/constants/Colors";
-import { StatusBar } from "expo-status-bar";
-import { useAuthStore } from "@/helpers/stores/auth/auth-store";
-import { getSize } from "@/constants/sizes";
+import {colors} from "@/constants/Colors";
+import {StatusBar} from "expo-status-bar";
+import {useAuthStore} from "@/helpers/stores/auth/auth-store";
+import {getSize} from "@/constants/sizes";
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "index"
 >;
-const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 const Welcome: React.FC = () => {
     // const {t, i18n} = useTranslation();
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     // const {language, setLanguage} = langstore();
-    const { setIsLoginModal } = useAuthStore()
+    const {setIsLoginModal} = useAuthStore()
     const [backPressCount, setBackPressCount] = useState(0);
 
 
@@ -60,9 +60,9 @@ const Welcome: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style='light' />
+            <StatusBar style='light'/>
             <View style={styles.logo}>
-                <FontAwesome name="soccer-ball-o" size={50 + (isTablet ? 60 : 0)} color="black" />
+                <FontAwesome name="soccer-ball-o" size={50 + (isTablet ? 60 : 0)} color="black"/>
             </View>
             <Text style={styles.title}>Soccer Bookers</Text>
             <Text style={styles.welcome}> </Text>
@@ -72,7 +72,7 @@ const Welcome: React.FC = () => {
                     title="Kirish"
                     onPress={() => {
                         navigation.navigate("(pages)/(client)/(dashboard)/dashboard");
-                        changeLanguage("ru");
+                        changeLanguage("ru").then(() => console.log('success'));
                         setIsLoginModal(true)
                     }}
                 />

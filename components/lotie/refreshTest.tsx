@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { RefreshControl, StyleSheet, View, Animated } from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {RefreshControl, StyleSheet, Animated} from 'react-native';
+
 // import LottieView from 'lottie-react-native';
 
 interface LottieRefreshControlTestProps {
@@ -10,11 +11,11 @@ interface LottieRefreshControlTestProps {
 }
 
 const LottieRefreshControlTest: React.FC<LottieRefreshControlTestProps> = ({
-    refreshing,
-    onRefresh,
-    lottieSource,
-    lottieStyle,
-}) => {
+                                                                               refreshing,
+                                                                               onRefresh,
+                                                                               // lottieSource,
+                                                                               // lottieStyle,
+                                                                           }) => {
     const animationValue = useRef(new Animated.Value(-100)).current; // Start off-screen
     const paddingValue = useRef(new Animated.Value(0)).current; // Padding animation value
 
@@ -51,7 +52,7 @@ const LottieRefreshControlTest: React.FC<LottieRefreshControlTestProps> = ({
     }, [refreshing]);
 
     return (
-        <Animated.View style={{ paddingTop: paddingValue }}>
+        <Animated.View style={{paddingTop: paddingValue}}>
             <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefresh}
@@ -59,7 +60,7 @@ const LottieRefreshControlTest: React.FC<LottieRefreshControlTestProps> = ({
                 colors={['transparent']}  // Hide the default spinner
             >
                 {refreshing && (
-                    <Animated.View style={[styles.lottieContainer, { transform: [{ translateY: animationValue }] }]}>
+                    <Animated.View style={[styles.lottieContainer, {transform: [{translateY: animationValue}]}]}>
                         {/* <LottieView
                             source={lottieSource}
                             autoPlay

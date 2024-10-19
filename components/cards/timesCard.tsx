@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { colors } from '@/constants/Colors';
-import { getSize } from '@/constants/sizes';
+import {colors} from '@/constants/Colors';
+import {getSize} from '@/constants/sizes';
 
 interface TimesCardProps {
     title: string;
@@ -11,10 +11,11 @@ interface TimesCardProps {
     disabled: boolean;
     isBrone: boolean
 }
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
-const TimesCard: React.FC<TimesCardProps> = ({ title, isBrone, onSelect, isSelected, isInRange, disabled }) => {
+const TimesCard: React.FC<TimesCardProps> = ({title, isBrone, onSelect, isSelected, isInRange, disabled}) => {
     return (
         <TouchableOpacity
             activeOpacity={.8}
@@ -27,7 +28,8 @@ const TimesCard: React.FC<TimesCardProps> = ({ title, isBrone, onSelect, isSelec
             ]}
             disabled={disabled}
         >
-            <Text style={[styles.title, { color: isSelected ? 'white' : colors.inDarkGreen }]}>{title && title.slice(0, 5)}</Text>
+            <Text
+                style={[styles.title, {color: isSelected ? 'white' : colors.inDarkGreen}]}>{title && title.slice(0, 5)}</Text>
         </TouchableOpacity>
     );
 };

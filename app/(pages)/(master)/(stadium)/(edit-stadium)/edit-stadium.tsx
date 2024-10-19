@@ -254,7 +254,7 @@ const EditStadium = () => {
   };
 
   const handleSubmit = () => {
-    submitStadiumPost();
+    submitStadiumPost().then(() => console.log('success'));
     images.length !== 0 && addImage()
   }
 

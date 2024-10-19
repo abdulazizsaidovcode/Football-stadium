@@ -1,9 +1,9 @@
 export const BASE_URL: string = 'https://app.coinbyitca.uz/api/v1/';
 
 // AUTH
-export const auth_login: string = `${BASE_URL}auth/login`;
+// export const auth_login: string = `${BASE_URL}auth/login`;
 export const auth_register: string = `${BASE_URL}auth/register`;
-export const auth_register_client: string = `${BASE_URL}auth/client/register`;
+// export const auth_register_client: string = `${BASE_URL}auth/client/register`;
 export const auth_check_code: string = `${BASE_URL}auth/check-code`;
 export const auth_send_code: string = `${BASE_URL}auth/send-code-to-phone`;
 
@@ -13,10 +13,10 @@ export const user_update: string = `${BASE_URL}user/update`;
 export const user_found: string = `${BASE_URL}user/is/found`;
 
 // FILE 
-export const file_upload: string = `${BASE_URL}file/upload`;
-export const file_update: string = `${BASE_URL}file/update`;
+// export const file_upload: string = `${BASE_URL}file/upload`;
+// export const file_update: string = `${BASE_URL}file/update`;
 export const file_get: string = `${BASE_URL}file/`;
-export const file_delete: string = `${BASE_URL}file/delete`;
+// export const file_delete: string = `${BASE_URL}file/delete`;
 
 // STADIUM
 export const stadium_get: string = `${BASE_URL}stadium`;
@@ -50,7 +50,7 @@ export const favourite_delate: string = `${BASE_URL}favourite/delete`;
 
 // Notification
 export const get_notification: string = `${BASE_URL}notification/my-notifications`;
-export const get_notification_cout: string = `${BASE_URL}notification/count-unread-notifications`;
+// export const get_notification_cout: string = `${BASE_URL}notification/count-unread-notifications`;
 export const delete_notification: string = `${BASE_URL}notification/soft-delete`;
 export const isread_notification: string = `${BASE_URL}notification/mark-as-read`;
 

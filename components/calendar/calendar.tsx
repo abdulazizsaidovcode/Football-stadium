@@ -1,12 +1,12 @@
-import React, { useState, useCallback } from "react";
-import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
-import { Calendar } from "react-native-calendars";
-import { MarkedDates } from "react-native-calendars/src/types";
+import React, {useState, useCallback} from "react";
+import {StyleSheet, View, Dimensions} from "react-native";
+import {Calendar} from "react-native-calendars";
+import {MarkedDates} from "react-native-calendars/src/types";
 import moment from "moment";
-import { useFocusEffect } from "expo-router";
+import {useFocusEffect} from "expo-router";
 import calenderStory from "@/helpers/stores/order/graficWorkStore";
-import { colors } from "@/constants/Colors";
-import { getSize } from "@/constants/sizes";
+import {colors} from "@/constants/Colors";
+import {getSize} from "@/constants/sizes";
 
 export interface DateObject {
     dateString: string;
@@ -16,11 +16,11 @@ export interface DateObject {
     timestamp: number;
 }
 
-const { width: screenWidth } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 
-const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
+const CalendarGrafficEdit = ({saveTime}: { saveTime: string }) => {
     const [selectedDate, setSelectedDate] = useState<MarkedDates>({});
-    const { setCalendarDate } = calenderStory();
+    const {setCalendarDate} = calenderStory();
 
     useFocusEffect(
         useCallback(() => {
@@ -51,7 +51,8 @@ const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
                 setCalendarDate(today); // Default bugungi sanani saqlash
             }
 
-            return () => { };
+            return () => {
+            };
         }, [saveTime, setCalendarDate])
     );
 
@@ -85,9 +86,9 @@ const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
         for (let date = startOfMonth; date.isBefore(endOfMonth); date.add(1, 'day')) {
             const dayString = date.format("YYYY-MM-DD");
             if (date.isBefore(today)) {
-                markedDates[dayString] = { color: 'gray', textColor: 'white', disabled: true };
+                markedDates[dayString] = {color: 'gray', textColor: 'white', disabled: true};
             } else if (date.day() === 0 || date.day() === 6) {
-                markedDates[dayString] = { textColor: 'red', color: 'transparent' }; // Ensure weekends are red
+                markedDates[dayString] = {textColor: 'red', color: 'transparent'}; // Ensure weekends are red
             } else {
                 markedDates[dayString] = {};
             }
@@ -100,7 +101,7 @@ const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
             <Calendar
                 style={styles.containerCall}
                 onDayPress={onDayPress}
-                markedDates={{ ...getMarkedDates(), ...selectedDate }}
+                markedDates={{...getMarkedDates(), ...selectedDate}}
                 firstDay={1} // Haftani dushanbadan boshlash
                 theme={{
                     calendarBackground: '#ffffff',
@@ -124,7 +125,7 @@ const CalendarGrafficEdit = ({ saveTime }: { saveTime: string }) => {
                     textMonthFontSize: getSize('smallText'),
                     textDayHeaderFontSize: getSize('smallText'),
                 }}
-                
+
             />
         </View>
     );

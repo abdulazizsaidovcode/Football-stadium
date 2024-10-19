@@ -1,11 +1,11 @@
 import React from 'react';
-import {useNavigation} from 'expo-router';
+// import {useNavigation} from 'expo-router';
 import {StyleSheet, View, Text} from 'react-native';
 import NavigationMenu from "@/components/navigation/NavigationMenu";
 import Layout from "@/layout/layout";
 
 const UserOffer: React.FC = () => {
-    const navigation = useNavigation<any>();
+    // const navigation = useNavigation<any>();
 
     return (
         <Layout scroll padding>

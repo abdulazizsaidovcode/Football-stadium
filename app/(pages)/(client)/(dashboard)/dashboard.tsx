@@ -7,8 +7,8 @@ import {
     Text,
     View,
 } from "react-native";
-import React, { useCallback, useState } from "react";
-import { colors } from "@/constants/Colors";
+import React, {useCallback, useState} from "react";
+import {colors} from "@/constants/Colors";
 import {
     AntDesign,
     Entypo,
@@ -16,39 +16,39 @@ import {
     MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {StatusBar} from "expo-status-bar";
 import {
     NavigationProp,
     useFocusEffect,
     useNavigation,
 } from "@react-navigation/native";
-import { getUserLocation } from "@/helpers/global_functions/user_functions/user-functions";
-import { useUserStore } from "@/helpers/stores/user/user-store";
-import { useGlobalRequest } from "@/helpers/global_functions/global-response/global-response";
-import { stadium_get, stadium_search } from "@/helpers/api/api";
-import { RootStackParamList } from "@/types/root/root";
-import { StadiumTypes } from "@/types/stadium/stadium";
-import { Loading } from "@/components/loading/loading";
+import {getUserLocation} from "@/helpers/global_functions/user_functions/user-functions";
+import {useUserStore} from "@/helpers/stores/user/user-store";
+import {useGlobalRequest} from "@/helpers/global_functions/global-response/global-response";
+import {stadium_get, stadium_search} from "@/helpers/api/api";
+import {RootStackParamList} from "@/types/root/root";
+import {StadiumTypes} from "@/types/stadium/stadium";
+import {Loading} from "@/components/loading/loading";
 import StadiumCard from "@/components/cards/StadiumCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "@/components/input/input";
 import CenteredModal from "@/components/modal/sentralmodal";
-import { useAuthStore } from "@/helpers/stores/auth/auth-store";
+import {useAuthStore} from "@/helpers/stores/auth/auth-store";
 import Buttons from "@/components/button/button";
-import { getSize } from "@/constants/sizes";
+import {getSize} from "@/constants/sizes";
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 const ClientDashboard = () => {
-    const { userLocation, setUserLocation } = useUserStore();
+    const {userLocation, setUserLocation} = useUserStore();
     const [token, setToken] = useState<string | null>("");
     const [stadiumData, setstadiumData] = useState<StadiumTypes[] | null>(null);
     const [inputValue, setinputValue] = useState<string | null>("");
-    const { isLoginModal, setIsLoginModal } = useAuthStore();
+    const {isLoginModal, setIsLoginModal} = useAuthStore();
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
     const [refreshing, setRefreshing] = React.useState(false);
@@ -67,13 +67,13 @@ const ClientDashboard = () => {
     useFocusEffect(
         useCallback(() => {
             setLocationLoading(true)
-            getUserLocation(setUserLocation);
+            getUserLocation(setUserLocation).then(() => console.log('success'));
             const getConfig = async () => {
                 setToken(await AsyncStorage.getItem("token"));
                 setRole(await AsyncStorage.getItem("role"));
             };
 
-            getConfig();
+            getConfig().then(() => console.log('success'));
         }, [])
     );
 
@@ -135,7 +135,7 @@ const ClientDashboard = () => {
     };
 
     const confirmLogOut = () => {
-        logOut();
+        logOut().then(() => console.log('success'));
         hideModal();
     };
 
@@ -149,13 +149,13 @@ const ClientDashboard = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style="light" />
+            <StatusBar style="light"/>
             <ScrollView
                 // contentContainerStyle={styles.scrollView}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing && !staduims.response} onRefresh={onRefresh} />
+                    <RefreshControl refreshing={refreshing && !staduims.response} onRefresh={onRefresh}/>
                 }
-                style={{ paddingHorizontal: getSize('defaultPadding') }}>
+                style={{paddingHorizontal: getSize('defaultPadding')}}>
                 {role && token && (
                     <View style={styles.header}>
                         <Text style={styles.title}>Главная</Text>
@@ -173,7 +173,7 @@ const ClientDashboard = () => {
                                     name="notifications"
                                     onPress={() => navigation.navigate('(pages)/(notification)/notification')}
                                     size={getSize('mediumText') + (isTablet ? 8 : 12)}
-                                    color="white" />
+                                    color="white"/>
                             </View>
                             <FontAwesome
                                 onPress={showModal}
@@ -185,7 +185,7 @@ const ClientDashboard = () => {
                     </View>
                 )}
 
-                <View style={{ marginTop: 15 }}>
+                <View style={{marginTop: 15}}>
                     <View>
                         <Input
                             value={inputValue ? inputValue : ""}
@@ -199,14 +199,14 @@ const ClientDashboard = () => {
                             {role && token ? "Мои записи" : "Stadionlar"}
                         </Text>
                         {!token && !role && (
-                            <View style={{ marginVertical: 10 }}>
+                            <View style={{marginVertical: 10}}>
                                 <Buttons
                                     title="Tizimga kirish"
                                     onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')}
                                 />
                             </View>
                         )}
-                        <View style={{ marginVertical: 16, gap: 10 }}>
+                        <View style={{marginVertical: 16, gap: 10}}>
                             {/* {!locationLoading ?
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                     <Entypo name="location-pin" size={44} color={colors.green} />
@@ -244,20 +244,20 @@ const ClientDashboard = () => {
                                 </View>)
                             } */}
                             {locationLoading ?
-                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Entypo name="location-pin" size={44} color={colors.green} />
-                                    <Text style={{ color: '#fff' }}>location olinmoqda ...</Text>
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <Entypo name="location-pin" size={44} color={colors.green}/>
+                                    <Text style={{color: '#fff'}}>location olinmoqda ...</Text>
                                 </View>
                                 :
-                                <View style={{ marginBottom: 5 }}>
+                                <View style={{marginBottom: 5}}>
                                     {
                                         staduims.loading ? (
                                             <View>
-                                                {!refreshing && <Loading />}
+                                                {!refreshing && <Loading/>}
                                             </View>
                                         ) : stadiumData && stadiumData.length > 0 ? (
                                             stadiumData.map((item: StadiumTypes, index: number) => (
-                                                <View style={{ marginBottom: getSize('marginBottom') }}>
+                                                <View style={{marginBottom: getSize('marginBottom')}}>
                                                     <StadiumCard
                                                         key={index}
                                                         fetchFunction={staduims.globalDataFunc}
@@ -265,13 +265,13 @@ const ClientDashboard = () => {
                                                         onMapPress={() =>
                                                             navigation.navigate(
                                                                 "(pages)/(maps)/(stadium-locations)/stadium-locations",
-                                                                { id: item.id }
+                                                                {id: item.id}
                                                             )
                                                         }
                                                         onPress={() =>
                                                             navigation.navigate(
                                                                 "(pages)/(order)/(order-save)/order-save",
-                                                                { id: item.id }
+                                                                {id: item.id}
                                                             )
                                                         }
                                                     />
@@ -302,9 +302,13 @@ const ClientDashboard = () => {
                         marginBottom: 10,
                     }}
                 >
-                    <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen} />
+                    <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen}/>
                     <Text
-                        style={{ fontSize: getSize('smallText') + (isTablet ? 5 : 0), color: '#fff', textAlign: "center" }}
+                        style={{
+                            fontSize: getSize('smallText') + (isTablet ? 5 : 0),
+                            color: '#fff',
+                            textAlign: "center"
+                        }}
                     >
                         Siz aniq tizimdan chiqmoqchimisz ?
                     </Text>
@@ -328,9 +332,9 @@ const ClientDashboard = () => {
                         marginBottom: 10,
                     }}
                 >
-                    <AntDesign name="login" size={80} color={colors.lightGreen} />
+                    <AntDesign name="login" size={80} color={colors.lightGreen}/>
                     <Text
-                        style={{ fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10 }}
+                        style={{fontSize: 17, color: '#fff', textAlign: "center", marginTop: 10}}
                     >
                         Tizmdan foydalanish uchun ro'yhatsan o'ting
                     </Text>

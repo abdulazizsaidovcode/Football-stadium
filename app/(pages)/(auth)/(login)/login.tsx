@@ -18,7 +18,7 @@ import {RootStackParamList} from '@/types/root/root';
 import {useAuthStore} from '@/helpers/stores/auth/auth-store';
 import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
 import {auth_send_code, user_found} from '@/helpers/api/api';
-import {Link, useFocusEffect} from 'expo-router';
+import {useFocusEffect} from 'expo-router';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
 import {getSize} from '@/constants/sizes';
 
@@ -26,7 +26,7 @@ type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "(pages)/(auth)/(login)/login"
 >;
-const {height: screenHeight, width: screenWidth} = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 const Login = () => {

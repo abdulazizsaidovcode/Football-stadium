@@ -1,25 +1,29 @@
-import { Dimensions, Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { colors } from '@/constants/Colors'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {colors} from '@/constants/Colors'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import Input from '@/components/input/input'
 import NavigationMenu from '@/components/navigation/NavigationMenu'
 import Buttons from '@/components/button/button'
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response'
-import { card } from '@/helpers/api/api'
-import { useAuthStore } from '@/helpers/stores/auth/auth-store'
-import { useNavigation } from '@react-navigation/native'
-import { getSize } from '@/constants/sizes'
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response'
+import {card} from '@/helpers/api/api'
+import {useAuthStore} from '@/helpers/stores/auth/auth-store'
+import {useNavigation} from '@react-navigation/native'
+import {getSize} from '@/constants/sizes'
 
-const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
-const isTablet = screenWidth > 768;
+// const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
+// const isTablet = screenWidth > 768;
 
 const AddCard = () => {
     const navigation = useNavigation<any>()
     const [cardNumber, setCardNumber] = useState('');
     const [cardExpire, setEardExpire] = useState('');
-    const { setPhoneNumber } = useAuthStore()
-    const addCard = useGlobalRequest(card.split('/api/v1').join(''), 'POST', { cardNumber: cardNumber.split(' ').join(''), cardExpire: cardExpire.split('/').reverse().join(''), main: true })
+    const {setPhoneNumber} = useAuthStore()
+    const addCard = useGlobalRequest(card.split('/api/v1').join(''), 'POST', {
+        cardNumber: cardNumber.split(' ').join(''),
+        cardExpire: cardExpire.split('/').reverse().join(''),
+        main: true
+    })
     const formatCardNumber = (text: string) => {
         return text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
     };
@@ -42,10 +46,11 @@ const AddCard = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
-                <NavigationMenu name="Karta qo'shish" />
+                <NavigationMenu name="Karta qo'shish"/>
                 <View>
-                    <View style={{ marginTop: 50 }}>
-                        <Text style={{ color: colors.white, fontSize: getSize('mediumText') }}>Karta ma'lumotlarini kiriting</Text>
+                    <View style={{marginTop: 50}}>
+                        <Text style={{color: colors.white, fontSize: getSize('mediumText')}}>Karta ma'lumotlarini
+                            kiriting</Text>
                         <Input
                             placeholder='0000 0000 0000 0000'
                             maxLength={19}

@@ -9,12 +9,12 @@ import {
 } from "@/helpers/api/api";
 import Layout from "@/layout/layout";
 import { Loading } from "@/components/loading/loading";
-import Buttons from "@/components/button/button";
+// import Buttons from "@/components/button/button";
 import { useFocusEffect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Notification = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const [notificationIds, setNotificationIds] = useState<string[]>([]);
   const [isRead, setIsRead] = useState<boolean>(true);
   const GetNotification = useGlobalRequest(get_notification, "GET");

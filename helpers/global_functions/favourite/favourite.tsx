@@ -1,20 +1,20 @@
-import { colors } from "@/constants/Colors";
-import { favourite_add, favourite_delate, favourite_get } from "@/helpers/api/api";
-import { getConfig } from "@/helpers/api/token";
-import { StadiumTypes } from "@/types/stadium/stadium";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import {colors} from "@/constants/Colors";
+import {favourite_add, favourite_delate} from "@/helpers/api/api";
+import {getConfig} from "@/helpers/api/token";
+// import { StadiumTypes } from "@/types/stadium/stadium";
+import {Feather, MaterialIcons} from "@expo/vector-icons";
 import axios from "axios"
-import { Dimensions, TouchableOpacity } from "react-native";
-import { toastMessage } from "../toast-message/toast-message";
-import { getSize } from "@/constants/sizes";
+import {Dimensions, TouchableOpacity} from "react-native";
+import {toastMessage} from "../toast-message/toast-message";
+import {getSize} from "@/constants/sizes";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 export const addFavouriteOrder = async (masterId: string, fetchFunction: () => void) => {
     const config = await getConfig();
     try {
-        const { data } = await axios.post(`${favourite_add}/${masterId}`, {}, config ? config : {})
+        const {data} = await axios.post(`${favourite_add}/${masterId}`, {}, config ? config : {})
         if (data.data) {
             alert('Мастер успешно добавлен в список любимый мастеров.',)
             fetchFunction()
@@ -30,7 +30,7 @@ export const deleteFavouriteOrder = async (masterId: string, fetchFunction: () =
     const config = await getConfig();
 
     try {
-        const { data } = await axios.delete(`${favourite_delate}/${masterId}`, config ? config : {});
+        const {data} = await axios.delete(`${favourite_delate}/${masterId}`, config ? config : {});
         // console.log(data);
 
         if (data.data) {
@@ -55,7 +55,7 @@ export const haveOrNot = (favourite: boolean, masterId: any, fetchFunction: () =
                 borderRadius: 50,
                 width: isTablet ? 70 : 46,
             }}>
-                <MaterialIcons name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
+                <MaterialIcons name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white"/>
             </TouchableOpacity>
         )
     } else {
@@ -68,7 +68,7 @@ export const haveOrNot = (favourite: boolean, masterId: any, fetchFunction: () =
                 borderRadius: 50,
                 width: isTablet ? 70 : 46,
             }}>
-                <Feather name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white" />
+                <Feather name="bookmark" size={getSize('mediumText') + (isTablet ? 15 : 0)} color="white"/>
             </TouchableOpacity>
         )
     }

@@ -8,7 +8,6 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  Dimensions,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import NavigationMenu from "@/components/navigation/NavigationMenu";

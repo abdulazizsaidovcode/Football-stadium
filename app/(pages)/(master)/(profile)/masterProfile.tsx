@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, {useEffect} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import Layout from '@/layout/layout';
-import Buttons from '@/components/button/button';
-import { BASE_URL, file_get, user_me } from '@/helpers/api/api';
-import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
-import { getConfig } from '@/helpers/api/token';
-import { AntDesign } from '@expo/vector-icons';
+// import Buttons from '@/components/button/button';
+import {file_get, user_me} from '@/helpers/api/api';
+import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
+// import { getConfig } from '@/helpers/api/token';
+import {AntDesign} from '@expo/vector-icons';
 
 const Profile = () => {
     const userMee = useGlobalRequest<string>(user_me, 'GET');
@@ -18,16 +18,19 @@ const Profile = () => {
         <Layout scroll style={styles.container}>
             <View style={styles.profile}>
                 {userMee.response && userMee.response.attaachmentId ?
-                    <Image source={{uri: file_get + userMee.response.attaachmentId}} alt={`img`} style={styles.avatar} />
-                    : <AntDesign name="user" size={70} color="white" />
+                    <Image source={{uri: file_get + userMee.response.attaachmentId}} alt={`img`} style={styles.avatar}/>
+                    : <AntDesign name="user" size={70} color="white"/>
 
                 }
                 <View style={styles.profileBody}>
                     <Text>
-                        <Text style={styles.name}>{userMee.response && userMee.response.lastName || "Network error"} </Text>
-                        <Text style={styles.name}>{userMee.response && userMee.response.firstName || "Network error"}</Text>
+                        <Text
+                            style={styles.name}>{userMee.response && userMee.response.lastName || "Network error"} </Text>
+                        <Text
+                            style={styles.name}>{userMee.response && userMee.response.firstName || "Network error"}</Text>
                     </Text>
-                    <Text style={styles.phone}>{userMee.response && userMee.response.phoneNumber || "Network error"}</Text>
+                    <Text
+                        style={styles.phone}>{userMee.response && userMee.response.phoneNumber || "Network error"}</Text>
                 </View>
             </View>
         </Layout>
