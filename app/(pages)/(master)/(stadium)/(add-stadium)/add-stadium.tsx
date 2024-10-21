@@ -333,7 +333,7 @@ const AddStadium = () => {
                                 borderRadius: 10
                             }}>
                                 <View style={{flexDirection: 'row', gap: 10}}>
-                                    <FontAwesome5 name="toilet" size={24} color="white"/>
+                                    <FontAwesome5 name="toilet" size={getSize('mediumText')} color="white"/>
                                     <Text style={[styles.label]}>Hojathona</Text>
                                 </View>
                                 <Switch
@@ -353,7 +353,7 @@ const AddStadium = () => {
                                 marginVertical: 10
                             }}>
                                 <View style={{flexDirection: 'row', gap: 10}}>
-                                    <Entypo name="shop" size={24} color="white"/>
+                                    <Entypo name="shop" size={getSize('mediumText')} color="white"/>
                                     <Text style={[styles.label]}>Do'kon</Text>
                                 </View>
                                 <Switch
@@ -373,7 +373,7 @@ const AddStadium = () => {
                                 marginBottom: 10
                             }}>
                                 <View style={{flexDirection: 'row', gap: 10}}>
-                                    <MaterialIcons name="shower" size={24} color="white"/>
+                                    <MaterialIcons name="shower" size={getSize('mediumText')} color="white"/>
                                     <Text style={[styles.label]}>Yuvinish honasi</Text>
                                 </View>
                                 <Switch

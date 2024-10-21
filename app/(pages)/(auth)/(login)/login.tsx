@@ -9,30 +9,30 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native'
-import React, {useCallback, useEffect, useState} from 'react'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {colors} from '@/constants/Colors'
+import React, { useCallback, useEffect, useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { colors } from '@/constants/Colors'
 import Buttons from '@/components/button/button';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '@/types/root/root';
-import {useAuthStore} from '@/helpers/stores/auth/auth-store';
-import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
-import {auth_send_code, user_found} from '@/helpers/api/api';
-import {useFocusEffect} from 'expo-router';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '@/types/root/root';
+import { useAuthStore } from '@/helpers/stores/auth/auth-store';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { auth_send_code, user_found } from '@/helpers/api/api';
+import { useFocusEffect } from 'expo-router';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
-import {getSize} from '@/constants/sizes';
+import { getSize } from '@/constants/sizes';
 
 type SettingsScreenNavigationProp = NavigationProp<
     RootStackParamList,
     "(pages)/(auth)/(login)/login"
 >;
-const {width: screenWidth} = Dimensions.get('window')
+const { width: screenWidth } = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 
 const Login = () => {
-    const {phoneNumber, setPhoneNumber, status, setStatus} = useAuthStore();
+    const { phoneNumber, setPhoneNumber, status, setStatus } = useAuthStore();
     const navigation = useNavigation<SettingsScreenNavigationProp>();
-    const sendCode = useGlobalRequest(auth_send_code, 'POST', {phoneNumber: '+998' + phoneNumber.split(' ').join('')}, 'DEFAULT');
+    const sendCode = useGlobalRequest(auth_send_code, 'POST', { phoneNumber: '+998' + phoneNumber.split(' ').join('') }, 'DEFAULT');
     const userFound = useGlobalRequest(`${user_found}?phone=${'%2B998' + phoneNumber.split(' ').join('')}`, 'GET');
     const [isChecked, setIsChecked] = useState(false);
     const [isPhoneNumberComplete, setIsPhoneNumberComplete] = useState(false); // New state to track phone number completeness
@@ -68,17 +68,17 @@ const Login = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
-                <NavigationMenu name=''/>
-                <View style={{marginTop: 50, paddingHorizontal: 0 + (isTablet ? 100 : 0)}}>
+                <NavigationMenu name='' />
+                <View style={{ marginTop: 50, paddingHorizontal: 0 + (isTablet ? 100 : 0) }}>
                     <Text style={styles.title}>Ваш номер телефона</Text>
                     <Text style={styles.des}>Мы отправим вам SMS с кодом подтверждения.</Text>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <View style={styles.phoneCard}>
-                            <Image style={{width: isTablet ? 20 : 10, height: isTablet ? 20 : 10}}
-                                   source={require('../../../../assets/images/uzb.png')}/>
-                            <Text style={{fontSize: 17 + (isTablet ? 20 : 0), color: colors.white}}>+998</Text>
+                            <Image style={{ width: isTablet ? 20 : 10, height: isTablet ? 20 : 10 }}
+                                source={require('../../../../assets/images/uzb.png')} />
+                            <Text style={{ fontSize: 17 + (isTablet ? 20 : 0), color: colors.white }}>+998</Text>
                         </View>
-                        <View style={{width: '69%'}}>
+                        <View style={{ width: '69%' }}>
                             <TextInput
                                 style={styles.phoneInput}
                                 placeholder='Номер телефона'
@@ -89,7 +89,7 @@ const Login = () => {
                             />
                         </View>
                     </View>
-                    {!status && (
+                    {isPhoneNumberComplete&&!status && (
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
@@ -98,10 +98,10 @@ const Login = () => {
                         }}>
                             <TouchableOpacity onPress={handleToggle}>
                                 <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
-                                    {isChecked && <View style={styles.checkboxTick}/>}
+                                    {isChecked && <View style={styles.checkboxTick} />}
                                 </View>
                             </TouchableOpacity>
-                            <Text style={{alignItems: 'center'}}>
+                            <Text style={{ alignItems: 'center' }}>
                                 <Text style={styles.label}>Men </Text>
                                 <Text
                                     style={styles.links}
@@ -121,7 +121,7 @@ const Login = () => {
                 </View>
                 {isPhoneNumberComplete && (
                     <View
-                        style={{position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center'}}>
+                        style={{ position: 'absolute', width: '100%', bottom: 0, marginBottom: 25, alignSelf: 'center' }}>
                         {status === true ? (
                             <Buttons
                                 title="Kirish"
@@ -200,14 +200,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#70bf73',
     },
     label: {
-        fontSize: 16,
+        fontSize: isTablet ? 23 : 16,
         color: '#fff',
         opacity: .6
     },
     links: {
         textDecorationLine: 'underline',
         color: 'green',
-        fontSize: 16,
+        fontSize: isTablet ? 23 : 16,
         opacity: .7
     }
 });

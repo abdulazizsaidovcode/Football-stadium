@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView} from 'react-native';
+import {Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
 import React, {useCallback} from 'react';
 // import Layout from '@/layout/layout';
 import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
@@ -13,7 +13,8 @@ import {RootStackParamList} from '@/types/root/root';
 import {getSize} from '@/constants/sizes';
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
-
+const {width: screenWidth} = Dimensions.get('window')
+const isTablet = screenWidth > 768;
 const Stadium = () => {
     const stadiums = useGlobalRequest(stadium_get_master, 'GET');
     const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
@@ -71,7 +72,7 @@ const Stadium = () => {
                 paddingVertical: 10
             }}>
                 <Buttons
-                    icon={<Entypo name="plus" size={24} color="white"/>}
+                    icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white"/>}
                     title="Maydon qo'shish
           "
                     onPress={() => {
@@ -97,11 +98,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 70,
-        marginBottom: 30
+        marginBottom: 30,
     },
     title: {
-        fontSize: 25,
-        color: colors.white
+        fontSize: getSize('mediumText'),
+        color: colors.white,
     },
     Image: {
         width: '120%',

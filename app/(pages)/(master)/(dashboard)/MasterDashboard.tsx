@@ -125,10 +125,10 @@ const MasterDashboardScreen: React.FC = () => {
                     <Text style={{marginTop: isTablet ? 100 : 50, width: 100}}>
                         <Input
                             labalVisible
-                            label='Year'
-                            placeholder='Enter count'
+                            label='Yil'
+                            placeholder='Yil kiriting'
                             type='numeric'
-                            value={year.toString()}
+                            value={`${year}`}
                             onChangeText={(text) => setYear(Number(text))}
                         />
                     </Text>
@@ -165,7 +165,7 @@ const MasterDashboardScreen: React.FC = () => {
                                     }}
                                 />
                             ) : (
-                                <Text style={{marginTop: 20, textAlign: 'center', color: "white"}}>Buyurtmalar mavjud
+                                <Text style={{marginTop: 20, textAlign: 'center', color: "white", fontSize: getSize('smallText')}}>Buyurtmalar mavjud
                                     emas</Text>
                             )
                         }
@@ -174,8 +174,8 @@ const MasterDashboardScreen: React.FC = () => {
                 <CenteredModal
                     isModal={isModalVisible}
                     isFullBtn
-                    btnRedText='Save'
-                    btnWhiteText='Cancel'
+                    btnRedText='Saqlash'
+                    btnWhiteText='Orqaga'
                     toggleModal={() => setIsModalVisible(false)}
                     onConfirm={handleSave}
                 >
@@ -206,8 +206,8 @@ const MasterDashboardScreen: React.FC = () => {
                 <CenteredModal
                     isModal={isLogoutModalVisible}
                     isFullBtn
-                    btnRedText='Logout'
-                    btnWhiteText='Cancel'
+                    btnRedText='Chiqish'
+                    btnWhiteText='Orqaga'
                     toggleModal={() => setIsLogoutModalVisible(false)}
                     onConfirm={logOut}
                 >
@@ -219,7 +219,7 @@ const MasterDashboardScreen: React.FC = () => {
                         }}
                     >
                         <MaterialCommunityIcons name="cancel" size={100} color={colors.lightGreen}/>
-                        <Text style={{fontSize: 17, color: '#fff', textAlign: "center"}}>
+                        <Text style={{fontSize: getSize('mediumText'), color: '#fff', textAlign: "center"}}>
                             Siz aniq tizimdan chiqmoqchimisz ?
                         </Text>
                     </View>
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     phone: {
-        fontSize: 14,
+        fontSize: getSize('smallText'),
         color: '#fff',
     },
     editButton: {
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        width: 300,
+        width: '100%',
         padding: 20,
         color: '#fff',
         borderRadius: 10,
@@ -339,6 +339,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingVertical: 5,
         paddingHorizontal: 10,
+        fontSize: getSize('smallText')
     },
 });
 

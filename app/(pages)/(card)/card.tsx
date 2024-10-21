@@ -76,7 +76,7 @@ const Cards = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ padding: 10 }}>
-                <Text style={{ fontSize: 22, color: "white", marginVertical: 10, }}>Kartalar</Text>
+                <Text style={{ fontSize: getSize('mediumText'), color: "white", marginVertical: 10, }}>Kartalar</Text>
             </View>
             <ScrollView horizontal={isTablet} style={{ flex: 1 }}>
                 <View style={[{ padding: 0, flexDirection: isTablet ? 'row' : "column", width: '100%', flex: 1, gap: 10 }, isTablet && { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
@@ -126,7 +126,7 @@ const Cards = () => {
 
             <View style={styles.addButtonContainer}>
                 <Buttons
-                    icon={<Entypo name="plus" size={24} color="white" />}
+                    icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white" />}
                     title="Karta qo'shish"
                     onPress={() => navigation.navigate('(pages)/(card)/(add-card)/add-card')}
                 />

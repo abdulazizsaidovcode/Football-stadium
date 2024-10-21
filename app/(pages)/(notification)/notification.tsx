@@ -12,6 +12,8 @@ import { Loading } from "@/components/loading/loading";
 // import Buttons from "@/components/button/button";
 import { useFocusEffect } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { getSize } from "@/constants/sizes";
+import NavigationMenu from "@/components/navigation/NavigationMenu";
 
 const Notification = () => {
   // const [loading, setLoading] = useState<boolean>(true);
@@ -57,6 +59,7 @@ const Notification = () => {
 
   return (
     <Layout scroll style={styles.container}>
+      <NavigationMenu name="Bildirishnomalar"/>
       <View
         style={{
           display: "flex",
@@ -65,20 +68,17 @@ const Notification = () => {
           paddingVertical: 16,
         }}
       >
-        <Text style={{ fontSize: 27, color: "#fff", fontWeight: "700" }}>
-          Bildirishnomalar
-        </Text>
         <View style={{ display: "flex", gap: 10, flexDirection: "row" }}>
           <MaterialIcons
             name="check"
             onPress={handleCheckPress}
-            size={30}
+            size={getSize('mediumText')}
             color="white"
           />
           <MaterialIcons
             name="delete"
             onPress={handleDeletePress}
-            size={30}
+            size={getSize('mediumText')}
             color="white"
           />
         </View>
@@ -113,7 +113,7 @@ const Notification = () => {
                 }}
               >
                 <Text style={styles.orderNumber}>
-                  Date: {item.time && item?.time.slice(0, 10)}
+                  Sana: {item.time && item?.time.slice(0, 10)}
                 </Text>
               </View>
             </View>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   orderNumber: {
-    fontSize: 17,
+    fontSize: getSize('smallText'),
     color: "white",
     marginBottom: 4,
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   orderDate: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: getSize('mediumText'),
     color: "white",
     marginBottom: 8,
   },

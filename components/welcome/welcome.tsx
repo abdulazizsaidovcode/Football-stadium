@@ -65,7 +65,6 @@ const Welcome: React.FC = () => {
                 <FontAwesome name="soccer-ball-o" size={50 + (isTablet ? 60 : 0)} color="black"/>
             </View>
             <Text style={styles.title}>Soccer Bookers</Text>
-            <Text style={styles.welcome}> </Text>
             <Text style={styles.selectLanguage}>Bu app orqali o'zngizga yoqan stadionlaringizni bron qiling</Text>
             <View style={styles.button}>
                 <Buttons
@@ -102,11 +101,6 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#ffffff",
         marginBottom: 10,
-    },
-    welcome: {
-        fontSize: 18,
-        color: "#ffffff",
-        marginBottom: 5,
     },
     selectLanguage: {
         fontSize: getSize('smallText'),

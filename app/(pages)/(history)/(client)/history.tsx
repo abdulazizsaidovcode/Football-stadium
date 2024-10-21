@@ -8,6 +8,7 @@ import Layout from '@/layout/layout';
 import { Loading } from '@/components/loading/loading';
 import Buttons from '@/components/button/button';
 import { useFocusEffect } from '@react-navigation/native';
+import { getSize } from '@/constants/sizes';
 interface OrderHistory {
   id: string;
   date: string;
@@ -41,16 +42,15 @@ const ClientHistory = () => {
 
   return (
     <Layout scroll style={styles.container}>
-      <NavigationMenu name="История заказов" />
+      <NavigationMenu name="Buyurtmalar tarixi" />
       {GetHistory.loading ? (
         <Loading />
       ) : historyData.length > 0 ? (
         <>
           {historyData.map((item) => (
             <View key={item.id} style={styles.itemContainer}>
-              <Text style={styles.orderDate}>Date: {item.date}</Text>
-              <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
-              <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
+              <Text style={styles.orderDate}>Sana: {item.date}</Text>
+              <Text style={styles.orderTime}>Vaqt: {item.startTime} - {item.endTime}</Text>
               <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
             </View>
           ))}
@@ -86,29 +86,29 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   orderNumber: {
-    fontSize: 14,
+    fontSize: getSize('smallText'),
     color: "white",
     marginBottom: 4,
   },
   orderTime: {
     color: "white",
-    fontSize: 14,
+    fontSize: getSize('smallText'),
     marginBottom: 4,
   },
   orderDate: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: getSize('smallText'),
     color: "white",
     marginBottom: 8,
   },
   orderStatus: {
-    fontSize: 16,
+    fontSize: getSize('smallText'),
     fontWeight: 'bold',
     color: "white",
   },
   noDataText: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: getSize('smallText'),
     color: 'white',
     marginTop: 20,
   },

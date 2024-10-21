@@ -109,7 +109,7 @@ export default function MasterOrder() {
                         ))
                     ) : (
                         <Text
-                            style={{marginTop: 20, textAlign: "center", color: "white"}}
+                            style={{marginTop: 20, textAlign: "center", color: "white", fontSize: getSize('smallText')}}
                         >
                             Order Mavjud emas
                         </Text>
@@ -136,7 +136,7 @@ export default function MasterOrder() {
                         }
                     }}
                     title="Bron qo'shish"
-                    icon={<Entypo name="plus" size={24} color="white"/>}
+                    icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white"/>}
                 />}
             </View>
 
