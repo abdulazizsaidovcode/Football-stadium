@@ -1,9 +1,9 @@
-import {useFocusEffect, useNavigation} from "expo-router";
+import {useFocusEffect} from "expo-router";
 import React, {useCallback, useState} from "react";
 import {StyleSheet, View, Text, SafeAreaView, BackHandler, Dimensions} from "react-native";
 // import { useTranslation } from "react-i18next";
 // import "../../i18next";
-import {NavigationProp} from "@react-navigation/native";
+import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {RootStackParamList} from "@/types/root/root";
 // import {langstore} from "@/helpers/state_managment/lang/lang";
 // import Toast from "react-native-simple-toast";

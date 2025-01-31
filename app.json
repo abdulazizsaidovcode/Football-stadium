@@ -56,6 +56,11 @@
         "projectId": "1e530b86-ce84-4fe0-8a44-6e7997c9c8fe"
       }
     },
-    "owner": "kimdir"
+    "owner": "kimdir",
+    "plugins": [
+      "expo-font",
+      "expo-router",
+      "expo-secure-store"
+    ]
   }
 }

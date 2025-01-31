@@ -15,9 +15,8 @@ import {useGlobalRequest} from '@/helpers/global_functions/global-response/globa
 import {auth_check_code} from '@/helpers/api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { getConfig } from '@/helpers/api/token';
-import {useNavigation} from 'expo-router';
 import {RootStackParamList} from '@/types/root/root';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {getSize} from '@/constants/sizes';
 
 type SettingsScreenNavigationProp = NavigationProp<

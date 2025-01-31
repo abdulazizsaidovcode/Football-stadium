@@ -1,8 +1,7 @@
 import {colors} from '@/constants/Colors'
-import {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from 'expo-router';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import {StyleSheet, View, Text, SafeAreaView,} from 'react-native';
 import Buttons from '@/components/button/button';
 import {useAuthStore} from '@/helpers/stores/auth/auth-store';
 import {FontAwesome} from '@expo/vector-icons';
@@ -11,7 +10,7 @@ import {RootStackParamList} from '@/types/root/root';
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 const MasterorClient: React.FC = () => {
     const {setRole} = useAuthStore()
-    const navigation = useNavigation<SettingsScreenNavigationProp>();
+const navigation = useNavigation<SettingsScreenNavigationProp>();
 
 
     return (

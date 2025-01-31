@@ -4,8 +4,7 @@ import { useGlobalRequest } from '@/helpers/global_functions/global-response/glo
 import { useAuthStore } from '@/helpers/stores/auth/auth-store';
 import { RootStackParamList } from '@/types/root/root';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationProp } from '@react-navigation/native';
-import { useNavigation } from 'expo-router';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;

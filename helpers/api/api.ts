@@ -1,4 +1,4 @@
-export const BASE_URL: string = 'https://app.coinbyitca.uz/api/v1/';
+export const BASE_URL: string = 'http://164.92.165.18:8080/api/v1/';
 
 // AUTH
 // export const auth_login: string = `${BASE_URL}auth/login`;
