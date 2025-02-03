@@ -74,6 +74,9 @@ const MasterDashboardScreen: React.FC = () => {
                 await AsyncStorage.setItem('token', userEdit.response);
             }
         };
+        if (userEdit.response) {
+            userMee.globalDataFunc();
+        }
         updateToken().then(() => console.log('success'));
     }, [userEdit.response]);
 
@@ -111,9 +114,9 @@ const MasterDashboardScreen: React.FC = () => {
                     <View style={styles.profile}>
                         <View style={styles.profileInfo}>
                             <Text style={styles.name}>
-                                {userMee.response?.lastName || "Guest"} {userMee.response?.firstName || ""}
+                                {userMee.response?.lastName || "..."} {userMee.response?.firstName || "..."}
                             </Text>
-                            <Text style={styles.phone}>{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
+                            <Text style={styles.phone}>fds{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
                         </View>
                         <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
                             <AntDesign name="edit" size={getSize('mediumText') + (isTablet ? 15 : 5)}  color="white"/>

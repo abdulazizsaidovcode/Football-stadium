@@ -204,6 +204,8 @@ const AddStadium = () => {
         try {
             const config = await getConfig()
             const {data} = await axios.post(stadium_post_master, payload, config || {});
+            console.log('data response',data);
+            
             if (data.data) {
                 navigation.goBack();
                 setFormValues({
