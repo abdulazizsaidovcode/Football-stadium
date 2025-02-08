@@ -27,7 +27,7 @@ const Payment = () => {
     // const [refreshing, setRefreshing] = useState(false);
     const {pay, setPay, setCardExpire, setCardNumber} = useOrderStory();
     const [cardId, setCardId] = useState('')
-    const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
+    const cards = useGlobalRequest(card, 'GET');
 
     // const lottieRef = useRef<LottieView>(null);
     // const paddingValue = useRef(new Animated.Value(0)).current; // Padding animation value

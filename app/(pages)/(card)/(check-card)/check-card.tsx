@@ -20,7 +20,7 @@ const CheckCard = () => {
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const inputRefs = useRef<Array<TextInput | null>>([]);
 
-    const checkCode = useGlobalRequest(check_card.split('/api/v1').join(''), 'POST', {
+    const checkCode = useGlobalRequest(check_card, 'POST', {
         phone: phoneNumber,
         code: +code.join('')
     })

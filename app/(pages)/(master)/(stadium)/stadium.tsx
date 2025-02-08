@@ -17,7 +17,7 @@ const {width: screenWidth} = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 const Stadium = () => {
     const stadiums = useGlobalRequest(stadium_get_master, 'GET');
-    const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
+    const cards = useGlobalRequest(card, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
 
     useFocusEffect(
@@ -73,8 +73,7 @@ const Stadium = () => {
             }}>
                 <Buttons
                     icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white"/>}
-                    title="Maydon qo'shish
-          "
+                    title="Maydon qo'shish"
                     onPress={() => {
                         if (cards.response && cards.response.length === 0) {
                             alert('Dovud kut birinchi carta qush')

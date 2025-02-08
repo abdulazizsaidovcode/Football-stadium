@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from "expo-router";
 import { INavigationProps } from "@/types/navigation/navigation";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { colors } from '@/constants/Colors';
 import { getSize } from '@/constants/sizes';
+import { useNavigation } from '@react-navigation/native';
 
 const NavigationMenu = ({ toggleModal, name, deleteIcon, all = false, delOnPress, editOnPress, addOnPress, navigate }: INavigationProps) => {
     const navigation = useNavigation();

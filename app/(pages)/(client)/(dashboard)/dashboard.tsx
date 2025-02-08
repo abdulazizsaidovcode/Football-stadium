@@ -51,7 +51,7 @@ const ClientDashboard = () => {
     const { isLoginModal, setIsLoginModal } = useAuthStore();
     const [backPressCount, setBackPressCount] = useState(0);
     const [role, setRole] = useState<string | null>("");
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [locationLoading, setLocationLoading] = useState(false)
 
     const staduims = useGlobalRequest(
@@ -101,11 +101,14 @@ const ClientDashboard = () => {
 
     useFocusEffect(
         useCallback(() => {
-            if (staduims.response) {
+            if (staduims.response) { 
                 setstadiumData(staduims.response);
                 setLocationLoading(false)
-            } else if (staduims.error) {
+                console.log("tug'ri hatom");
+                
+            } else {
                 setstadiumData(null);
+                console.log("xato hatom");
             }
         }, [staduims.error, staduims.response, userLocation?.coords?.latitude])
     );
@@ -198,14 +201,7 @@ const ClientDashboard = () => {
                         <Text style={styles.subTitle}>
                             {role && token ? "Mening yozuvlarim" : "Stadionlar"}
                         </Text>
-                        {!token && !role && (
-                            <View style={{ marginVertical: 10 }}>
-                                <Buttons
-                                    title="Tizimga kirish"
-                                    onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')}
-                                />
-                            </View>
-                        )}
+
                         <View style={{ marginVertical: 16, gap: 10 }}>
                             {/* {!locationLoading ?
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -255,7 +251,7 @@ const ClientDashboard = () => {
                                             <View>
                                                 {!refreshing && <Loading />}
                                             </View>
-                                        ) : stadiumData && stadiumData.length > 0 ? (
+                                        ) : stadiumData && stadiumData.length >= 0 ? (
                                             stadiumData.map((item: StadiumTypes, index: number) => (
                                                 <View style={{ marginBottom: getSize('marginBottom') }}>
                                                     <StadiumCard
@@ -340,6 +336,14 @@ const ClientDashboard = () => {
                     </Text>
                 </View>
             </CenteredModal>
+            {!token && !role && (
+                <View style={{ marginVertical: 10, marginHorizontal: 16 }}>
+                    <Buttons
+                        title="Tizimga kirish"
+                        onPress={() => navigation.navigate('(pages)/(auth)/(login)/login')}
+                    />
+                </View>
+            )}
         </SafeAreaView>
     );
 };

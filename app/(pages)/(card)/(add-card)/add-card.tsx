@@ -19,7 +19,7 @@ const AddCard = () => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardExpire, setEardExpire] = useState('');
     const {setPhoneNumber} = useAuthStore()
-    const addCard = useGlobalRequest(card.split('/api/v1').join(''), 'POST', {
+    const addCard = useGlobalRequest(card, 'POST', {
         cardNumber: cardNumber.split(' ').join(''),
         cardExpire: cardExpire.split('/').reverse().join(''),
         main: true

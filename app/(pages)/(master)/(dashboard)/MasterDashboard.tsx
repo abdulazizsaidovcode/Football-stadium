@@ -19,9 +19,8 @@ import Input from '@/components/input/input';
 import CenteredModal from '@/components/modal/sentralmodal';
 import {LineChart} from 'react-native-chart-kit';
 import {colors} from '@/constants/Colors';
-import {useNavigation} from 'expo-router';
 import {RootStackParamList} from '@/types/root/root';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {getSize} from '@/constants/sizes';
 
 type UserResponse = {

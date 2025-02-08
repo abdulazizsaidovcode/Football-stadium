@@ -17,9 +17,9 @@ import {
 import Buttons from "@/components/button/button";
 import {colors} from "@/constants/Colors";
 import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
-import {useFocusEffect, useNavigation} from "expo-router";
+import {useFocusEffect} from "expo-router";
 import {RootStackParamList} from "@/types/root/root";
-import {NavigationProp} from "@react-navigation/native";
+import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {Picker} from "@react-native-picker/picker";
 import CenteredModal from "@/components/modal/sentralmodal";
 import {StadiumTypes} from "@/types/stadium/stadium";

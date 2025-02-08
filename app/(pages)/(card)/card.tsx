@@ -23,9 +23,9 @@ const Cards = () => {
     const [currentMainId, setCurrentMainId] = useState('')  // To track the existing main card before change
     const [isDelModal, setIsDelModal] = useState(false);
 
-    const cards = useGlobalRequest(card.split('/api/v1').join(''), 'GET');
-    const deleteCard = useGlobalRequest(`${card.split('/api/v1').join('')}/${cardId}`, 'DELETE');
-    const updateMainCard = useGlobalRequest(`${card.split('/api/v1').join('')}/update/main/${selectedMainId}?isMain=true`, 'PUT');
+    const cards = useGlobalRequest(card, 'GET');
+    const deleteCard = useGlobalRequest(`${card}/${cardId}`, 'DELETE');
+    const updateMainCard = useGlobalRequest(`${card}/update/main/${selectedMainId}?isMain=true`, 'PUT');
 
     // Fetch cards and set the current main card
     useFocusEffect(

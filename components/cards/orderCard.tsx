@@ -11,13 +11,13 @@ import {file_get} from '@/helpers/api/api'
 import {getSize} from '@/constants/sizes'
 
 export interface OrderTofay {
-    "clientFirstName": string,
-    "clientLastName": string,
-    "stadiumNumber": number,
-    "date": string,
-    "startTime": string,
-    "endTime": string,
-    "startPrice": number,
+    clientFirstName: string,
+    clientLastName: string,
+    stadiumNumber: number,
+    date: string,
+    startTime: string,
+    endTime: string,
+    startPrice: number,
     orderStatus: string | null,
     isMainAttachmentId: 'string',
     fileId: string | null
@@ -32,13 +32,7 @@ const OrderCard: React.FC<{
     onPress: () => void,
     boxOnPress?: () => void,
     iconColor?: string | any
-}> = ({data, onPress, boxOnPress, iconColor = 'white'}) => {
-    // const navigation = useNavigation<any>();
-
-    // const {OrderData} = OrderStore()
-    // const [isModalVisible, setIsModalVisible] = useState(false);
-
-    // const openModal = () => OrderData?.id ? setIsModalVisible(!isModalVisible) : {};
+}> = ({data, onPress, boxOnPress}) => {
 
     return (
         <>
@@ -56,7 +50,7 @@ const OrderCard: React.FC<{
                 />
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={styles.title}>{data.clientFirstName} {data.clientLastName}</Text>
-                    <Text style={styles.priceTitle}> {data.startPrice} sum</Text>
+                    <Text style={styles.priceTitle}> {data.startPrice || 0} sum</Text>
                 </View>
                 <Text style={styles.priceTitle}>{data.date}</Text>
                 <Text
