@@ -182,7 +182,6 @@ const AddStadium = () => {
     function formatTime(time: string): string {
         const [hours, minutes] = time.split(':').map(Number);
 
-        // Soat va daqiqalarni ikki raqamli formatda ko'rsatish
         const formattedHours = hours.toString().padStart(2, '0');
         const formattedMinutes = minutes.toString().padStart(2, '0');
 
