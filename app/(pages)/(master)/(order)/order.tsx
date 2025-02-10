@@ -91,7 +91,7 @@ export default function MasterOrder() {
         >
             <Layout scroll>
                 <View style={styles.container}>
-                    <Text style={styles.title}>Bugungi qilingan bronlaringiz</Text>
+                    <Text style={styles.title}>Сегодняшние заказы</Text>
 
                     {OrdersDay.response && OrdersDay.response.length > 0 ? (
                         OrdersDay.response.map((item: OrderTofay) => (

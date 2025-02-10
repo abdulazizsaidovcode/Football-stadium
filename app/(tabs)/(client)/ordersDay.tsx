@@ -23,7 +23,7 @@ export default function OrdersDay() {
         <Layout scroll style={styles.container}>
             {/* <NavigationMenu name='History' /> */}
             <Text style={styles.title}>
-                Bugungi qilingan orderlar
+            Сегодняшние заказы
             </Text>
             {getOrdersTodey.response && getOrdersTodey.response.map((item: {
                 orderNumber: number,
@@ -34,10 +34,10 @@ export default function OrdersDay() {
                 orderStatus: string
             }) => (
                 <View key={item.id} style={styles.itemContainer}>
-                    <Text style={styles.orderNumber}>Order Number: {item.orderNumber}</Text>
-                    <Text style={styles.orderTime}>Time: {item.startTime} - {item.endTime}</Text>
-                    <Text style={styles.orderDate}>Date: {item.date}</Text>
-                    <Text style={styles.orderStatus}>Status: {item.orderStatus}</Text>
+                    <Text style={styles.orderNumber}>Номер заказа: {item.orderNumber}</Text>
+                    <Text style={styles.orderTime}>Время: {item.startTime} - {item.endTime}</Text>
+                    <Text style={styles.orderDate}>Дата: {item.date}</Text>
+                    <Text style={styles.orderStatus}>Статус: {item.orderStatus}</Text>
                 </View>
             ))}
         </Layout>

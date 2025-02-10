@@ -1,22 +1,22 @@
-import {View, Text, ScrollView, TextInput, StyleSheet, SafeAreaView, Dimensions} from 'react-native';
-import React, {useState, useCallback} from 'react';
+import { View, Text, ScrollView, TextInput, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
+import React, { useState, useCallback } from 'react';
 // import LottieView from 'lottie-react-native';
 import Buttons from '@/components/button/button';
-import {colors} from '@/constants/Colors';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import { colors } from '@/constants/Colors';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import LoadingButtons from '@/components/button/loadingButton';
-import {useOrderStory} from '@/helpers/stores/order/order-store';
+import { useOrderStory } from '@/helpers/stores/order/order-store';
 import NavigationMenu from '@/components/navigation/NavigationMenu';
-import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
-import {card} from '@/helpers/api/api';
-import {useFocusEffect} from 'expo-router';
-import {Loading} from '@/components/loading/loading';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { card } from '@/helpers/api/api';
+import { useFocusEffect } from 'expo-router';
+import { Loading } from '@/components/loading/loading';
 import CreditCard from '@/components/cards/credit-card';
-import {Entypo, Feather} from '@expo/vector-icons';
-import {RootStackParamList} from '@/types/root/root';
-import {getSize} from '@/constants/sizes';
+import { Entypo, Feather } from '@expo/vector-icons';
+import { RootStackParamList } from '@/types/root/root';
+import { getSize } from '@/constants/sizes';
 
-const {height: screenHeight, width: screenWidth} = Dimensions.get('window')
+const { height: screenHeight, width: screenWidth } = Dimensions.get('window')
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 const isTablet = screenWidth > 768;
 
@@ -25,7 +25,7 @@ const Payment = () => {
     const navigation = useNavigation<SettingsScreenNavigationProp>();
     const [loading, setLoading] = useState(false);
     // const [refreshing, setRefreshing] = useState(false);
-    const {pay, setPay, setCardExpire, setCardNumber} = useOrderStory();
+    const { pay, setPay, setCardExpire, setCardNumber } = useOrderStory();
     const [cardId, setCardId] = useState('')
     const cards = useGlobalRequest(card, 'GET');
 
@@ -96,25 +96,25 @@ const Payment = () => {
                 loop
                 style={styles.lottieAnimationTest}
             /> */}
-            <View style={{paddingHorizontal: getSize('defaultPadding')}}>
-                <NavigationMenu name='qedir'/>
+            <View style={{ paddingHorizontal: getSize('defaultPadding') }}>
+                <NavigationMenu name='' />
             </View>
             <ScrollView
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 showsHorizontalScrollIndicator={false}
-                // refreshControl={
-                //     <RefreshControl
-                //         refreshing={refreshing}
-                //         onRefresh={onRefresh}
-                //         tintColor="transparent" // Hides the default spinner
-                //         colors={['transparent']} // Hides the default spinner on Android
-                //     >
-                //         <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>917777777
-                //     </RefreshControl>
-                // }
+            // refreshControl={
+            //     <RefreshControl
+            //         refreshing={refreshing}
+            //         onRefresh={onRefresh}
+            //         tintColor="transparent" // Hides the default spinner
+            //         colors={['transparent']} // Hides the default spinner on Android
+            //     >
+            //         <Animated.View style={{ paddingTop: paddingValue }}></Animated.View>917777777
+            //     </RefreshControl>
+            // }
             >
                 <View style={styles.topSection}>
-                    <Text style={styles.label}>{"so'mmani kiriting"}</Text>
+                    <Text style={styles.label}>{"Введите сумму платежа"}</Text>
                     <TextInput
                         editable={!!cardId}
                         keyboardType='numeric'
@@ -122,7 +122,7 @@ const Payment = () => {
                             backgroundColor: cardId == '' ? 'gray' : colors.inDarkGreen,
                             marginBottom: 20
                         }]}
-                        placeholder={("so'mmani kiriting")}
+                        placeholder={("Введите сумму платежа")}
                         placeholderTextColor="#FFF"
                         value={pay}
                         onChangeText={handleFirstNameChange}
@@ -140,12 +140,12 @@ const Payment = () => {
                         width: '100%',
                         flex: 1,
                         gap: 10
-                    }, isTablet && {justifyContent: 'flex-start', alignItems: 'flex-start'}]}>
+                    }, isTablet && { justifyContent: 'flex-start', alignItems: 'flex-start' }]}>
                         {
                             cards.loading ?
                                 (
-                                    <View style={{height: screenHeight / 1.5}}>
-                                        <Loading/>
+                                    <View style={{ height: screenHeight / 1.5 }}>
+                                        <Loading />
                                     </View>
                                 )
                                 : (
@@ -176,19 +176,17 @@ const Payment = () => {
                                                 alignItems: 'center',
                                                 paddingHorizontal: 16
                                             }}>
-                                                <Feather name="credit-card" size={70} color="white"/>
-                                                <Text style={{color: colors.white, fontSize: 20}}>Siz toʻlov kartasini
-                                                    qoʻshmagansiz</Text>
+                                                <Feather name="credit-card" size={70} color="white" />
+                                                <Text style={{ color: colors.white, fontSize: 20 }}>Вы не добавили платежную карту</Text>
                                                 <Text style={{
                                                     color: '#828282',
                                                     fontSize: 14,
                                                     textAlign: 'center',
                                                     marginBottom: 10
-                                                }}>Ilova orqali tez va oson toʻlovlarni amalga oshirish uchun karta
-                                                    qoʻshing</Text>
-                                                <Buttons icon={<Entypo name="plus" size={24} color="white"/>}
-                                                         title="Karta qo'shish"
-                                                         onPress={() => navigation.navigate('(pages)/(card)/(add-card)/add-card')}/>
+                                                }}>Карта для быстрых и удобных платежей через приложение добавлять</Text>
+                                                <Buttons icon={<Entypo name="plus" size={24} color="white" />}
+                                                    title="Karta qo'shish"
+                                                    onPress={() => navigation.navigate('(pages)/(card)/(add-card)/add-card')} />
                                             </View>
                                         )
                                 )
@@ -202,7 +200,7 @@ const Payment = () => {
             <View style={styles.bottomSection}>
                 {!loading ? (
                     <Buttons
-                        title={("Continue")}
+                        title={("Продолжать")}
                         isDisebled={(pay !== '')}
                         onPress={() => {
                             setLoading(true);
@@ -213,7 +211,7 @@ const Payment = () => {
                         }}
                     />
                 ) : (
-                    <LoadingButtons title={("Continue")}/>
+                    <LoadingButtons title={("Продолжать")} />
                 )}
             </View>
         </SafeAreaView>
@@ -223,7 +221,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.darkGreen,
-        paddingHorizontal: getSize('defaultPadding'),
         justifyContent: 'space-between',
     },
     topSection: {

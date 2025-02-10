@@ -161,7 +161,7 @@ const ClientDashboard = () => {
                 style={{ paddingHorizontal: getSize('defaultPadding') }}>
                 {role && token && (
                     <View style={styles.header}>
-                        <Text style={styles.title}>Asosiy</Text>
+                        <Text style={styles.title}>Главная</Text>
                         <View style={styles.headerIcon}>
                             <MaterialIcons
                                 name="history"
@@ -196,7 +196,7 @@ const ClientDashboard = () => {
                             onChangeText={(text) => {
                                 setinputValue(text);
                             }}
-                            label="Ism bo'yicha qidirish"
+                            label="Поиск по имени"
                         />
                         <Text style={styles.subTitle}>
                             {role && token ? "Mening yozuvlarim" : "Stadionlar"}
