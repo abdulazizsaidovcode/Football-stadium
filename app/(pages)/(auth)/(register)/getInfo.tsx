@@ -64,7 +64,6 @@ const UserInfo: React.FC = () => {
                     value={firstName}
                     onChangeText={handleFirstNameChange}
                 />
-                {/* {firstNameError ? <Text style={styles.errorText}>{firstNameError}</Text> : null} */}
                 <TextInput
                     style={styles.input}
                     placeholder={("familiyangiz")}

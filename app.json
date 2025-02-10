@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "project",
+    "slug": "stadium-app",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -53,10 +53,10 @@
         "origin": false
       },
       "eas": {
-        "projectId": "1e530b86-ce84-4fe0-8a44-6e7997c9c8fe"
+        "projectId": "8b009065-0e6d-4915-8041-9584c0b777f6"
       }
     },
-    "owner": "kimdir",
+    "owner": "abdulvohid31",
     "plugins": [
       "expo-font",
       "expo-router",
