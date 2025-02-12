@@ -40,7 +40,7 @@ end
 
 prepare_react_native_project!
 
-target 'MyExpoProject' do
+target 'Stadium' do
   use_expo_modules!
   config = use_native_modules!
 

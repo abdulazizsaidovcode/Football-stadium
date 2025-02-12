@@ -1,22 +1,22 @@
 {
   "expo": {
     "name": "Stadium",
-    "slug": "stadium-app",
-    "version": "1.0.2",
+    "slug": "stadium",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
+    "newArchEnabled": true,
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain",
+      "backgroundColor": "#A6EBA7"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "uz.sfera.stadium",
-      "deploymentTarget": "13.4",
-      "buildNumber": "1.0.2",
+      "bundleIdentifier": "com.stadium.app",
+      "buildNumber": "1.0.0",
       "config": {
         "googleMapsApiKey": "AIzaSyA7hQst-XJ1zOl63vgDEfOI05ec3boIPms"
       },
@@ -25,11 +25,12 @@
       }
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#A6EBA7"
       },
-      "package": "uz.sfera.stadium",
+      "package": "com.stadium.app",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyA7hQst-XJ1zOl63vgDEfOI05ec3boIPms"
@@ -53,14 +54,22 @@
         "origin": false
       },
       "eas": {
-        "projectId": "8b009065-0e6d-4915-8041-9584c0b777f6"
+        "projectId": "b04b50c8-91e8-41eb-bc1b-be8b575d6463"
       }
     },
-    "owner": "abdulvohid31",
+    "owner": "behruz_0790",
     "plugins": [
       "expo-font",
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#A6EBA7"
+        }
+      ]
     ]
   }
 }

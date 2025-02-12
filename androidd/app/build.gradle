@@ -32,6 +32,7 @@ def rnVersion = getRNVersion()
 react {
     entryFile = file(["node", "-e", "require('expo/scripts/resolveAppEntry')", projectRoot, "android", "absolute"].execute(null, rootDir).text.trim())
     reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
+    
     hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
     codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
 
@@ -104,14 +105,21 @@ def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInRelea
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'uz.sfera.stadium'
+    namespace 'com.stadium.app'
     defaultConfig {
-        applicationId 'uz.sfera.stadium'
+        applicationId 'com.stadium.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
@@ -125,13 +133,13 @@ android {
             keyPassword 'bookingstadium'
         }
         release {
-            if (project.hasProperty('booking-stadium.keystore')) {
-                storeFile file(booking-stadium.keystore)
-                storePassword bookingstadium
-                keyAlias booking-stadium-key
-                keyPassword bookingstadium
-            }
-        }
+        if (file("booking-stadium.keystore").exists()) {
+        storeFile file("booking-stadium.keystore")
+        storePassword "bookingstadium"
+        keyAlias "booking-stadium-key"
+        keyPassword "bookingstadium"
+    }
+}
     }
     buildTypes {
         debug {

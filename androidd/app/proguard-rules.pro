@@ -10,6 +10,6 @@
 # react-native-reanimated
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
--keep class uz.sfera.stadium.MainApplication { *; }
+-keep class com.stadium.app.MainApplication { *; }
 
 # Add any project specific keep options here:

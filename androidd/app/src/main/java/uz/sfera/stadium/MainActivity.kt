@@ -1,4 +1,4 @@
-package uz.sfera.stadium
+package com.stadium.app
 
 import android.os.Build
 import android.os.Bundle
