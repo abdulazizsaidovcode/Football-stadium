@@ -37,18 +37,20 @@ const UserInfo: React.FC = () => {
     }, [firstName, lastName, phoneNumber])
 
     useEffect(() => {
+        console.log("check response", register.response);
         if (register.response) {
             if (register.response.role === 'ROLE_MASTER') navigate.navigate('(tabs)/(master)');
             if (register.response.role === 'ROLE_CLIENT') navigate.navigate('(tabs)/(client)');
-            setFirstName('')
-            setPhoneNumber('')
-            setLastName('')
+            setFirstName('');
+            setPhoneNumber('');
+            setLastName('');
             async function setToken() {
                 await AsyncStorage.setItem('token', register.response.token)
                 await AsyncStorage.setItem('role', role)
             }
             setToken().then(() => console.log('success'))
         }
+        
     }, [register.response])
 
     return (

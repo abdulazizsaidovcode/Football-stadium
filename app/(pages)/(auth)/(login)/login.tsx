@@ -89,7 +89,7 @@ const Login = () => {
                             />
                         </View>
                     </View>
-                    {isPhoneNumberComplete&&!status && (
+                    {isPhoneNumberComplete && !status && (
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'flex-start',

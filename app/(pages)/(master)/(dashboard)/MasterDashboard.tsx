@@ -115,7 +115,7 @@ const MasterDashboardScreen: React.FC = () => {
                             <Text style={styles.name}>
                                 {userMee.response?.lastName || "..."} {userMee.response?.firstName || "..."}
                             </Text>
-                            <Text style={styles.phone}>fds{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
+                            <Text style={styles.phone}>{userMee.response?.phoneNumber || "+998XXXXXXXXX"}</Text>
                         </View>
                         <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
                             <AntDesign name="edit" size={getSize('mediumText') + (isTablet ? 15 : 5)}  color="white"/>

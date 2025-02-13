@@ -36,10 +36,7 @@
           "apiKey": "AIzaSyA7hQst-XJ1zOl63vgDEfOI05ec3boIPms"
         }
       },
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ]
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "web": {
       "bundler": "metro",
