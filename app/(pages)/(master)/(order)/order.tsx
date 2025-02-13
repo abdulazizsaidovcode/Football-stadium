@@ -93,8 +93,8 @@ export default function MasterOrder() {
                 <View style={styles.container}>
                     <Text style={styles.title}>Сегодняшние заказы</Text>
 
-                    {OrdersDay.response && OrdersDay.response.length > 0 ? (
-                        OrdersDay.response.map((item: OrderTofay) => (
+                    {OrdersDay?.response && OrdersDay?.response?.length > 0 ? (
+                        OrdersDay?.response.map((item: OrderTofay) => (
                             <OrderCard
                                 boxOnPress={() => {
                                     setOrderData(item)
@@ -168,8 +168,8 @@ export default function MasterOrder() {
                         }}
                         onValueChange={(itemValue) => setSelectedValue(itemValue)}
                     >
-                        {stadiums.response &&
-                            stadiums.response.map((res: { name: string, id: number | string }, index: string) => (
+                        {stadiums?.response &&
+                            stadiums?.response?.map((res: { name: string, id: number | string }, index: string) => (
                                 <Picker.Item
                                     label={`${index + 1}: ${res.name}`}
                                     value={res.id}
@@ -178,8 +178,8 @@ export default function MasterOrder() {
                     </Picker>
                     <Text style={{color: "#fff", fontSize: 16}}>
                         Tanlangan stadion:
-                        {stadiums.response &&
-                            stadiums.response.find((item: { id: number | null | string }) => item.id == selectedValue)
+                        {stadiums?.response &&
+                            stadiums?.response.find((item: { id: number | null | string }) => item.id == selectedValue)
                                 ?.name}
                     </Text>
                 </View>
