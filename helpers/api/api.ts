@@ -19,7 +19,7 @@ export const file_get: string = `${BASE_URL}file/`;
 // export const file_delete: string = `${BASE_URL}file/delete`;
 
 // STADIUM
-export const stadium_get: string = `${BASE_URL}stadium`;
+export const stadium_get: string = `${BASE_URL}stadium/all`;
 export const stadium_get_master: string = `${BASE_URL}stadium/for/master`;
 export const stadium_post_master: string = `${BASE_URL}stadium`;
 export const stadium_add_attachment :string = `${BASE_URL}stadium/attachment`;
