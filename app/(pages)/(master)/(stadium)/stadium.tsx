@@ -76,7 +76,7 @@ const Stadium = () => {
                     title="Maydon qo'shish"
                     onPress={() => {
                         if (cards.response && cards.response.length === 0) {
-                            alert('Dovud kut birinchi carta qush')
+                            alert('Siz avval karta qo`shishingiz kerak')
                         } else navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')
                     }}
                 />
