@@ -30,7 +30,6 @@ const EditStadium = () => {
   const delStadium = useGlobalRequest(`${stadium_delete}?id=${id}`, 'DELETE',)
   const [markerPosition, setMarkerPosition] = useState<Region | null>(null);
   const [images, setImages] = useState<string[]>([]);
-  // const [attachmentId, setAttachmentId] = useState<string[]>([]);
   const [details, setDetails] = useState({ toilet: false, shower: false, shop: false });
   const navigation = useNavigation();
   const [isFormValid, setIsFormValid] = useState<number | "" | undefined | boolean>(false);
@@ -147,10 +146,11 @@ const EditStadium = () => {
 
   const pickImageFromGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Media library permissions are required!");
-      return;
-    }
+    console.log(status)
+    // if (status !== "granted") {
+    //   alert("Media library permissions are required!");
+    //   return;
+    // }
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -205,7 +205,7 @@ const EditStadium = () => {
     setIsLoading(true)
     try {
       const config = await getConfig()
-      const { data } = await axios.put(`${stadium_get}?id=${id}`, payload, config || {});
+      const { data } = await axios.put(`${stadium_delete}?id=${id}`, payload, config || {});
       if (data.data) {
         images.length === 0 && navigation.goBack();
         setFormValues({

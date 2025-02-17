@@ -11,6 +11,7 @@ import {Loading} from '@/components/loading/loading';
 import {Entypo} from '@expo/vector-icons';
 import {RootStackParamList} from '@/types/root/root';
 import {getSize} from '@/constants/sizes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
 const {width: screenWidth} = Dimensions.get('window')
@@ -19,14 +20,16 @@ const Stadium = () => {
     const stadiums = useGlobalRequest(stadium_get_master, 'GET');
     const cards = useGlobalRequest(card, 'GET');
     const navigation = useNavigation<SettingsScreenNavigationProp>();
+    const token = AsyncStorage.getItem('token')
 
     useFocusEffect(
         useCallback(() => {
+            console.log("token", token);
             stadiums.globalDataFunc();
             cards.globalDataFunc();
-        }, [])
+        },
+     [])
     )
-
     return (
         <SafeAreaView style={{
             flex: 1,
