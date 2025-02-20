@@ -1,20 +1,20 @@
-import {Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
-import React, {useCallback} from 'react';
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import React, { useCallback } from 'react';
 // import Layout from '@/layout/layout';
-import {useGlobalRequest} from '@/helpers/global_functions/global-response/global-response';
-import {card, file_get, stadium_get_master} from '@/helpers/api/api';
-import {StadiumTypes} from '@/types/stadium/stadium';
-import {colors} from '@/constants/Colors';
+import { useGlobalRequest } from '@/helpers/global_functions/global-response/global-response';
+import { card, file_get, stadium_get_master } from '@/helpers/api/api';
+import { StadiumTypes } from '@/types/stadium/stadium';
+import { colors } from '@/constants/Colors';
 import Buttons from '@/components/button/button';
-import {NavigationProp, useFocusEffect, useNavigation} from '@react-navigation/native';
-import {Loading} from '@/components/loading/loading';
-import {Entypo} from '@expo/vector-icons';
-import {RootStackParamList} from '@/types/root/root';
-import {getSize} from '@/constants/sizes';
+import { NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Loading } from '@/components/loading/loading';
+import { Entypo } from '@expo/vector-icons';
+import { RootStackParamList } from '@/types/root/root';
+import { getSize } from '@/constants/sizes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type SettingsScreenNavigationProp = NavigationProp<RootStackParamList>;
-const {width: screenWidth} = Dimensions.get('window')
+const { width: screenWidth } = Dimensions.get('window')
 const isTablet = screenWidth > 768;
 const Stadium = () => {
     const stadiums = useGlobalRequest(stadium_get_master, 'GET');
@@ -28,7 +28,7 @@ const Stadium = () => {
             stadiums.globalDataFunc();
             cards.globalDataFunc();
         },
-     [])
+            [])
     )
     return (
         <SafeAreaView style={{
@@ -37,7 +37,7 @@ const Stadium = () => {
         }}>
             <ScrollView>
 
-                <Image source={require('@/assets/images/Real.jpg')} style={styles.Image}/>
+                <Image source={require('@/assets/images/Real.jpg')} style={styles.Image} />
                 <Text style={styles.ImageBox}></Text>
                 <ScrollView contentContainerStyle={styles.stadiumList}>
                     <View style={styles.header}>
@@ -47,10 +47,10 @@ const Stadium = () => {
                         stadiums.response ?
                             stadiums.response.map((stadium: StadiumTypes) => (
                                 <TouchableOpacity
-                                    onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', {id: stadium.id})}
+                                    onPress={() => navigation.navigate('(pages)/(master)/(stadium)/(edit-stadium)/edit-stadium', { id: stadium.id })}
                                     activeOpacity={.8} key={stadium.id} style={styles.card}>
                                     <Image
-                                        source={stadium.isMainAttachmentId ? {uri: `${file_get}${stadium.isMainAttachmentId}`} : require('../../../../assets/images/defaultImg.jpeg')}
+                                        source={stadium.isMainAttachmentId ? { uri: `${file_get}${stadium.isMainAttachmentId}` } : require('../../../../assets/images/defaultImg.jpeg')}
                                         style={styles.cardImage}
                                         height={200}
                                     />
@@ -60,9 +60,9 @@ const Stadium = () => {
                                     </View>
                                 </TouchableOpacity>
                             )) :
-                            <Text style={{marginTop: 20, textAlign: 'center', color: "white"}}>Stadionlaringiz mavjud
+                            <Text style={{ marginTop: 20, textAlign: 'center', color: "white" }}>Stadionlaringiz mavjud
                                 emas</Text>
-                        : <View style={{height: 500}}><Loading/></View>
+                        : <View style={{ height: 500 }}><Loading /></View>
                     }
                 </ScrollView>
             </ScrollView>
@@ -75,11 +75,11 @@ const Stadium = () => {
                 paddingVertical: 10
             }}>
                 <Buttons
-                    icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white"/>}
+                    icon={<Entypo name="plus" size={isTablet ? 33 : 24} color="white" />}
                     title="Maydon qo'shish"
                     onPress={() => {
                         if (cards.response && cards.response.length === 0) {
-                            alert('Siz avval karta qo`shishingiz kerak')
+                            alert('Siz karta qo`shishingiz kerak')
                         } else navigation.navigate('(pages)/(master)/(stadium)/(add-stadium)/add-stadium')
                     }}
                 />
