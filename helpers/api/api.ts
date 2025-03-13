@@ -1,5 +1,5 @@
-export const BASE_URL: string = 'https://app.coinbyitca.uz/api/v1/';
-
+export const BASE_URL: string = 'https://stadium.welltech.uz/api/v1/';
+ 
 // AUTH
 // export const auth_login: string = `${BASE_URL}auth/login`;
 export const auth_register: string = `${BASE_URL}auth/register`;
